@@ -6,8 +6,10 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-3">
-            <img src={logo} alt="alau.ai" className="h-8 w-auto" />
-            <span className="text-xl font-bold text-foreground">alau.ai</span>
+            <img src={logo} alt="Alau.ai" className="h-8 w-auto" />
+            <span className="text-xl font-bold text-foreground">
+              Alau<span className="text-primary">.ai</span>
+            </span>
           </div>
 
           <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
@@ -29,7 +31,7 @@ const Footer = () => {
           </div>
 
           <div className="text-sm text-muted-foreground">
-            © 2024 alau.ai. Все права защищены.
+            © 2024 Alau.ai. Все права защищены.
           </div>
         </div>
       </div>

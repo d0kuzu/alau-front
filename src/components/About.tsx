@@ -61,7 +61,7 @@ const About = () => {
 
           <Card className="p-8 bg-primary/5 border-2 border-primary/20 animate-fade-in">
             <p className="text-lg text-foreground leading-relaxed text-center">
-              <strong className="text-primary">alau.ai</strong> — это платформа нового поколения, 
+              <strong className="text-primary">Alau.ai</strong> — это платформа нового поколения, 
               которая позволяет казахстанскому бизнесу использовать возможности 
               искусственного интеллекта без сложных настроек и огромных бюджетов. 
               Мы создаём умных агентов, которые работают за вас 24/7.
