@@ -31,7 +31,7 @@ const Hero = () => {
             AI-агенты, которые работают за вас
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Автоматизация бизнеса в Казахстане с помощью умных ИИ-решений
+            Автоматизация бизнеса через SMS, WhatsApp и Telegram с помощью умных ИИ-решений
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Button
