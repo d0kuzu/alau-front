@@ -10,7 +10,7 @@ const features = [
   {
     icon: Headset,
     title: "ИИ-агенты для поддержки",
-    description: "Мгновенные ответы на вопросы клиентов 24/7 через WhatsApp, Telegram и другие каналы.",
+    description: "Мгновенные ответы на вопросы клиентов 24/7 через SMS, WhatsApp и Telegram.",
   },
   {
     icon: Settings,

@@ -54,7 +54,7 @@ const About = () => {
                 Интеграции
               </h3>
               <p className="text-muted-foreground">
-                WhatsApp, Telegram, 1C, CRM, ERP и другие системы
+                SMS (основной канал), WhatsApp, Telegram, 1C, CRM, ERP и другие системы
               </p>
             </Card>
           </div>
