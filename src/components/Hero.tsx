@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const Hero = () => {
   const scrollToContact = () => {
@@ -9,20 +10,56 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-secondary/30 to-background pt-20">
-      {/* Decorative mountains background */}
-      <div className="absolute inset-0 opacity-5">
+      {/* Multi-layer mountain background */}
+      <div className="absolute inset-0 opacity-10">
         <svg
           className="w-full h-full"
           viewBox="0 0 1200 600"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="xMidYMid slice"
         >
+          {/* Back layer - distant mountains */}
+          <path
+            d="M0 600L120 480L240 520L360 420L480 460L600 380L720 440L840 360L960 400L1080 340L1200 380V600H0Z"
+            fill="currentColor"
+            className="text-primary"
+            opacity="0.3"
+          />
+          {/* Middle layer */}
+          <path
+            d="M0 600L100 500L200 520L350 400L500 440L650 360L800 420L950 340L1100 380L1200 340V600H0Z"
+            fill="currentColor"
+            className="text-primary"
+            opacity="0.5"
+          />
+          {/* Front layer - prominent peaks */}
           <path
             d="M0 600L150 450L300 500L450 350L600 400L750 250L900 350L1050 200L1200 300V600H0Z"
             fill="currentColor"
             className="text-primary"
+            opacity="0.8"
           />
         </svg>
+      </div>
+
+      {/* Logo as decorative element with parallax */}
+      <div className="absolute top-1/4 right-[10%] w-64 h-64 opacity-8 animate-float pointer-events-none">
+        <img 
+          src={logo} 
+          alt="" 
+          className="w-full h-full object-contain filter blur-[2px]"
+          style={{ transform: "translateZ(0)" }}
+        />
+      </div>
+      
+      <div className="absolute top-1/3 left-[8%] w-48 h-48 opacity-6 animate-float pointer-events-none" style={{ animationDelay: "2s" }}>
+        <img 
+          src={logo} 
+          alt="" 
+          className="w-full h-full object-contain filter blur-[3px]"
+          style={{ transform: "translateZ(0)" }}
+        />
       </div>
 
       <div className="container mx-auto px-4 py-20 relative z-10">
