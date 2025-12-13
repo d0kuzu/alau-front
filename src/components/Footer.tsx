@@ -1,12 +1,10 @@
 import logo from "@/assets/logo.png";
-
 const Footer = () => {
-  return (
-    <footer className="bg-secondary/30 border-t border-border py-12">
+  return <footer className="bg-secondary/30 border-t border-border py-12">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-3">
-            <img src={logo} alt="Alau.ai" className="h-8 w-auto brightness-0 invert-0 sepia saturate-[10] hue-rotate-[170deg]" />
+            
             <span className="text-xl font-bold text-foreground">
               Alau<span className="text-primary">.ai</span>
             </span>
@@ -35,8 +33,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
