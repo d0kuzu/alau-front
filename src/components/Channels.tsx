@@ -10,7 +10,7 @@ const channels = [
     name: "SMS",
     badge: "Основной канал",
     description: "Главная платформа для работы ИИ-агентов. Доступность 100%, работает на любом телефоне.",
-    featured: true,
+    featured: false,
   },
   {
     icon: MessageCircle,
