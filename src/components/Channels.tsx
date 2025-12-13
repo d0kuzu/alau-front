@@ -47,7 +47,7 @@ const Channels = () => {
                 <Card
                   className={`p-8 transition-all duration-300 hover:-translate-y-2 h-full ${
                     channel.featured
-                      ? "md:scale-110 border-4 border-primary shadow-2xl shadow-primary/20 bg-gradient-to-br from-primary/5 to-primary/10"
+                      ? "md:scale-110 border-2 border-border hover:border-primary shadow-xl hover:shadow-2xl hover:shadow-primary/20 bg-gradient-to-br from-primary/5 to-primary/10"
                       : "border-2 border-border hover:border-primary/30 hover:shadow-xl"
                   }`}
                 >
