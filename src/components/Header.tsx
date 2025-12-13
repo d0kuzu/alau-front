@@ -1,11 +1,24 @@
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
+import { useState } from "react";
 import logo from "@/assets/logo.png";
 
 const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     element?.scrollIntoView({ behavior: "smooth" });
+    setIsOpen(false);
   };
+
+  const navItems = [
+    { id: "features", label: "Возможности" },
+    { id: "for-who", label: "Для кого" },
+    { id: "about", label: "О нас" },
+    { id: "pricing", label: "Цены" },
+  ];
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
@@ -18,31 +31,17 @@ const Header = () => {
             </span>
           </div>
 
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <button
-              onClick={() => scrollToSection("features")}
-              className="text-foreground/80 hover:text-foreground transition-colors"
-            >
-              Возможности
-            </button>
-            <button
-              onClick={() => scrollToSection("for-who")}
-              className="text-foreground/80 hover:text-foreground transition-colors"
-            >
-              Для кого
-            </button>
-            <button
-              onClick={() => scrollToSection("about")}
-              className="text-foreground/80 hover:text-foreground transition-colors"
-            >
-              О нас
-            </button>
-            <button
-              onClick={() => scrollToSection("pricing")}
-              className="text-foreground/80 hover:text-foreground transition-colors"
-            >
-              Цены
-            </button>
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className="text-foreground/80 hover:text-foreground transition-colors"
+              >
+                {item.label}
+              </button>
+            ))}
             <Button
               onClick={() => scrollToSection("contact")}
               className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
@@ -51,12 +50,42 @@ const Header = () => {
             </Button>
           </nav>
 
-          <Button
-            onClick={() => scrollToSection("contact")}
-            className="md:hidden bg-primary hover:bg-primary/90 text-primary-foreground"
-          >
-            Связаться
-          </Button>
+          {/* Mobile Navigation */}
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger asChild className="md:hidden">
+              <Button variant="ghost" size="icon">
+                <Menu className="h-6 w-6" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[280px] bg-background">
+              <div className="flex flex-col gap-6 mt-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <img src={logo} alt="Alau.ai" className="h-8 w-auto brightness-0 invert-0 sepia saturate-[10] hue-rotate-[170deg]" />
+                  <span className="text-xl font-bold text-foreground">
+                    Alau<span className="text-primary">.ai</span>
+                  </span>
+                </div>
+                
+                {navItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className="text-lg text-foreground/80 hover:text-foreground transition-colors text-left py-2 border-b border-border/50"
+                  >
+                    {item.label}
+                  </button>
+                ))}
+                
+                <Button
+                  onClick={() => scrollToSection("contact")}
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg mt-4"
+                  size="lg"
+                >
+                  Связаться
+                </Button>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>
