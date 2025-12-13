@@ -18,7 +18,7 @@ const plans = [
   },
   {
     name: "Бизнес",
-    price: "99 000 ₸",
+    price: "149 000 ₸",
     period: "в месяц",
     popular: true,
     features: [
