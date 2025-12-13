@@ -26,7 +26,7 @@ const Hero = () => {
         <img 
           src={logo} 
           alt="" 
-          className="w-full h-full object-contain filter blur-[2px]"
+          className="w-full h-full object-contain filter blur-[2px] brightness-0 invert-0 sepia saturate-[10] hue-rotate-[170deg]"
           style={{ transform: "translateZ(0)" }}
         />
       </div>
@@ -35,7 +35,7 @@ const Hero = () => {
         <img 
           src={logo} 
           alt="" 
-          className="w-full h-full object-contain filter blur-[3px]"
+          className="w-full h-full object-contain filter blur-[3px] brightness-0 invert-0 sepia saturate-[10] hue-rotate-[170deg]"
           style={{ transform: "translateZ(0)" }}
         />
       </div>
