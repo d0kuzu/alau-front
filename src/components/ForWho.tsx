@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Store, Scissors, Stethoscope, Truck, Briefcase, Building2 } from "lucide-react";
+import AnimatedCard from "./AnimatedCard";
 
 const businesses = [
   {
@@ -38,7 +39,7 @@ const ForWho = () => {
   return (
     <section id="for-who" className="py-20 bg-secondary/30">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16 animate-fade-in">
+        <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
             Для кого Alau.ai?
           </h2>
@@ -51,25 +52,23 @@ const ForWho = () => {
           {businesses.map((business, index) => {
             const Icon = business.icon;
             return (
-              <Card
-                key={index}
-                className="p-6 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-card border border-border hover:border-primary/30 animate-scale-in"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="flex flex-col items-center gap-4">
-                  <div className="p-5 bg-primary/10 rounded-full">
-                    <Icon className="w-10 h-10 text-primary" />
+              <AnimatedCard key={index} index={index} baseDelay={80}>
+                <Card className="p-6 h-full text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-card border border-border hover:border-primary/30">
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="p-5 bg-primary/10 rounded-full">
+                      <Icon className="w-10 h-10 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-foreground mb-2">
+                        {business.title}
+                      </h3>
+                      <p className="text-muted-foreground text-sm">
+                        {business.description}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-foreground mb-2">
-                      {business.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm">
-                      {business.description}
-                    </p>
-                  </div>
-                </div>
-              </Card>
+                </Card>
+              </AnimatedCard>
             );
           })}
         </div>
