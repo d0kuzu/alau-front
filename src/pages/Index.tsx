@@ -7,18 +7,31 @@ import About from "@/components/About";
 import Pricing from "@/components/Pricing";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import AnimatedSection from "@/components/AnimatedSection";
 
 const Index = () => {
   return (
     <div className="min-h-screen">
       <Header />
       <Hero />
-      <Features />
-      <Channels />
-      <ForWho />
-      <About />
-      <Pricing />
-      <Contact />
+      <AnimatedSection>
+        <Features />
+      </AnimatedSection>
+      <AnimatedSection delay={100}>
+        <Channels />
+      </AnimatedSection>
+      <AnimatedSection delay={100}>
+        <ForWho />
+      </AnimatedSection>
+      <AnimatedSection delay={100}>
+        <About />
+      </AnimatedSection>
+      <AnimatedSection delay={100}>
+        <Pricing />
+      </AnimatedSection>
+      <AnimatedSection delay={100}>
+        <Contact />
+      </AnimatedSection>
       <Footer />
     </div>
   );
