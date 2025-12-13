@@ -16,28 +16,9 @@ const Hero = () => {
         <img 
           src={mountainsBg} 
           alt="" 
-          className="w-full h-full object-cover opacity-30"
+          className="w-full h-full object-cover opacity-60"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-secondary/50 to-background/80" />
-      </div>
-
-      {/* Logo as decorative element with parallax */}
-      <div className="absolute top-1/4 right-[10%] w-64 h-64 opacity-8 animate-float pointer-events-none">
-        <img 
-          src={logo} 
-          alt="" 
-          className="w-full h-full object-contain filter blur-[2px] brightness-0 invert-0 sepia saturate-[10] hue-rotate-[170deg]"
-          style={{ transform: "translateZ(0)" }}
-        />
-      </div>
-      
-      <div className="absolute top-1/3 left-[8%] w-48 h-48 opacity-6 animate-float pointer-events-none" style={{ animationDelay: "2s" }}>
-        <img 
-          src={logo} 
-          alt="" 
-          className="w-full h-full object-contain filter blur-[3px] brightness-0 invert-0 sepia saturate-[10] hue-rotate-[170deg]"
-          style={{ transform: "translateZ(0)" }}
-        />
+        <div className="absolute inset-0 bg-gradient-to-b from-secondary/30 to-background/90" />
       </div>
 
       <div className="container mx-auto px-4 py-20 relative z-10">
