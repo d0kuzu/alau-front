@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Headset, ShoppingCart, Settings, BarChart3 } from "lucide-react";
 import AnimatedCard from "./AnimatedCard";
+import AnimatedSection from "./AnimatedSection";
 
 const features = [
   {
@@ -29,14 +30,14 @@ const Features = () => {
   return (
     <section id="features" className="py-20 bg-background">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+        <AnimatedSection className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
             Возможности платформы
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Умные ИИ-агенты для автоматизации любых бизнес-задач
           </p>
-        </div>
+        </AnimatedSection>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {features.map((feature, index) => {
