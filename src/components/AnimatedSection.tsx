@@ -9,16 +9,16 @@ interface AnimatedSectionProps {
 }
 
 const AnimatedSection = ({ children, className, delay = 0 }: AnimatedSectionProps) => {
-  const { ref, isVisible } = useScrollAnimation(0.1);
+  const { ref, isVisible } = useScrollAnimation(0.05, "-100px");
 
   return (
     <div
       ref={ref}
       className={cn(
-        "transition-all duration-700 ease-out",
+        "transition-all duration-1000 ease-out",
         isVisible
-          ? "opacity-100 translate-y-0"
-          : "opacity-0 translate-y-10",
+          ? "opacity-100 translate-y-0 blur-0"
+          : "opacity-0 translate-y-12 blur-sm",
         className
       )}
       style={{ transitionDelay: `${delay}ms` }}

@@ -5,6 +5,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Mail, MessageCircle, Send } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import AnimatedSection from "./AnimatedSection";
+import AnimatedCard from "./AnimatedCard";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -28,63 +30,70 @@ const Contact = () => {
     <section id="contact" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16 animate-fade-in">
+          <AnimatedSection className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
               Свяжитесь с нами
             </h2>
             <p className="text-xl text-muted-foreground">
               Готовы начать? Оставьте заявку, и мы свяжемся с вами
             </p>
-          </div>
+          </AnimatedSection>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <Card className="p-6 text-center border-2 border-border hover:border-primary/30 transition-all animate-fade-in-up">
-              <div className="flex justify-center mb-4">
-                <div className="p-4 bg-primary/10 rounded-full">
-                  <MessageCircle className="w-6 h-6 text-primary" />
+            <AnimatedCard index={0}>
+              <Card className="p-6 text-center border-2 border-border hover:border-primary/30 transition-all h-full">
+                <div className="flex justify-center mb-4">
+                  <div className="p-4 bg-primary/10 rounded-full">
+                    <MessageCircle className="w-6 h-6 text-primary" />
+                  </div>
                 </div>
-              </div>
-              <h3 className="font-semibold text-foreground mb-2">WhatsApp</h3>
-              <a
-                href="https://wa.me/77000000000"
-                className="text-primary hover:underline"
-              >
-                +7 700 000 00 00
-              </a>
-            </Card>
+                <h3 className="font-semibold text-foreground mb-2">WhatsApp</h3>
+                <a
+                  href="https://wa.me/77000000000"
+                  className="text-primary hover:underline"
+                >
+                  +7 700 000 00 00
+                </a>
+              </Card>
+            </AnimatedCard>
 
-            <Card className="p-6 text-center border-2 border-border hover:border-primary/30 transition-all animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
-              <div className="flex justify-center mb-4">
-                <div className="p-4 bg-primary/10 rounded-full">
-                  <Mail className="w-6 h-6 text-primary" />
+            <AnimatedCard index={1}>
+              <Card className="p-6 text-center border-2 border-border hover:border-primary/30 transition-all h-full">
+                <div className="flex justify-center mb-4">
+                  <div className="p-4 bg-primary/10 rounded-full">
+                    <Mail className="w-6 h-6 text-primary" />
+                  </div>
                 </div>
-              </div>
-              <h3 className="font-semibold text-foreground mb-2">Email</h3>
-              <a
-                href="mailto:hello@alau.ai"
-                className="text-primary hover:underline"
-              >
-                hello@alau.ai
-              </a>
-            </Card>
+                <h3 className="font-semibold text-foreground mb-2">Email</h3>
+                <a
+                  href="mailto:hello@alau.ai"
+                  className="text-primary hover:underline"
+                >
+                  hello@alau.ai
+                </a>
+              </Card>
+            </AnimatedCard>
 
-            <Card className="p-6 text-center border-2 border-border hover:border-primary/30 transition-all animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-              <div className="flex justify-center mb-4">
-                <div className="p-4 bg-primary/10 rounded-full">
-                  <Send className="w-6 h-6 text-primary" />
+            <AnimatedCard index={2}>
+              <Card className="p-6 text-center border-2 border-border hover:border-primary/30 transition-all h-full">
+                <div className="flex justify-center mb-4">
+                  <div className="p-4 bg-primary/10 rounded-full">
+                    <Send className="w-6 h-6 text-primary" />
+                  </div>
                 </div>
-              </div>
-              <h3 className="font-semibold text-foreground mb-2">Telegram</h3>
-              <a
-                href="https://t.me/alauai"
-                className="text-primary hover:underline"
-              >
-                @alauai
-              </a>
-            </Card>
+                <h3 className="font-semibold text-foreground mb-2">Telegram</h3>
+                <a
+                  href="https://t.me/alauai"
+                  className="text-primary hover:underline"
+                >
+                  @alauai
+                </a>
+              </Card>
+            </AnimatedCard>
           </div>
 
-          <Card className="p-8 border-2 border-border animate-scale-in">
+          <AnimatedCard index={3}>
+            <Card className="p-8 border-2 border-border">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <Input
@@ -137,7 +146,8 @@ const Contact = () => {
                 Отправить заявку
               </Button>
             </form>
-          </Card>
+            </Card>
+          </AnimatedCard>
         </div>
       </div>
     </section>

@@ -10,16 +10,16 @@ interface AnimatedCardProps {
 }
 
 const AnimatedCard = ({ children, className, index = 0, baseDelay = 100 }: AnimatedCardProps) => {
-  const { ref, isVisible } = useScrollAnimation(0.1);
+  const { ref, isVisible } = useScrollAnimation(0.05, "-100px");
 
   return (
     <div
       ref={ref}
       className={cn(
-        "transition-all duration-500 ease-out",
+        "transition-all duration-700 ease-out",
         isVisible
-          ? "opacity-100 translate-y-0 scale-100"
-          : "opacity-0 translate-y-8 scale-95",
+          ? "opacity-100 translate-y-0 scale-100 blur-0"
+          : "opacity-0 translate-y-16 scale-90 blur-sm",
         className
       )}
       style={{ transitionDelay: `${index * baseDelay}ms` }}

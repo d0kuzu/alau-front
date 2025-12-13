@@ -22,14 +22,14 @@ const Hero = () => {
       </div>
 
       <div className="container mx-auto px-4 py-20 relative z-10">
-        <div className="max-w-4xl mx-auto text-center animate-fade-in">
-          <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-6 leading-tight">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-6 leading-tight opacity-0 animate-[fade-in_0.8s_ease-out_0.2s_forwards]">
             AI-агенты, которые работают за вас
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+          <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto opacity-0 animate-[fade-in_0.8s_ease-out_0.4s_forwards]">
             Автоматизация бизнеса через SMS, WhatsApp и Telegram с помощью умных ИИ-решений
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center opacity-0 animate-[fade-in_0.8s_ease-out_0.6s_forwards]">
             <Button
               onClick={scrollToContact}
               size="lg"
