@@ -6,7 +6,7 @@ import AnimatedCard from "./AnimatedCard";
 const plans = [
   {
     name: "Стартовый",
-    price: "49 000 ₸",
+    price: "100 000 ₸",
     period: "в месяц",
     features: [
       "1 ИИ-агент",
