@@ -1,23 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Menu, User, LogOut } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import logo from "@/assets/logo.png";
-
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, profile, isAuthenticated, signOut } = useAuth();
+  const {
+    user,
+    profile,
+    isAuthenticated,
+    signOut
+  } = useAuth();
 
   // Получаем имя из профиля или логин из email
   const getUserDisplayName = () => {
@@ -25,12 +23,10 @@ const Header = () => {
     if (user?.email) return user.email.split('@')[0];
     return "Пользователь";
   };
-
   const handleLogout = async () => {
     await signOut();
     navigate("/");
   };
-
   const scrollToSection = (id: string) => {
     if (location.pathname !== "/") {
       navigate("/");
@@ -48,7 +44,6 @@ const Header = () => {
     }
     setIsOpen(false);
   };
-
   const navItems = [{
     id: "features",
     label: "Возможности"
@@ -62,15 +57,11 @@ const Header = () => {
     id: "pricing",
     label: "Цены"
   }];
-
   return <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 py-4">
         <div className="grid grid-cols-3 items-center">
           <div className="flex items-center gap-3">
-            <button 
-              onClick={() => navigate("/")}
-              className="text-2xl font-bold text-foreground hover:opacity-80 transition-opacity cursor-pointer"
-            >
+            <button onClick={() => navigate("/")} className="text-2xl font-bold text-foreground hover:opacity-80 transition-opacity cursor-pointer">
               Alau<span className="text-primary">.ai</span>
             </button>
           </div>
@@ -84,20 +75,15 @@ const Header = () => {
 
           {/* Right side: Account button, Contact button (desktop) and Mobile menu */}
           <div className="flex justify-end items-center gap-4">
-            {isAuthenticated && user ? (
-              <DropdownMenu>
+            {isAuthenticated && user ? <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button 
-                    variant="ghost" 
-                    className="hidden md:flex items-center gap-2 px-3"
-                    style={{ 
-                      color: 'rgba(240, 240, 240, 1)', 
-                      backgroundColor: 'rgba(81, 194, 251, 1)', 
-                      borderStyle: 'solid', 
-                      borderWidth: '1px', 
-                      borderColor: 'rgba(81, 194, 251, 1)'
-                    }}
-                  >
+                  <Button variant="ghost" className="hidden md:flex items-center gap-2 px-3" style={{
+                color: 'rgba(240, 240, 240, 1)',
+                backgroundColor: 'rgba(81, 194, 251, 1)',
+                borderStyle: 'solid',
+                borderWidth: '1px',
+                borderColor: 'rgba(81, 194, 251, 1)'
+              }}>
                     <User className="h-4 w-4" />
                     <span className="font-medium">{getUserDisplayName()}</span>
                   </Button>
@@ -108,10 +94,7 @@ const Header = () => {
                     <div className="text-muted-foreground text-xs">{user.email}</div>
                   </div>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem 
-                    onClick={() => navigate("/dashboard")} 
-                    className="cursor-pointer"
-                  >
+                  <DropdownMenuItem onClick={() => navigate("/dashboard")} className="cursor-pointer">
                     <User className="mr-2 h-4 w-4" />
                     <span>Личный кабинет</span>
                   </DropdownMenuItem>
@@ -121,24 +104,15 @@ const Header = () => {
                     <span>Выйти</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button 
-                onClick={() => navigate("/auth")} 
-                variant="ghost" 
-                size="icon"
-                className="hidden md:flex"
-                style={{ 
-                  color: 'rgba(240, 240, 240, 1)', 
-                  backgroundColor: 'rgba(81, 194, 251, 1)', 
-                  borderStyle: 'solid', 
-                  borderWidth: '1px', 
-                  borderColor: 'rgba(81, 194, 251, 1)'
-                }}
-              >
+              </DropdownMenu> : <Button onClick={() => navigate("/auth")} variant="ghost" size="icon" className="hidden md:flex" style={{
+            color: 'rgba(240, 240, 240, 1)',
+            backgroundColor: 'rgba(81, 194, 251, 1)',
+            borderStyle: 'solid',
+            borderWidth: '1px',
+            borderColor: 'rgba(81, 194, 251, 1)'
+          }}>
                 <User className="h-5 w-5" />
-              </Button>
-            )}
+              </Button>}
             <Button onClick={() => scrollToSection("contact")} className="hidden md:flex bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg whitespace-nowrap">
               Связаться
             </Button>
@@ -151,7 +125,7 @@ const Header = () => {
               <SheetContent side="right" className="w-[280px] bg-background">
                 <div className="flex flex-col gap-6 mt-8">
                   <div className="flex items-center gap-3 mb-4">
-                    <img src={logo} alt="Alau.ai" className="h-8 w-auto brightness-0 invert-0 sepia saturate-[10] hue-rotate-[170deg]" />
+                    
                     <span className="text-xl font-bold text-foreground">
                       Alau<span className="text-primary">.ai</span>
                     </span>
@@ -161,45 +135,29 @@ const Header = () => {
                       {item.label}
                     </button>)}
                   
-                  {isAuthenticated && user ? (
-                    <>
+                  {isAuthenticated && user ? <>
                       <div className="px-2 py-2 border-b border-border/50">
                         <div className="font-medium text-foreground">{getUserDisplayName()}</div>
                         <div className="text-sm text-muted-foreground">{user.email}</div>
                       </div>
-                      <Button 
-                        onClick={() => {
-                          navigate("/dashboard");
-                          setIsOpen(false);
-                        }} 
-                        variant="ghost"
-                        className="text-lg text-foreground/80 hover:text-foreground transition-colors text-left py-2 border-b border-border/50 justify-start"
-                      >
+                      <Button onClick={() => {
+                    navigate("/dashboard");
+                    setIsOpen(false);
+                  }} variant="ghost" className="text-lg text-foreground/80 hover:text-foreground transition-colors text-left py-2 border-b border-border/50 justify-start">
                         <User className="h-5 w-5 mr-2" />
                         Личный кабинет
                       </Button>
-                      <Button 
-                        onClick={() => {
-                          handleLogout();
-                          setIsOpen(false);
-                        }} 
-                        variant="ghost"
-                        className="text-lg text-foreground/80 hover:text-foreground transition-colors text-left py-2 border-b border-border/50 justify-start"
-                      >
+                      <Button onClick={() => {
+                    handleLogout();
+                    setIsOpen(false);
+                  }} variant="ghost" className="text-lg text-foreground/80 hover:text-foreground transition-colors text-left py-2 border-b border-border/50 justify-start">
                         <LogOut className="h-5 w-5 mr-2" />
                         Выйти
                       </Button>
-                    </>
-                  ) : (
-                    <Button 
-                      onClick={() => navigate("/auth")} 
-                      variant="ghost"
-                      className="text-lg text-foreground/80 hover:text-foreground transition-colors text-left py-2 border-b border-border/50 justify-start"
-                    >
+                    </> : <Button onClick={() => navigate("/auth")} variant="ghost" className="text-lg text-foreground/80 hover:text-foreground transition-colors text-left py-2 border-b border-border/50 justify-start">
                       <User className="h-5 w-5 mr-2" />
                       Вход / Регистрация
-                    </Button>
-                  )}
+                    </Button>}
                   
                   <Button onClick={() => scrollToSection("contact")} className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg mt-4" size="lg">
                     Связаться
