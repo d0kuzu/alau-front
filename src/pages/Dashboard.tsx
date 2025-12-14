@@ -31,23 +31,6 @@ const Dashboard = () => {
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [tooltipValue, setTooltipValue] = useState<number | null>(null);
 
-  // #region agent log
-  const logDebug = (message: string, data: any, hypothesisId: string) => {
-    fetch('http://127.0.0.1:7243/ingest/7e6b22e7-ea26-42b8-bfde-441e0bf10f02', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'Dashboard.tsx',
-        message,
-        data,
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        hypothesisId
-      })
-    }).catch(() => {});
-  };
-  // #endregion
-
   useEffect(() => {
     if (!user) {
       navigate("/auth");
@@ -319,34 +302,13 @@ const Dashboard = () => {
               <div 
                 className="h-[300px] relative"
                 onMouseMove={(e) => {
-                  // #region agent log
-                  logDebug('Chart container mouseMove', { 
-                    hoveredBar, 
-                    clientX: e.clientX, 
-                    clientY: e.clientY 
-                  }, 'A');
-                  // #endregion
                   if (hoveredBar !== null) {
-                    const newPos = { x: e.clientX, y: e.clientY };
-                    setTooltipPosition(newPos);
-                    // #region agent log
-                    logDebug('Tooltip position updated', newPos, 'A');
-                    // #endregion
+                    setTooltipPosition({ x: e.clientX, y: e.clientY });
                   }
                 }}
-                onMouseLeave={(e) => {
-                  // #region agent log
-                  logDebug('Chart container mouseLeave', { 
-                    hoveredBar, 
-                    tooltipValue,
-                    relatedTarget: (e.relatedTarget as HTMLElement)?.className 
-                  }, 'B');
-                  // #endregion
+                onMouseLeave={() => {
                   setHoveredBar(null);
                   setTooltipValue(null);
-                  // #region agent log
-                  logDebug('Tooltip state cleared', { hoveredBar: null, tooltipValue: null }, 'B');
-                  // #endregion
                 }}
               >
                 {/* Y-axis labels - правильный порядок снизу вверх */}
@@ -381,33 +343,12 @@ const Dashboard = () => {
                           className="flex-1 flex flex-col items-center justify-end group relative"
                           style={{ height: "100%" }}
                           onMouseEnter={(e) => {
-                            // #region agent log
-                            logDebug('Bar mouseEnter', { 
-                              index, 
-                              value: item.value,
-                              currentHoveredBar: hoveredBar,
-                              clientX: e.clientX,
-                              clientY: e.clientY
-                            }, 'C');
-                            // #endregion
-                            // Update all state at once to avoid race conditions
                             setHoveredBar(index);
                             setTooltipValue(item.value);
                             setTooltipPosition({ x: e.clientX, y: e.clientY });
-                            // #region agent log
-                            logDebug('Bar state set', { index, value: item.value }, 'C');
-                            // #endregion
                           }}
                           onMouseMove={(e) => {
-                            // Always update position when mouse moves over a bar, regardless of hoveredBar state
-                            // This prevents issues with async state updates
-                            // #region agent log
-                            logDebug('Bar mouseMove', { 
-                              index, 
-                              hoveredBar, 
-                              matches: hoveredBar === index 
-                            }, 'A');
-                            // #endregion
+                            // Always update position when mouse moves over a bar
                             setTooltipPosition({ x: e.clientX, y: e.clientY });
                             // Also ensure state is set (in case of race condition)
                             if (hoveredBar !== index) {
@@ -415,14 +356,7 @@ const Dashboard = () => {
                               setTooltipValue(item.value);
                             }
                           }}
-                          onMouseLeave={(e) => {
-                            // #region agent log
-                            logDebug('Bar mouseLeave', { 
-                              index,
-                              relatedTarget: (e.relatedTarget as HTMLElement)?.className,
-                              isMovingToChart: (e.relatedTarget as HTMLElement)?.closest('.h-\\[300px\\]') !== null
-                            }, 'B');
-                            // #endregion
+                          onMouseLeave={() => {
                             // Don't clear state here - let the parent container handle it
                             // This prevents flickering when moving between bars
                           }}
