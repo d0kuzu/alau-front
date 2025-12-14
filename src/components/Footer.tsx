@@ -30,21 +30,7 @@ const Footer = () => {
             </button>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
-            <button onClick={() => scrollToSection("features")} className="hover:text-foreground transition-colors">
-              Возможности
-            </button>
-            <button onClick={() => scrollToSection("for-who")} className="hover:text-foreground transition-colors">
-              Для кого
-            </button>
-            <button onClick={() => scrollToSection("about")} className="hover:text-foreground transition-colors">
-              О нас
-            </button>
-            <button onClick={() => scrollToSection("pricing")} className="hover:text-foreground transition-colors">
-              Цены
-            </button>
-            
-          </div>
+          
 
           <div className="text-sm text-muted-foreground">
             ©Alau.ai. Все права защищены. 
