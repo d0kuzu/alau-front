@@ -52,24 +52,24 @@ const Pricing = () => {
   };
 
   return (
-    <section id="pricing" className="py-20 bg-secondary/30" style={{ backgroundColor: 'rgba(247, 248, 248, 1)' }}>
+    <section id="pricing" className="py-12 md:py-20 bg-secondary/30" style={{ backgroundColor: 'rgba(247, 248, 248, 1)' }}>
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+        <div className="text-center mb-10 md:mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
             Простые и понятные тарифы
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
             Выберите подходящий план для вашего бизнеса
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
           {plans.map((plan, index) => (
             <AnimatedCard key={index} index={index} baseDelay={150}>
               <Card
-                className={`p-8 h-full relative hover:shadow-xl transition-all duration-300 ${
+                className={`p-6 md:p-8 h-full relative hover:shadow-xl transition-all duration-300 ${
                   plan.popular
-                    ? "border-2 border-primary shadow-lg scale-105"
+                    ? "border-2 border-primary shadow-lg md:scale-105"
                     : "border border-border hover:border-primary/30"
                 }`}
               >
