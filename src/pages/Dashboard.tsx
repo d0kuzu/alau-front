@@ -4,10 +4,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
-  User, CreditCard, Settings, LogOut, MessageSquare, Phone, Calendar, TrendingUp, 
-  ArrowUp, ArrowDown, BarChart3, MessageCircle, Clock, Zap, ArrowRight, FileText 
+  CreditCard, Settings, MessageSquare, Phone, Calendar, TrendingUp, 
+  ArrowUp, ArrowDown, BarChart3, MessageCircle, Clock, ArrowRight, FileText 
 } from "lucide-react";
-import { getCurrentUser } from "@/lib/api";
 
 // Иконки для Telegram и WhatsApp
 const TelegramIcon = ({ className }: { className?: string }) => (
@@ -24,7 +23,7 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { user, logout, refreshUser } = useAuth();
+  const { user, profile, signOut, isAuthenticated, isLoading, refreshProfile } = useAuth();
   const [selectedPeriod, setSelectedPeriod] = useState("today");
   const [activeNav, setActiveNav] = useState("overview");
   const [hoveredBar, setHoveredBar] = useState<number | null>(null);
@@ -32,21 +31,20 @@ const Dashboard = () => {
   const [tooltipValue, setTooltipValue] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!user) {
+    if (!isLoading && !isAuthenticated) {
       navigate("/auth");
-    } else {
-      // Обновляем данные пользователя при загрузке
-      refreshUser();
+    } else if (isAuthenticated) {
+      refreshProfile();
     }
-  }, [user, navigate, refreshUser]);
+  }, [isAuthenticated, isLoading, navigate, refreshProfile]);
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await signOut();
     navigate("/");
   };
 
-  // Получаем тарифный план пользователя (по умолчанию "Бесплатный")
-  const userPlan = user?.plan || "Бесплатный";
+  // Получаем имя пользователя из профиля
+  const userName = profile?.name || user?.email?.split('@')[0] || "Пользователь";
 
   // Данные для графика
   const chartData = [
@@ -112,7 +110,15 @@ const Dashboard = () => {
     { id: "ai-settings", label: "Настройки AI", icon: Settings },
   ];
 
-  if (!user) {
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
     return null;
   }
 
@@ -196,27 +202,25 @@ const Dashboard = () => {
                   Dashboard
                 </h1>
                 <p className="text-slate-600 text-base">
-                  Добро пожаловать, {user.name}
+                  Добро пожаловать, {userName}
                 </p>
               </div>
-              {userPlan === "Бесплатный" && (
-                <Button 
-                  onClick={() => {
-                    navigate("/");
-                    setTimeout(() => {
-                      const element = document.getElementById("pricing");
-                      element?.scrollIntoView({ behavior: "smooth" });
-                    }, 100);
-                  }}
-                  style={{
-                    background: "linear-gradient(90deg, rgba(113, 181, 234, 1) 0%, rgba(81, 194, 251, 1) 80%)",
-                  }}
-                  className="hover:opacity-90 text-white font-medium shadow-md"
-                >
-                  <CreditCard className="w-4 h-4 mr-2" />
-                  Обновить план
-                </Button>
-              )}
+              <Button 
+                onClick={() => {
+                  navigate("/");
+                  setTimeout(() => {
+                    const element = document.getElementById("pricing");
+                    element?.scrollIntoView({ behavior: "smooth" });
+                  }, 100);
+                }}
+                style={{
+                  background: "linear-gradient(90deg, rgba(113, 181, 234, 1) 0%, rgba(81, 194, 251, 1) 80%)",
+                }}
+                className="hover:opacity-90 text-white font-medium shadow-md"
+              >
+                <CreditCard className="w-4 h-4 mr-2" />
+                Обновить план
+              </Button>
             </div>
 
             {/* Статистика в реальном времени */}
@@ -311,7 +315,7 @@ const Dashboard = () => {
                   setTooltipValue(null);
                 }}
               >
-                {/* Y-axis labels - правильный порядок снизу вверх */}
+                {/* Y-axis labels */}
                 <div className="absolute left-0 top-0 bottom-12 flex flex-col justify-between pr-2">
                   {[24, 18, 12, 6, 0].map((val) => (
                     <span key={val} className="text-xs text-slate-500 text-right w-8">
@@ -322,7 +326,7 @@ const Dashboard = () => {
                 
                 {/* Chart area */}
                 <div className="ml-12 mr-4 h-[calc(100%-3rem)] relative pb-8">
-                  {/* Grid lines - горизонтальные линии снизу вверх */}
+                  {/* Grid lines */}
                   <div className="absolute inset-0 flex flex-col justify-between">
                     {[0, 6, 12, 18, 24].map((val) => (
                       <div
@@ -332,7 +336,7 @@ const Dashboard = () => {
                     ))}
                   </div>
                   
-                  {/* Bars - выровнены снизу */}
+                  {/* Bars */}
                   <div className="absolute inset-0 flex items-end justify-between gap-2 px-2">
                     {chartData.map((item, index) => {
                       const height = (item.value / maxValue) * 100;
@@ -348,20 +352,13 @@ const Dashboard = () => {
                             setTooltipPosition({ x: e.clientX, y: e.clientY });
                           }}
                           onMouseMove={(e) => {
-                            // Always update position when mouse moves over a bar
                             setTooltipPosition({ x: e.clientX, y: e.clientY });
-                            // Also ensure state is set (in case of race condition)
                             if (hoveredBar !== index) {
                               setHoveredBar(index);
                               setTooltipValue(item.value);
                             }
                           }}
-                          onMouseLeave={() => {
-                            // Don't clear state here - let the parent container handle it
-                            // This prevents flickering when moving between bars
-                          }}
                         >
-                          {/* Highlight column on hover */}
                           {isHovered && (
                             <div className="absolute inset-0 bg-slate-100/50 rounded" />
                           )}
@@ -380,36 +377,28 @@ const Dashboard = () => {
                       );
                     })}
                   </div>
-                  
                 </div>
               </div>
               
-              {/* Tooltip following cursor - rendered outside chart area to avoid conflicts */}
-              {hoveredBar !== null && tooltipValue !== null && tooltipPosition.x > 0 && tooltipPosition.y > 0 && (
+              {/* Tooltip */}
+              {hoveredBar !== null && tooltipValue !== null && (
                 <div
-                  className="tooltip-container fixed z-50 bg-white rounded-lg shadow-lg px-3 py-2 pointer-events-none"
+                  className="fixed bg-slate-900 text-white px-3 py-1.5 rounded text-sm font-medium pointer-events-none z-50"
                   style={{
-                    left: `${tooltipPosition.x}px`,
-                    top: `${tooltipPosition.y}px`,
-                    transform: "translate(-50%, calc(-100% - 8px))",
+                    left: tooltipPosition.x + 10,
+                    top: tooltipPosition.y - 30,
                   }}
                 >
-                  <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">
-                    Разговоры
-                  </div>
-                  <div className="text-lg font-bold text-[#51C2FB] text-center">
-                    {tooltipValue}
-                  </div>
+                  {tooltipValue} разговоров
                 </div>
               )}
             </Card>
           </div>
         </div>
-      </main>
+        </main>
       </div>
     </div>
   );
 };
 
 export default Dashboard;
-
