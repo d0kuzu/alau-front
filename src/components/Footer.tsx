@@ -30,21 +30,20 @@ const Footer = () => {
             </button>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
-            <button onClick={() => scrollToSection("features")} className="hover:text-foreground transition-colors">
+          <nav className="flex flex-wrap justify-center items-center gap-8">
+            <button onClick={() => scrollToSection("features")} className="text-foreground/80 hover:text-foreground transition-colors whitespace-nowrap">
               Возможности
             </button>
-            <button onClick={() => scrollToSection("for-who")} className="hover:text-foreground transition-colors">
+            <button onClick={() => scrollToSection("for-who")} className="text-foreground/80 hover:text-foreground transition-colors whitespace-nowrap">
               Для кого
             </button>
-            <button onClick={() => scrollToSection("about")} className="hover:text-foreground transition-colors">
+            <button onClick={() => scrollToSection("about")} className="text-foreground/80 hover:text-foreground transition-colors whitespace-nowrap">
               О нас
             </button>
-            <button onClick={() => scrollToSection("pricing")} className="hover:text-foreground transition-colors">
+            <button onClick={() => scrollToSection("pricing")} className="text-foreground/80 hover:text-foreground transition-colors whitespace-nowrap">
               Цены
             </button>
-            
-          </div>
+          </nav>
 
           <div className="text-sm text-muted-foreground">
             ©Alau.ai. Все права защищены. 
