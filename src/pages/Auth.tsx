@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,12 +7,11 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import Header from "@/components/Header";
-import { login, register } from "@/lib/api";
 
 const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { login: setAuthUser } = useAuth();
+  const { signIn, signUp, isAuthenticated, isLoading: authLoading } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [registerData, setRegisterData] = useState({ 
@@ -22,26 +21,42 @@ const Auth = () => {
     confirmPassword: "" 
   });
 
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated, authLoading, navigate]);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const result = await login(loginData);
+      const { error } = await signIn(loginData.email, loginData.password);
       
-      if (result.user) {
-        setAuthUser(result.user);
+      if (error) {
+        let message = "Произошла ошибка при входе";
+        if (error.message.includes("Invalid login credentials")) {
+          message = "Неверный email или пароль";
+        } else if (error.message.includes("Email not confirmed")) {
+          message = "Email не подтверждён";
+        }
+        
+        toast({
+          title: "Ошибка входа",
+          description: message,
+          variant: "destructive",
+        });
+        return;
       }
       
       toast({
         title: "Успешно!",
-        description: result.message || "Вход выполнен успешно",
+        description: "Вход выполнен успешно",
       });
 
-      // Перенаправление на личный кабинет через небольшую задержку
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 1000);
+      navigate("/dashboard");
     } catch (error) {
       toast({
         title: "Ошибка входа",
@@ -75,25 +90,44 @@ const Auth = () => {
       return;
     }
 
+    if (!registerData.name.trim()) {
+      toast({
+        title: "Ошибка",
+        description: "Введите ваше имя",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      const result = await register({
-        name: registerData.name,
-        email: registerData.email,
-        password: registerData.password,
-      });
+      const { error } = await signUp(
+        registerData.email,
+        registerData.password,
+        registerData.name
+      );
 
-      if (result.user) {
-        setAuthUser(result.user);
+      if (error) {
+        let message = "Произошла ошибка при регистрации";
+        if (error.message.includes("User already registered")) {
+          message = "Пользователь с таким email уже зарегистрирован";
+        }
+        
+        toast({
+          title: "Ошибка регистрации",
+          description: message,
+          variant: "destructive",
+        });
+        return;
       }
 
       toast({
         title: "Успешно!",
-        description: result.message || "Регистрация прошла успешно",
+        description: "Регистрация прошла успешно",
       });
 
-      // Очистка формы и переключение на вкладку входа
+      // Очистка формы
       setRegisterData({ 
         name: "", 
         email: "", 
@@ -101,10 +135,7 @@ const Auth = () => {
         confirmPassword: "" 
       });
 
-      // Перенаправление на личный кабинет через небольшую задержку
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 1000);
+      navigate("/dashboard");
     } catch (error) {
       toast({
         title: "Ошибка регистрации",
@@ -115,6 +146,14 @@ const Auth = () => {
       setIsLoading(false);
     }
   };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -297,4 +336,3 @@ const Auth = () => {
 };
 
 export default Auth;
-

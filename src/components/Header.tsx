@@ -17,17 +17,20 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, profile, isAuthenticated, signOut } = useAuth();
 
-  // Получаем логин из email (часть до @)
-  const getUserLogin = (email: string) => {
-    return email.split('@')[0];
+  // Получаем имя из профиля или логин из email
+  const getUserDisplayName = () => {
+    if (profile?.name) return profile.name;
+    if (user?.email) return user.email.split('@')[0];
+    return "Пользователь";
   };
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await signOut();
     navigate("/");
   };
+
   const scrollToSection = (id: string) => {
     if (location.pathname !== "/") {
       navigate("/");
@@ -45,6 +48,7 @@ const Header = () => {
     }
     setIsOpen(false);
   };
+
   const navItems = [{
     id: "features",
     label: "Возможности"
@@ -58,6 +62,7 @@ const Header = () => {
     id: "pricing",
     label: "Цены"
   }];
+
   return <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 py-4">
         <div className="grid grid-cols-3 items-center">
@@ -94,12 +99,12 @@ const Header = () => {
                     }}
                   >
                     <User className="h-4 w-4" />
-                    <span className="font-medium">{getUserLogin(user.email)}</span>
+                    <span className="font-medium">{getUserDisplayName()}</span>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   <div className="px-2 py-1.5 text-sm">
-                    <div className="font-medium">{user.name}</div>
+                    <div className="font-medium">{getUserDisplayName()}</div>
                     <div className="text-muted-foreground text-xs">{user.email}</div>
                   </div>
                   <DropdownMenuSeparator />
@@ -159,8 +164,8 @@ const Header = () => {
                   {isAuthenticated && user ? (
                     <>
                       <div className="px-2 py-2 border-b border-border/50">
-                        <div className="font-medium text-foreground">{user.name}</div>
-                        <div className="text-sm text-muted-foreground">{getUserLogin(user.email)}</div>
+                        <div className="font-medium text-foreground">{getUserDisplayName()}</div>
+                        <div className="text-sm text-muted-foreground">{user.email}</div>
                       </div>
                       <Button 
                         onClick={() => {
