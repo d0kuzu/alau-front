@@ -163,6 +163,7 @@ const Dashboard = () => {
           return (
             <button 
               key={item.id} 
+<<<<<<< HEAD
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -178,6 +179,20 @@ const Dashboard = () => {
             >
               <Icon className="w-5 h-5 flex-shrink-0 pointer-events-none" />
               <span className="pointer-events-none">{item.label}</span>
+=======
+              onClick={() => {
+                setActiveNav(item.id);
+                onItemClick?.();
+              }} 
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer select-none ${
+                isActive 
+                  ? "bg-[#51C2FB]/10 text-[#51C2FB] border-l-4 border-[#51C2FB]" 
+                  : "text-slate-700 hover:bg-slate-100"
+              }`}
+            >
+              <Icon className="w-5 h-5" />
+              <span>{item.label}</span>
+>>>>>>> 8273a912c0c8aca2f004b549c06a51f1f08c7839
             </button>
           );
         })}
@@ -322,14 +337,22 @@ const Dashboard = () => {
                   <h2 className="text-lg md:text-xl font-bold text-slate-900">
                     Статистика в реальном времени
                   </h2>
+<<<<<<< HEAD
                   <div className="flex flex-wrap gap-2 justify-end">
+=======
+                  <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0">
+>>>>>>> 8273a912c0c8aca2f004b549c06a51f1f08c7839
                     {periods.map(period => (
                       <Button 
                         key={period.key} 
                         variant={selectedPeriod === period.key ? "default" : "outline"} 
                         size="sm" 
                         onClick={() => setSelectedPeriod(period.key)} 
+<<<<<<< HEAD
                         className={`whitespace-nowrap ${
+=======
+                        className={`whitespace-nowrap flex-shrink-0 ${
+>>>>>>> 8273a912c0c8aca2f004b549c06a51f1f08c7839
                           selectedPeriod === period.key 
                             ? "text-white hover:opacity-90" 
                             : "bg-white text-slate-600 hover:bg-slate-50 border-slate-200"
