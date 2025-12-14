@@ -27,30 +27,30 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-20 bg-background">
+    <section id="contact" className="py-12 md:py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          <AnimatedSection className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+          <AnimatedSection className="text-center mb-10 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
               Свяжитесь с нами
             </h2>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-lg md:text-xl text-muted-foreground">
               Готовы начать? Оставьте заявку, и мы свяжемся с вами
             </p>
           </AnimatedSection>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-12">
             <AnimatedCard index={0}>
-              <Card className="p-6 text-center border-2 border-border hover:border-primary/30 transition-all h-full">
-                <div className="flex justify-center mb-4">
-                  <div className="p-4 bg-primary/10 rounded-full">
-                    <MessageCircle className="w-6 h-6 text-primary" />
+              <Card className="p-4 md:p-6 text-center border-2 border-border hover:border-primary/30 transition-all h-full">
+                <div className="flex justify-center mb-3 md:mb-4">
+                  <div className="p-3 md:p-4 bg-primary/10 rounded-full">
+                    <MessageCircle className="w-5 h-5 md:w-6 md:h-6 text-primary" />
                   </div>
                 </div>
                 <h3 className="font-semibold text-foreground mb-2">WhatsApp</h3>
                 <a
                   href="https://wa.me/77000000000"
-                  className="text-primary hover:underline"
+                  className="text-primary hover:underline text-sm md:text-base"
                 >
                   +7 700 000 00 00
                 </a>
@@ -58,16 +58,16 @@ const Contact = () => {
             </AnimatedCard>
 
             <AnimatedCard index={1}>
-              <Card className="p-6 text-center border-2 border-border hover:border-primary/30 transition-all h-full">
-                <div className="flex justify-center mb-4">
-                  <div className="p-4 bg-primary/10 rounded-full">
-                    <Mail className="w-6 h-6 text-primary" />
+              <Card className="p-4 md:p-6 text-center border-2 border-border hover:border-primary/30 transition-all h-full">
+                <div className="flex justify-center mb-3 md:mb-4">
+                  <div className="p-3 md:p-4 bg-primary/10 rounded-full">
+                    <Mail className="w-5 h-5 md:w-6 md:h-6 text-primary" />
                   </div>
                 </div>
                 <h3 className="font-semibold text-foreground mb-2">Email</h3>
                 <a
                   href="mailto:hello@alau.ai"
-                  className="text-primary hover:underline"
+                  className="text-primary hover:underline text-sm md:text-base"
                 >
                   hello@alau.ai
                 </a>
@@ -75,16 +75,16 @@ const Contact = () => {
             </AnimatedCard>
 
             <AnimatedCard index={2}>
-              <Card className="p-6 text-center border-2 border-border hover:border-primary/30 transition-all h-full">
-                <div className="flex justify-center mb-4">
-                  <div className="p-4 bg-primary/10 rounded-full">
-                    <Send className="w-6 h-6 text-primary" />
+              <Card className="p-4 md:p-6 text-center border-2 border-border hover:border-primary/30 transition-all h-full">
+                <div className="flex justify-center mb-3 md:mb-4">
+                  <div className="p-3 md:p-4 bg-primary/10 rounded-full">
+                    <Send className="w-5 h-5 md:w-6 md:h-6 text-primary" />
                   </div>
                 </div>
                 <h3 className="font-semibold text-foreground mb-2">Telegram</h3>
                 <a
                   href="https://t.me/alauai"
-                  className="text-primary hover:underline"
+                  className="text-primary hover:underline text-sm md:text-base"
                 >
                   @alauai
                 </a>
@@ -93,7 +93,7 @@ const Contact = () => {
           </div>
 
           <AnimatedCard index={3}>
-            <Card className="p-8 border-2 border-border">
+            <Card className="p-5 md:p-8 border-2 border-border">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <Input

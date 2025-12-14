@@ -160,19 +160,19 @@ const Auth = () => {
       <Header />
       <div className="flex-1 flex">
         {/* Левая панель - Форма входа */}
-        <div className="w-full lg:w-1/2 flex items-center justify-center px-4 py-12 bg-white">
-          <div className="w-full max-w-md space-y-6">
+        <div className="w-full lg:w-1/2 flex items-center justify-center px-4 py-8 md:py-12 bg-white">
+          <div className="w-full max-w-md space-y-4 md:space-y-6">
             <Button
               variant="ghost"
               onClick={() => navigate("/")}
-              className="text-muted-foreground hover:text-foreground mb-4"
+              className="text-muted-foreground hover:text-foreground mb-2 md:mb-4"
             >
               ← Вернуться на главную
             </Button>
             
             <div className="space-y-2">
-              <h1 className="text-3xl font-bold text-foreground">Добро пожаловать</h1>
-              <p className="text-muted-foreground">
+              <h1 className="text-2xl md:text-3xl font-bold text-foreground">Добро пожаловать</h1>
+              <p className="text-sm md:text-base text-muted-foreground">
                 Войдите в свой аккаунт Alau.ai
               </p>
             </div>
