@@ -1,31 +1,71 @@
+import { useNavigate, useLocation } from "react-router-dom";
 import logo from "@/assets/logo.png";
+
 const Footer = () => {
-  return <footer className="bg-secondary/30 border-t border-border py-12" style={{ backgroundColor: 'rgba(247, 247, 247, 1)' }}>
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const scrollToSection = (id: string) => {
+    if (location.pathname !== "/") {
+      navigate("/");
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        element?.scrollIntoView({
+          behavior: "smooth"
+        });
+      }, 100);
+    } else {
+      const element = document.getElementById(id);
+      element?.scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+  };
+
+  return (
+    <footer className="bg-secondary/30 border-t border-border py-12" style={{ backgroundColor: 'rgba(247, 247, 247, 1)' }}>
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-3">
-            
-            <span className="text-xl font-bold text-foreground">
+            <button 
+              onClick={() => navigate("/")}
+              className="text-xl font-bold text-foreground hover:opacity-80 transition-opacity cursor-pointer"
+            >
               Alau<span className="text-primary">.ai</span>
-            </span>
+            </button>
           </div>
 
           <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
-            <a href="#features" className="hover:text-foreground transition-colors">
+            <button 
+              onClick={() => scrollToSection("features")} 
+              className="hover:text-foreground transition-colors"
+            >
               Возможности
-            </a>
-            <a href="#for-who" className="hover:text-foreground transition-colors">
+            </button>
+            <button 
+              onClick={() => scrollToSection("for-who")} 
+              className="hover:text-foreground transition-colors"
+            >
               Для кого
-            </a>
-            <a href="#about" className="hover:text-foreground transition-colors">
+            </button>
+            <button 
+              onClick={() => scrollToSection("about")} 
+              className="hover:text-foreground transition-colors"
+            >
               О нас
-            </a>
-            <a href="#pricing" className="hover:text-foreground transition-colors">
+            </button>
+            <button 
+              onClick={() => scrollToSection("pricing")} 
+              className="hover:text-foreground transition-colors"
+            >
               Цены
-            </a>
-            <a href="#contact" className="hover:text-foreground transition-colors">
+            </button>
+            <button 
+              onClick={() => scrollToSection("contact")} 
+              className="hover:text-foreground transition-colors"
+            >
               Контакты
-            </a>
+            </button>
           </div>
 
           <div className="text-sm text-muted-foreground">
@@ -33,6 +73,8 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>;
+    </footer>
+  );
 };
+
 export default Footer;

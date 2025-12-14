@@ -4,10 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 import Header from "@/components/Header";
+import { login, register } from "@/lib/api";
 
 const Auth = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const { login: setAuthUser } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [registerData, setRegisterData] = useState({ 
     name: "", 
@@ -16,16 +22,98 @@ const Auth = () => {
     confirmPassword: "" 
   });
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Здесь будет логика входа
-    console.log("Login:", loginData);
+    setIsLoading(true);
+
+    try {
+      const result = await login(loginData);
+      
+      if (result.user) {
+        setAuthUser(result.user);
+      }
+      
+      toast({
+        title: "Успешно!",
+        description: result.message || "Вход выполнен успешно",
+      });
+
+      // Перенаправление на личный кабинет через небольшую задержку
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1000);
+    } catch (error) {
+      toast({
+        title: "Ошибка входа",
+        description: error instanceof Error ? error.message : "Произошла ошибка при входе",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Здесь будет логика регистрации
-    console.log("Register:", registerData);
+    
+    // Валидация паролей
+    if (registerData.password !== registerData.confirmPassword) {
+      toast({
+        title: "Ошибка",
+        description: "Пароли не совпадают",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (registerData.password.length < 6) {
+      toast({
+        title: "Ошибка",
+        description: "Пароль должен содержать минимум 6 символов",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const result = await register({
+        name: registerData.name,
+        email: registerData.email,
+        password: registerData.password,
+      });
+
+      if (result.user) {
+        setAuthUser(result.user);
+      }
+
+      toast({
+        title: "Успешно!",
+        description: result.message || "Регистрация прошла успешно",
+      });
+
+      // Очистка формы и переключение на вкладку входа
+      setRegisterData({ 
+        name: "", 
+        email: "", 
+        password: "", 
+        confirmPassword: "" 
+      });
+
+      // Перенаправление на личный кабинет через небольшую задержку
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1000);
+    } catch (error) {
+      toast({
+        title: "Ошибка регистрации",
+        description: error instanceof Error ? error.message : "Произошла ошибка при регистрации",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -83,8 +171,9 @@ const Auth = () => {
                   <Button 
                     type="submit" 
                     className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
+                    disabled={isLoading}
                   >
-                    Войти
+                    {isLoading ? "Вход..." : "Войти"}
                   </Button>
                 </form>
               </TabsContent>
@@ -138,8 +227,9 @@ const Auth = () => {
                   <Button 
                     type="submit" 
                     className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
+                    disabled={isLoading}
                   >
-                    Зарегистрироваться
+                    {isLoading ? "Регистрация..." : "Зарегистрироваться"}
                   </Button>
                 </form>
               </TabsContent>
