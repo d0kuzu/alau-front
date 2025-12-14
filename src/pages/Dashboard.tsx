@@ -166,7 +166,7 @@ const Dashboard = () => {
                 setActiveNav(item.id);
                 onItemClick?.();
               }} 
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer select-none ${
                 isActive 
                   ? "bg-[#51C2FB]/10 text-[#51C2FB] border-l-4 border-[#51C2FB]" 
                   : "text-slate-700 hover:bg-slate-100"
@@ -238,7 +238,7 @@ const Dashboard = () => {
                   handleLogout();
                   setMobileMenuOpen(false);
                 }} 
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100 transition-colors"
+                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer select-none"
               >
                 <ArrowRight className="w-5 h-5" />
                 <span>Выйти</span>
@@ -249,7 +249,7 @@ const Dashboard = () => {
       </div>
 
       {/* Левая боковая панель навигации - только desktop */}
-      <aside className="hidden md:flex w-64 bg-slate-50 border-r border-slate-200 flex-col fixed left-0 top-0 bottom-0">
+      <aside className="hidden md:flex w-64 bg-slate-50 border-r border-slate-200 flex-col fixed left-0 top-0 bottom-0 z-40">
         {/* Логотип */}
         <div className="p-6 border-b border-slate-200">
           <h1 
@@ -269,7 +269,7 @@ const Dashboard = () => {
         <div className="p-4 border-t border-slate-200">
           <button 
             onClick={handleLogout} 
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100 transition-colors"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer select-none"
           >
             <ArrowRight className="w-5 h-5" />
             <span>Выйти</span>
@@ -278,7 +278,7 @@ const Dashboard = () => {
       </aside>
 
       {/* Основной контент */}
-      <div className="flex-1 pt-16 md:pt-0">
+      <div className="flex-1 pt-16 md:pt-0 relative z-0">
         <main className="flex-1 md:ml-64">
           <div className="p-4 md:p-8">
             <div className="max-w-7xl mx-auto">

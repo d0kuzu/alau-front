@@ -280,7 +280,7 @@ const Auth = () => {
         <div 
           className="hidden lg:flex lg:w-1/2 items-center justify-center px-12 py-20 text-white"
           style={{
-            backgroundColor: 'rgba(158, 223, 255, 1)'
+            backgroundColor: 'rgba(169, 225, 253, 1)'
           }}
         >
           <div className="max-w-lg space-y-8">
