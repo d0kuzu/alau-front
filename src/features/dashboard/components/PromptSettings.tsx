@@ -50,10 +50,12 @@ const PromptSettings = () => {
           <Textarea
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            className="min-h-[500px] font-mono text-sm leading-relaxed border-slate-200 focus:border-[#51C2FB] focus:ring-2 focus:ring-[#51C2FB]/20 resize-y"
+            className="flex min-h-[500px] font-mono text-sm leading-relaxed border-slate-200 focus:border-[#51C2FB] focus:ring-2 focus:ring-[#51C2FB]/20 resize-y"
             placeholder="Введите системный промпт..."
             style={{
-              fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace'
+              fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace',
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start'
             }}
           />
 
