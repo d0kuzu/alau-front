@@ -1,7 +1,6 @@
 import { Button } from "@/shared/ui/button";
 import { ArrowRight } from "lucide-react";
-import logo from "@/assets/logo.png";
-import mountainsBg from "@/assets/mountains-bg.png";
+import heroBgVideo from "@/assets/hero-bg.mp4";
 
 const Hero = () => {
   const scrollToContact = () => {
@@ -11,13 +10,17 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-secondary/30 to-background pt-16 md:pt-20">
-      {/* Real mountains background */}
+      {/* Video background */}
       <div className="absolute inset-0">
-        <img 
-          src={mountainsBg} 
-          alt="" 
+        <video 
+          autoPlay 
+          muted 
+          loop 
+          playsInline
           className="w-full h-full object-cover opacity-60"
-        />
+        >
+          <source src={heroBgVideo} type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-gradient-to-b from-secondary/30 to-background/90" />
       </div>
 

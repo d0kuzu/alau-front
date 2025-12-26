@@ -1,3 +1,3 @@
 export { useToast, toast } from './use-toast';
-export { useMobile } from './use-mobile';
+export { useIsMobile } from './use-mobile';
 export { useScrollAnimation } from './useScrollAnimation';
