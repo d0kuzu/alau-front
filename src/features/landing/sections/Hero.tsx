@@ -2,7 +2,11 @@ import { Button } from "@/shared/ui/button";
 import { ArrowRight } from "lucide-react";
 import heroBgVideo from "@/assets/hero-bg.mp4";
 
-const Hero = () => {
+interface HeroProps {
+  onVideoLoad?: () => void;
+}
+
+const Hero = ({ onVideoLoad }: HeroProps) => {
   const scrollToContact = () => {
     const element = document.getElementById("contact");
     element?.scrollIntoView({ behavior: "smooth" });
@@ -17,6 +21,7 @@ const Hero = () => {
           muted 
           loop 
           playsInline
+          onLoadedData={onVideoLoad}
           className="w-full h-full object-cover opacity-60"
         >
           <source src={heroBgVideo} type="video/mp4" />
