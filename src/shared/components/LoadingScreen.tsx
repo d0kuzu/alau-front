@@ -1,26 +1,36 @@
 import { useState, useEffect } from "react";
 
 interface LoadingScreenProps {
-  onLoadComplete: () => void;
+  isReady: boolean;
   minDisplayTime?: number;
 }
 
-const LoadingScreen = ({ onLoadComplete, minDisplayTime = 2000 }: LoadingScreenProps) => {
+const LoadingScreen = ({ isReady, minDisplayTime = 800 }: LoadingScreenProps) => {
   const [isExiting, setIsExiting] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [minTimePassed, setMinTimePassed] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsExiting(true);
-      setTimeout(onLoadComplete, 500); // Wait for exit animation
+      setMinTimePassed(true);
     }, minDisplayTime);
-
     return () => clearTimeout(timer);
-  }, [onLoadComplete, minDisplayTime]);
+  }, [minDisplayTime]);
+
+  useEffect(() => {
+    if (isReady && minTimePassed) {
+      setIsExiting(true);
+      const timer = setTimeout(() => setIsVisible(false), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isReady, minTimePassed]);
+
+  if (!isVisible) return null;
 
   return (
     <div
       className={`fixed inset-0 z-50 flex items-center justify-center bg-background transition-opacity duration-500 ${
-        isExiting ? "opacity-0" : "opacity-100"
+        isExiting ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
       <div className="flex flex-col items-center gap-6">
@@ -32,7 +42,7 @@ const LoadingScreen = ({ onLoadComplete, minDisplayTime = 2000 }: LoadingScreenP
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            {/* Back mountain - draws second */}
+            {/* Back mountain */}
             <path
               d="M25 70 L50 25 L75 70"
               className="stroke-primary/40"
@@ -47,7 +57,7 @@ const LoadingScreen = ({ onLoadComplete, minDisplayTime = 2000 }: LoadingScreenP
               }}
             />
             
-            {/* Front mountain - draws first */}
+            {/* Front mountain */}
             <path
               d="M10 70 L40 20 L55 45 L70 30 L90 70"
               className="stroke-primary"
