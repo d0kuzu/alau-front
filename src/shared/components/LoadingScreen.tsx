@@ -53,7 +53,7 @@ const LoadingScreen = ({ isReady, minDisplayTime = 800 }: LoadingScreenProps) =>
               style={{
                 strokeDasharray: 150,
                 strokeDashoffset: 150,
-                animation: "drawMountain 1s ease-out 0.3s forwards",
+                animation: "drawMountain 0.5s ease-out 0.15s forwards",
               }}
             />
             
@@ -68,7 +68,7 @@ const LoadingScreen = ({ isReady, minDisplayTime = 800 }: LoadingScreenProps) =>
               style={{
                 strokeDasharray: 200,
                 strokeDashoffset: 200,
-                animation: "drawMountain 1.2s ease-out forwards",
+                animation: "drawMountain 0.6s ease-out forwards",
               }}
             />
             
@@ -83,19 +83,19 @@ const LoadingScreen = ({ isReady, minDisplayTime = 800 }: LoadingScreenProps) =>
               style={{
                 strokeDasharray: 30,
                 strokeDashoffset: 30,
-                animation: "drawMountain 0.5s ease-out 1s forwards",
+                animation: "drawMountain 0.25s ease-out 0.5s forwards",
               }}
             />
           </svg>
           
           {/* Pulsing glow effect */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-16 h-16 rounded-full bg-primary/10 animate-ping" style={{ animationDuration: "1.5s" }} />
+            <div className="w-16 h-16 rounded-full bg-primary/10 animate-ping" style={{ animationDuration: "0.75s" }} />
           </div>
         </div>
 
         {/* Brand name */}
-        <div className="flex items-center gap-1 opacity-0 animate-[fade-in_0.5s_ease-out_0.8s_forwards]">
+        <div className="flex items-center gap-1 opacity-0 animate-[fade-in_0.25s_ease-out_0.4s_forwards]">
           <span className="text-2xl font-bold text-foreground">Alau</span>
           <span className="text-2xl font-bold text-primary">.ai</span>
         </div>

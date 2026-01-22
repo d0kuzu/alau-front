@@ -15,7 +15,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
-      <LoadingScreen isReady={videoLoaded} minDisplayTime={800} />
+      <LoadingScreen isReady={videoLoaded} minDisplayTime={400} />
       <Header />
       <Hero onVideoLoad={() => setVideoLoaded(true)} />
       <Features />
