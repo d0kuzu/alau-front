@@ -53,7 +53,7 @@ const ForWho = () => {
             const Icon = business.icon;
             return (
               <AnimatedCard key={index} index={index} baseDelay={80}>
-                <Card className="p-6 h-full text-center transition-colors bg-card border border-border hover:bg-accent/50">
+                <Card className="p-6 h-full text-center bg-card border border-border">
                   <div className="flex flex-col items-center gap-4">
                     <div className="p-5 bg-primary/10 rounded-full">
                       <Icon className="w-10 h-10 text-primary" />

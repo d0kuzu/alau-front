@@ -40,7 +40,7 @@ const About = () => {
               const Icon = card.icon;
               return (
                 <AnimatedCard key={index} index={index} baseDelay={150}>
-                  <Card className="p-6 text-center border-2 border-border hover:bg-accent/50 transition-colors h-full">
+                  <Card className="p-6 text-center border-2 border-border h-full">
                     <div className="flex justify-center mb-4">
                       <div className="p-4 bg-primary/10 rounded-full">
                         <Icon className="w-8 h-8 text-primary" />
