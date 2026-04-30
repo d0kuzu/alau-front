@@ -41,7 +41,7 @@ const Hero = ({ onVideoLoad }: HeroProps) => {
             <Button
               onClick={scrollToContact}
               size="lg"
-              className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground text-base md:text-lg px-6 md:px-8 py-5 md:py-6 rounded-xl shadow-lg hover:shadow-xl transition-all group"
+              className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground text-base md:text-lg px-6 md:px-8 py-5 md:py-6 rounded-xl shadow-lg transition-colors group"
             >
               Попробовать бесплатно
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
@@ -53,7 +53,7 @@ const Hero = ({ onVideoLoad }: HeroProps) => {
               }}
               variant="outline"
               size="lg"
-              className="w-full sm:w-auto text-base md:text-lg px-6 md:px-8 py-5 md:py-6 rounded-xl border-2 border-primary/20 hover:border-primary/40"
+              className="w-full sm:w-auto text-base md:text-lg px-6 md:px-8 py-5 md:py-6 rounded-xl border-2 border-primary/20"
             >
               Узнать больше
             </Button>

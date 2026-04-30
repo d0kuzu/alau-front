@@ -45,10 +45,10 @@ const Channels = () => {
             return (
               <AnimatedCard key={index} index={index} baseDelay={150}>
                 <Card
-                  className={`p-8 transition-all duration-300 hover:-translate-y-2 h-full ${
+                  className={`p-8 h-full transition-colors ${
                     channel.featured
-                      ? "md:scale-110 border-2 border-border hover:border-primary shadow-xl hover:shadow-2xl hover:shadow-primary/20 bg-gradient-to-br from-primary/5 to-primary/10"
-                      : "border-2 border-border hover:border-primary/30 hover:shadow-xl"
+                      ? "md:scale-110 border-2 border-border hover:bg-accent/50 shadow-xl bg-gradient-to-br from-primary/5 to-primary/10"
+                      : "border-2 border-border hover:bg-accent/50"
                   }`}
                 >
                   <div className="flex flex-col items-center text-center gap-4">
