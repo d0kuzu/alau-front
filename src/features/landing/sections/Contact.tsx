@@ -41,7 +41,7 @@ const Contact = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-12">
             <AnimatedCard index={0}>
-              <Card className="p-4 md:p-6 text-center border-2 border-border hover:border-primary/30 transition-all h-full">
+              <Card className="p-4 md:p-6 text-center border-2 border-border hover:bg-accent/50 transition-colors h-full">
                 <div className="flex justify-center mb-3 md:mb-4">
                   <div className="p-3 md:p-4 bg-primary/10 rounded-full">
                     <MessageCircle className="w-5 h-5 md:w-6 md:h-6 text-primary" />
@@ -58,7 +58,7 @@ const Contact = () => {
             </AnimatedCard>
 
             <AnimatedCard index={1}>
-              <Card className="p-4 md:p-6 text-center border-2 border-border hover:border-primary/30 transition-all h-full">
+              <Card className="p-4 md:p-6 text-center border-2 border-border hover:bg-accent/50 transition-colors h-full">
                 <div className="flex justify-center mb-3 md:mb-4">
                   <div className="p-3 md:p-4 bg-primary/10 rounded-full">
                     <Mail className="w-5 h-5 md:w-6 md:h-6 text-primary" />
@@ -75,7 +75,7 @@ const Contact = () => {
             </AnimatedCard>
 
             <AnimatedCard index={2}>
-              <Card className="p-4 md:p-6 text-center border-2 border-border hover:border-primary/30 transition-all h-full">
+              <Card className="p-4 md:p-6 text-center border-2 border-border hover:bg-accent/50 transition-colors h-full">
                 <div className="flex justify-center mb-3 md:mb-4">
                   <div className="p-3 md:p-4 bg-primary/10 rounded-full">
                     <Send className="w-5 h-5 md:w-6 md:h-6 text-primary" />
