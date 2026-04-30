@@ -67,10 +67,10 @@ const Pricing = () => {
           {plans.map((plan, index) => (
             <AnimatedCard key={index} index={index} baseDelay={150}>
               <Card
-                className={`p-6 md:p-8 h-full relative hover:shadow-xl transition-all duration-300 ${
+                className={`p-6 md:p-8 h-full relative transition-colors ${
                   plan.popular
                     ? "border-2 border-primary shadow-lg md:scale-105"
-                    : "border border-border hover:border-primary/30"
+                    : "border border-border hover:bg-accent/50"
                 }`}
               >
                 {plan.popular && (
@@ -123,7 +123,7 @@ const Pricing = () => {
           <Button
             onClick={scrollToContact}
             variant="outline"
-            className="border-2 border-primary/20 hover:border-primary/40"
+            className="border-2 border-primary/20"
           >
             Связаться с нами
           </Button>
