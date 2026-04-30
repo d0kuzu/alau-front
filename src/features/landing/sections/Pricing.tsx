@@ -67,10 +67,10 @@ const Pricing = () => {
           {plans.map((plan, index) => (
             <AnimatedCard key={index} index={index} baseDelay={150}>
               <Card
-                className={`p-6 md:p-8 h-full relative transition-colors ${
+                className={`p-6 md:p-8 h-full relative ${
                   plan.popular
                     ? "border-2 border-primary shadow-lg md:scale-105"
-                    : "border border-border hover:bg-accent/50"
+                    : "border border-border"
                 }`}
               >
                 {plan.popular && (

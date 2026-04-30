@@ -44,7 +44,7 @@ const Features = () => {
             const Icon = feature.icon;
             return (
               <AnimatedCard key={index} index={index}>
-                <Card className="p-8 h-full transition-colors border-2 border-border hover:bg-accent/50">
+                <Card className="p-8 h-full border-2 border-border">
                   <div className="flex items-start gap-4">
                     <div className="p-4 bg-primary/10 rounded-2xl flex-shrink-0">
                       <Icon className="w-8 h-8 text-primary" />
