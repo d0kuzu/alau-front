@@ -9,6 +9,11 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
     proxy: {
+      "/diaxel": {
+        target: "https://api.zerde.co",
+        changeOrigin: true,
+        secure: true,
+      },
       "/api": {
         target: "http://localhost:3001",
         changeOrigin: true,

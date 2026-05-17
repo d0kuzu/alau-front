@@ -15,7 +15,6 @@ const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [registerData, setRegisterData] = useState({ 
-    name: "", 
     email: "", 
     password: "", 
     confirmPassword: "" 
@@ -90,22 +89,12 @@ const Auth = () => {
       return;
     }
 
-    if (!registerData.name.trim()) {
-      toast({
-        title: "Ошибка",
-        description: "Введите ваше имя",
-        variant: "destructive",
-      });
-      return;
-    }
-
     setIsLoading(true);
 
     try {
       const { error } = await signUp(
         registerData.email,
-        registerData.password,
-        registerData.name
+        registerData.password
       );
 
       if (error) {
@@ -129,7 +118,6 @@ const Auth = () => {
 
       // Очистка формы
       setRegisterData({ 
-        name: "", 
         email: "", 
         password: "", 
         confirmPassword: "" 
@@ -219,17 +207,6 @@ const Auth = () => {
               
               <TabsContent value="register" className="space-y-4">
                 <form onSubmit={handleRegister} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="register-name">Имя</Label>
-                    <Input
-                      id="register-name"
-                      type="text"
-                      placeholder="Ваше имя"
-                      value={registerData.name}
-                      onChange={(e) => setRegisterData({ ...registerData, name: e.target.value })}
-                      required
-                    />
-                  </div>
                   <div className="space-y-2">
                     <Label htmlFor="register-email">Email</Label>
                     <Input

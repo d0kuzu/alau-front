@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/shared/contexts/AuthContext";
 import { Card } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/shared/ui/sheet";
-import { CreditCard, Settings, MessageSquare, Phone, Calendar, TrendingUp, ArrowUp, ArrowDown, BarChart3, MessageCircle, Clock, ArrowRight, FileText, Menu } from "lucide-react";
+import { CreditCard, Settings, MessageSquare, Phone, Calendar, TrendingUp, ArrowUp, ArrowDown, BarChart3, MessageCircle, Clock, ArrowRight, FileText, Menu, Bot } from "lucide-react";
 import PromptSettings from "../components/PromptSettings";
+import AssistantsPage from "../components/AssistantsPage";
+import AssistantDetailsPage from "../components/AssistantDetailsPage";
+import ConversationsPage from "../components/ConversationsPage";
 
 // Иконки для Telegram и WhatsApp
 const TelegramIcon = ({
@@ -26,6 +29,9 @@ const WhatsAppIcon = ({
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { assistantId } = useParams<{ assistantId?: string }>();
+  const requestedActiveNav = (location.state as { activeNav?: string } | null)?.activeNav;
   const {
     user,
     profile,
@@ -35,7 +41,7 @@ const Dashboard = () => {
     refreshProfile
   } = useAuth();
   const [selectedPeriod, setSelectedPeriod] = useState("today");
-  const [activeNav, setActiveNav] = useState("overview");
+  const [activeNav, setActiveNav] = useState(requestedActiveNav ?? "overview");
   const [hoveredBar, setHoveredBar] = useState<number | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({
     x: 0,
@@ -51,6 +57,19 @@ const Dashboard = () => {
       refreshProfile();
     }
   }, [isAuthenticated, isLoading, navigate, refreshProfile]);
+
+  useEffect(() => {
+    if (assistantId) {
+      setActiveNav("assistants");
+    }
+  }, [assistantId]);
+
+  useEffect(() => {
+    if (requestedActiveNav) {
+      setActiveNav(requestedActiveNav);
+      navigate(location.pathname, { replace: true, state: null });
+    }
+  }, [location.pathname, navigate, requestedActiveNav]);
 
   const handleLogout = async () => {
     await signOut();
@@ -126,6 +145,10 @@ const Dashboard = () => {
     label: "Обзор",
     icon: BarChart3
   }, {
+    id: "assistants",
+    label: "Ассистенты",
+    icon: Bot
+  }, {
     id: "conversations",
     label: "Разговоры",
     icon: MessageCircle
@@ -160,7 +183,7 @@ const Dashboard = () => {
       <div className="space-y-1">
         {navItems.map(item => {
           const Icon = item.icon;
-          const isActive = activeNav === item.id;
+          const isActive = assistantId ? item.id === "assistants" : activeNav === item.id;
           return (
             <button 
               key={item.id} 
@@ -168,6 +191,9 @@ const Dashboard = () => {
                 e.preventDefault();
                 e.stopPropagation();
                 setActiveNav(item.id);
+                if (assistantId) {
+                  navigate("/dashboard", { state: { activeNav: item.id } });
+                }
                 onItemClick?.();
               }} 
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150 cursor-pointer select-none relative ${
@@ -287,8 +313,14 @@ const Dashboard = () => {
         <main className="flex-1 md:ml-64">
           <div className="p-4 md:p-8">
             <div className="max-w-7xl mx-auto">
-              {activeNav === "prompt-settings" ? (
+              {assistantId ? (
+                <AssistantDetailsPage assistantId={assistantId} />
+              ) : activeNav === "prompt-settings" ? (
                 <PromptSettings />
+              ) : activeNav === "assistants" ? (
+                <AssistantsPage />
+              ) : activeNav === "conversations" ? (
+                <ConversationsPage />
               ) : (
                 <>
                   {/* Заголовок */}
