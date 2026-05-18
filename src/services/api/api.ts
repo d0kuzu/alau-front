@@ -1,4 +1,5 @@
-const API_BASE_URL = "/diaxel";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+  ?? (import.meta.env.DEV ? "/diaxel" : "https://api.zerde.co/diaxel");
 const AUTH_STORAGE_KEY = "diaxel_auth";
 const ACCESS_TOKEN_LIFETIME_MS = 15 * 60 * 1000;
 const REFRESH_SKEW_MS = 60 * 1000;
