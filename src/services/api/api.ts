@@ -64,6 +64,13 @@ type TwilioRegisterResponse = {
   webhook_url: string;
 };
 
+type ApiLogMeta = {
+  method: string;
+  path: string;
+  url: string;
+  hasRetried?: boolean;
+};
+
 class ApiRequestError extends Error {
   status: number;
   data: unknown;
@@ -188,9 +195,57 @@ const getErrorMessage = (data: unknown, fallback: string) => {
   return fallback;
 };
 
-const parseResponse = async <TResponse>(response: Response) => {
+const isApiDebugLoggingEnabled = () => {
+  if (import.meta.env.DEV) {
+    return true;
+  }
+
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  return window.localStorage.getItem("alau_debug_api") === "1";
+};
+
+const logBackendResponse = (meta: ApiLogMeta, response: Response, rawBody: string, parsedBody: unknown) => {
+  if (!isApiDebugLoggingEnabled()) {
+    return;
+  }
+
+  const logPayload = {
+    request: {
+      method: meta.method,
+      path: meta.path,
+      url: meta.url,
+      retriedAfterRefresh: Boolean(meta.hasRetried),
+    },
+    response: {
+      ok: response.ok,
+      status: response.status,
+      statusText: response.statusText,
+      headers: Object.fromEntries(response.headers.entries()),
+      rawBody,
+      parsedBody,
+    },
+  };
+
+  const label = `[backend] ${meta.method} ${meta.path} -> ${response.status}`;
+
+  if (response.ok) {
+    console.groupCollapsed(label);
+  } else {
+    console.group(label);
+  }
+
+  console.log(logPayload);
+  console.groupEnd();
+};
+
+const parseResponse = async <TResponse>(response: Response, meta: ApiLogMeta) => {
   const text = await response.text();
   const data = parseJsonLikeBody(text);
+
+  logBackendResponse(meta, response, text, data);
 
   if (!response.ok) {
     const message = getErrorMessage(data, `HTTP ${response.status}`);
@@ -201,7 +256,9 @@ const parseResponse = async <TResponse>(response: Response) => {
 };
 
 const requestJson = async <TResponse>(path: string, init: RequestInit = {}) => {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
+  const method = init.method ?? "GET";
+  const url = `${API_BASE_URL}${path}`;
+  const response = await fetch(url, {
     ...init,
     headers: {
       "Content-Type": "application/json",
@@ -209,7 +266,11 @@ const requestJson = async <TResponse>(path: string, init: RequestInit = {}) => {
     },
   });
 
-  return parseResponse<TResponse>(response);
+  return parseResponse<TResponse>(response, {
+    method,
+    path,
+    url,
+  });
 };
 
 const createSession = (tokens: AuthTokens, email?: string): AuthSession => ({
@@ -342,7 +403,9 @@ export const getValidAccessToken = async () => {
 
 const backendRequest = async <TResponse>(path: string, init: RequestInit = {}, hasRetried = false): Promise<TResponse> => {
   const accessToken = await getValidAccessToken();
-  const response = await fetch(`${API_BASE_URL}${path}`, {
+  const method = init.method ?? "GET";
+  const url = `${API_BASE_URL}${path}`;
+  const response = await fetch(url, {
     ...init,
     headers: {
       "Content-Type": "application/json",
@@ -356,7 +419,12 @@ const backendRequest = async <TResponse>(path: string, init: RequestInit = {}, h
     return backendRequest<TResponse>(path, init, true);
   }
 
-  return parseResponse<TResponse>(response);
+  return parseResponse<TResponse>(response, {
+    method,
+    path,
+    url,
+    hasRetried,
+  });
 };
 
 const getFirstString = (...values: unknown[]) => {
