@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/shared/contexts/AuthContext";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
 import { Card } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/shared/ui/sheet";
@@ -9,6 +10,7 @@ import PromptSettings from "../components/PromptSettings";
 import AssistantsPage from "../components/AssistantsPage";
 import AssistantDetailsPage from "../components/AssistantDetailsPage";
 import ConversationsPage from "../components/ConversationsPage";
+import LanguageSelector from "@/shared/components/LanguageSelector";
 
 // Иконки для Telegram и WhatsApp
 const TelegramIcon = ({
@@ -30,6 +32,7 @@ const WhatsAppIcon = ({
 const Dashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useLanguage();
   const { assistantId } = useParams<{ assistantId?: string }>();
   const requestedActiveNav = (location.state as { activeNav?: string } | null)?.activeNav;
   const {
@@ -77,64 +80,64 @@ const Dashboard = () => {
   };
 
   // Получаем имя пользователя из профиля
-  const userName = profile?.name || user?.email?.split('@')[0] || "Пользователь";
+  const userName = profile?.name || user?.email?.split('@')[0] || t.common.userFallback;
 
   // Данные для графика
   const chartData = [{
-    day: "Пн",
+    day: t.dashboard.days[0],
     value: 12
   }, {
-    day: "Вт",
+    day: t.dashboard.days[1],
     value: 8
   }, {
-    day: "Ср",
+    day: t.dashboard.days[2],
     value: 15
   }, {
-    day: "Чт",
+    day: t.dashboard.days[3],
     value: 10
   }, {
-    day: "Пт",
+    day: t.dashboard.days[4],
     value: 18
   }, {
-    day: "Сб",
+    day: t.dashboard.days[5],
     value: 6
   }, {
-    day: "Вс",
+    day: t.dashboard.days[6],
     value: 4
   }];
   const maxValue = Math.max(...chartData.map(d => d.value));
 
   // Статистика
   const stats = [{
-    title: "Начато разговоров",
+    title: t.dashboard.startedConversations,
     value: "7",
     change: "-46%",
     changeType: "negative",
-    description: "от предыдущего периода",
+    description: t.dashboard.previousPeriod,
     icon: Phone,
     iconColor: "text-[#51C2FB]"
   }, {
-    title: "Завершено разговоров",
+    title: t.dashboard.completedConversations,
     value: "3",
     change: "-25%",
     changeType: "negative",
-    description: "от предыдущего периода",
+    description: t.dashboard.previousPeriod,
     icon: MessageSquare,
     iconColor: "text-[#51C2FB]"
   }, {
-    title: "Забронировано встреч",
+    title: t.dashboard.bookedMeetings,
     value: "1",
     change: "+100%",
     changeType: "positive",
-    description: "от предыдущего периода",
+    description: t.dashboard.previousPeriod,
     icon: Calendar,
     iconColor: "text-[#51C2FB]"
   }, {
-    title: "Конверсия",
+    title: t.dashboard.conversion,
     value: "14%",
     change: "+100%",
     changeType: "positive",
-    description: "от предыдущего периода",
+    description: t.dashboard.previousPeriod,
     icon: TrendingUp,
     iconColor: "text-[#51C2FB]"
   }];
@@ -142,19 +145,19 @@ const Dashboard = () => {
   // Навигационные элементы
   const navItems = [{
     id: "overview",
-    label: "Обзор",
+    label: t.dashboard.overview,
     icon: BarChart3
   }, {
     id: "assistants",
-    label: "Ассистенты",
+    label: t.dashboard.assistants,
     icon: Bot
   }, {
     id: "conversations",
-    label: "Разговоры",
+    label: t.dashboard.conversations,
     icon: MessageCircle
   }, {
     id: "follow-up",
-    label: "Последующие",
+    label: t.dashboard.followUp,
     icon: Clock
   }, {
     id: "telegram",
@@ -166,11 +169,11 @@ const Dashboard = () => {
     icon: WhatsAppIcon
   }, {
     id: "prompt-settings",
-    label: "Настройки промпта",
+    label: t.dashboard.promptSettings,
     icon: FileText
   }, {
     id: "ai-settings",
-    label: "Настройки AI",
+    label: t.dashboard.aiSettings,
     icon: Settings
   }];
 
@@ -178,7 +181,7 @@ const Dashboard = () => {
   const NavContent = ({ onItemClick }: { onItemClick?: () => void }) => (
     <>
       <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4 px-3">
-        Навигация
+        {t.dashboard.navigation}
       </h2>
       <div className="space-y-1">
         {navItems.map(item => {
@@ -213,11 +216,11 @@ const Dashboard = () => {
   );
 
   const periods = [
-    { key: "today", label: "Сегодня" },
-    { key: "7days", label: "7 дней" },
-    { key: "30days", label: "30 дней" },
-    { key: "60days", label: "60 дней" },
-    { key: "90days", label: "90 дней" },
+    { key: "today", label: t.dashboard.periods.today },
+    { key: "7days", label: t.dashboard.periods.sevenDays },
+    { key: "30days", label: t.dashboard.periods.thirtyDays },
+    { key: "60days", label: t.dashboard.periods.sixtyDays },
+    { key: "90days", label: t.dashboard.periods.ninetyDays },
   ];
 
   if (isLoading) {
@@ -272,8 +275,9 @@ const Dashboard = () => {
                 className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer select-none"
               >
                 <ArrowRight className="w-5 h-5" />
-                <span>Выйти</span>
+                <span>{t.dashboard.logout}</span>
               </button>
+              <LanguageSelector fullWidth className="mt-3" />
             </div>
           </SheetContent>
         </Sheet>
@@ -303,8 +307,9 @@ const Dashboard = () => {
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer select-none"
           >
             <ArrowRight className="w-5 h-5" />
-            <span>Выйти</span>
+            <span>{t.dashboard.logout}</span>
           </button>
+          <LanguageSelector fullWidth className="mt-3" />
         </div>
       </aside>
 
@@ -327,10 +332,10 @@ const Dashboard = () => {
                   <div className="mb-6 md:mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                       <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-1">
-                        Панель управления
+                        {t.dashboard.title}
                       </h1>
                       <p className="text-slate-600 text-sm md:text-base">
-                        Добро пожаловать, {userName}
+                        {t.dashboard.welcome}, {userName}
                       </p>
                     </div>
                     <Button 
@@ -349,7 +354,7 @@ const Dashboard = () => {
                       className="hover:opacity-90 text-white font-medium shadow-md w-full sm:w-auto"
                     >
                       <CreditCard className="w-4 h-4 mr-2" />
-                      Обновить план
+                      {t.dashboard.upgradePlan}
                     </Button>
                   </div>
 
@@ -357,7 +362,7 @@ const Dashboard = () => {
                   <div className="mb-6 md:mb-8">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
                       <h2 className="text-lg md:text-xl font-bold text-slate-900">
-                        Статистика в реальном времени
+                        {t.dashboard.realtimeStats}
                       </h2>
                       <div className="flex flex-wrap gap-2 justify-end">
                         {periods.map(period => (
@@ -420,9 +425,9 @@ const Dashboard = () => {
                   <Card className="p-4 md:p-6 bg-white border border-slate-200 shadow-sm">
                     <div className="mb-4 md:mb-6">
                       <h2 className="text-lg md:text-xl font-bold text-slate-900 mb-1">
-                        Еженедельные начатые разговоры
+                        {t.dashboard.weeklyStarted}
                       </h2>
-                      <p className="text-xs md:text-sm text-slate-600">Разговоры за прошедшую неделю</p>
+                      <p className="text-xs md:text-sm text-slate-600">{t.dashboard.conversationsPastWeek}</p>
                     </div>
                     <div 
                       className="h-[250px] md:h-[300px] relative" 
@@ -514,7 +519,7 @@ const Dashboard = () => {
                           top: tooltipPosition.y - 30
                         }}
                       >
-                        {tooltipValue} разговоров
+                        {tooltipValue} {t.dashboard.tooltipConversations}
                       </div>
                     )}
                   </Card>

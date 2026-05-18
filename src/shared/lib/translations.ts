@@ -1,0 +1,1011 @@
+export const translations = {
+  ru: {
+    common: {
+      userFallback: "Пользователь",
+      languageSelector: "Выбор языка",
+      notSpecified: "Не указан",
+      close: "Закрыть",
+      cancel: "Отмена",
+      save: "Сохранить",
+      search: "Поиск",
+      created: "Создан",
+      updated: "Обновлён",
+      platform: "Платформа",
+      messages: "Сообщения",
+    },
+    seo: {
+      title: "Alau.ai - AI-агенты для бизнеса в Казахстане",
+      description:
+        "Платформа ИИ-агентов для автоматизации малого и среднего бизнеса в Казахстане. Умные решения для продаж, поддержки клиентов и бизнес-процессов.",
+    },
+    header: {
+      nav: {
+        features: "Возможности",
+        forWho: "Для кого",
+        about: "О нас",
+        pricing: "Цены",
+      },
+      account: "Личный кабинет",
+      logout: "Выйти",
+      loginRegister: "Вход / Регистрация",
+      contact: "Связаться",
+    },
+    landing: {
+      hero: {
+        title: "AI-агенты, которые работают за вас",
+        subtitle: "Автоматизация бизнеса через SMS, WhatsApp и Telegram с помощью умных ИИ-решений",
+        primaryCta: "Попробовать бесплатно",
+        secondaryCta: "Узнать больше",
+      },
+      features: {
+        title: "Возможности платформы",
+        subtitle: "Умные ИИ-агенты для автоматизации любых бизнес-задач",
+        cards: [
+          {
+            title: "ИИ-агенты для продаж",
+            description: "Автоматизируйте обработку заказов, консультацию клиентов и увеличьте конверсию продаж.",
+          },
+          {
+            title: "ИИ-агенты для поддержки",
+            description: "Мгновенные ответы на вопросы клиентов 24/7 через SMS, WhatsApp и Telegram.",
+          },
+          {
+            title: "Автоматизация процессов",
+            description: "Интеграция с 1C, CRM, ERP системами для полной автоматизации бизнес-процессов.",
+          },
+          {
+            title: "Аналитика и данные",
+            description: "Глубокая аналитика взаимодействий с клиентами и автоматическая обработка данных.",
+          },
+        ],
+      },
+      channels: {
+        title: "Работаем на всех популярных платформах",
+        subtitle: "Ваши клиенты могут связаться с ИИ-агентами удобным для них способом",
+        mainBadge: "Основной канал",
+        cards: [
+          {
+            name: "SMS",
+            description: "Главная платформа для работы ИИ-агентов. Доступность 100%, работает на любом телефоне.",
+          },
+          {
+            name: "WhatsApp",
+            description: "Автоматизация заказов, консультаций и обработка запросов клиентов через популярный мессенджер.",
+          },
+          {
+            name: "Telegram",
+            description: "Мгновенная поддержка клиентов и уведомления через быстрый и удобный канал связи.",
+          },
+        ],
+      },
+      forWho: {
+        title: "Для кого Alau.ai?",
+        subtitle: "Решения для любого бизнеса в Казахстане",
+        cards: [
+          {
+            title: "Магазины и ритейл",
+            description: "Автоматизация продаж и обработка заказов",
+          },
+          {
+            title: "Услуги",
+            description: "Запись клиентов и консультации",
+          },
+          {
+            title: "Салоны красоты",
+            description: "Онлайн-запись и напоминания",
+          },
+          {
+            title: "Медицинские центры",
+            description: "Запись на приём и поддержка пациентов",
+          },
+          {
+            title: "Логистика",
+            description: "Отслеживание заказов и уведомления",
+          },
+          {
+            title: "SMB-компании",
+            description: "Полная автоматизация процессов",
+          },
+        ],
+      },
+      about: {
+        title: "О нас",
+        subtitle: "Мы делаем ИИ доступным для каждого бизнеса в Казахстане",
+        cards: [
+          {
+            title: "Наша миссия",
+            description: "Сделать ИИ-технологии доступными для малого и среднего бизнеса",
+          },
+          {
+            title: "Надёжность",
+            description: "Локальная поддержка и гарантия безопасности ваших данных",
+          },
+          {
+            title: "Интеграции",
+            description: "SMS (основной канал), WhatsApp, Telegram, 1C, CRM, ERP и другие системы",
+          },
+        ],
+        paragraph:
+          "это платформа нового поколения, которая позволяет казахстанскому бизнесу использовать возможности искусственного интеллекта без сложных настроек и огромных бюджетов. Мы создаём умных агентов, которые работают за вас 24/7.",
+      },
+      pricing: {
+        title: "Простые и понятные тарифы",
+        subtitle: "Выберите подходящий план для вашего бизнеса",
+        popular: "Популярный",
+        choosePlan: "Выбрать план",
+        consultation: "Нужна консультация? Мы поможем подобрать оптимальный тариф",
+        contact: "Связаться с нами",
+        plans: [
+          {
+            name: "Стартовый",
+            price: "300 000 ₸",
+            period: "в месяц",
+            features: [
+              "1 ИИ-агент",
+              "До 1000 обращений/месяц",
+              "Интеграция WhatsApp или Telegram",
+              "Базовая аналитика",
+              "Email поддержка",
+            ],
+          },
+          {
+            name: "Бизнес",
+            price: "450 000 ₸",
+            period: "в месяц",
+            features: [
+              "До 5 ИИ-агентов",
+              "До 5000 обращений/месяц",
+              "Все каналы связи",
+              "Интеграция с 1C/CRM",
+              "Продвинутая аналитика",
+              "Приоритетная поддержка",
+            ],
+          },
+          {
+            name: "Корпоративный",
+            price: "Индивидуально",
+            period: "",
+            features: [
+              "Неограниченное количество агентов",
+              "Неограниченные обращения",
+              "Все интеграции",
+              "Персональный менеджер",
+              "SLA гарантии",
+              "Кастомные разработки",
+            ],
+          },
+        ],
+      },
+      contact: {
+        title: "Свяжитесь с нами",
+        subtitle: "Готовы начать? Оставьте заявку, и мы свяжемся с вами",
+        namePlaceholder: "Ваше имя *",
+        phonePlaceholder: "Телефон",
+        messagePlaceholder: "Расскажите о вашем проекте *",
+        submit: "Отправить заявку",
+        toastTitle: "Заявка отправлена!",
+        toastDescription: "Мы свяжемся с вами в ближайшее время.",
+      },
+    },
+    footer: {
+      privacyLink: "Политика конфиденциальности",
+      termsLink: "Условия использования",
+      rights: "© 2024 Alau.ai. Все права защищены.",
+      phoneLabel: "Телефон",
+      privacy: {
+        title: "Политика конфиденциальности",
+        accept: "Я прочитал и согласен с политикой",
+        sections: [
+          {
+            heading: "Ваша конфиденциальность важна для нас",
+            paragraphs: [
+              "В Alau.ai мы привержены защите вашей конфиденциальности и обеспечению безопасности вашей личной информации. Настоящая Политика конфиденциальности объясняет, как мы собираем, используем, раскрываем и защищаем ваши данные при использовании наших ИИ-сервисов для автоматизации бизнеса в Казахстане.",
+            ],
+          },
+          {
+            heading: "1. Информация, которую мы собираем",
+            paragraphs: ["Мы собираем информацию, которую вы предоставляете нам напрямую, включая:"],
+            list: [
+              "Название компании и контактные данные",
+              "Номера телефонов клиентов и история коммуникаций",
+              "Данные о встречах и информация о планировании",
+              "Предпочтения сервиса и шаблоны взаимодействия",
+              "Данные об использовании, информация об устройстве и аналитика для улучшения наших услуг",
+            ],
+          },
+          {
+            heading: "2. Как мы используем вашу информацию",
+            paragraphs: ["Мы используем собранную информацию для:"],
+            list: [
+              "Предоставления и поддержки наших ИИ-сервисов для автоматизации",
+              "Обработки и управления коммуникациями с клиентами от вашего имени",
+              "Планирования встреч и автоматизации бизнес-процессов",
+              "Анализа и улучшения качества наших услуг",
+              "Обеспечения соблюдения наших условий обслуживания и правовых обязательств",
+              "Отправки важных обновлений и уведомлений о сервисе",
+            ],
+          },
+          {
+            heading: "3. Безопасность данных",
+            paragraphs: [
+              "Мы применяем надежные меры безопасности для защиты ваших данных, включая шифрование, безопасное хранение данных и регулярные аудиты безопасности. Все данные хранятся в соответствии с международными стандартами безопасности и законодательством Республики Казахстан.",
+            ],
+          },
+          {
+            heading: "4. Обмен данными",
+            paragraphs: [
+              "Мы не продаем и не передаем вашу личную информацию третьим лицам. Мы можем делиться данными только с доверенными партнерами, которые помогают нам предоставлять наши услуги, и только в той мере, в какой это необходимо для выполнения их функций. Все партнеры обязаны соблюдать конфиденциальность ваших данных.",
+            ],
+          },
+          {
+            heading: "5. Ваши права",
+            paragraphs: ["В соответствии с законодательством Республики Казахстан, вы имеете право:"],
+            list: [
+              "Запрашивать доступ к вашим персональным данным",
+              "Исправлять неточные данные",
+              "Запрашивать удаление ваших данных",
+              "Ограничивать обработку ваших данных",
+              "Возражать против обработки ваших данных",
+              "Получать копию ваших данных",
+            ],
+          },
+          {
+            heading: "6. Хранение данных",
+            paragraphs: [
+              "Мы храним ваши данные только в течение времени, необходимого для предоставления наших услуг или выполнения юридических обязательств. После завершения использования наших сервисов, ваши данные будут безопасно удалены в соответствии с нашей политикой хранения.",
+            ],
+          },
+          {
+            heading: "7. Контактная информация",
+            paragraphs: [
+              "Если у вас есть вопросы о настоящей Политике конфиденциальности или наших методах обработки данных, пожалуйста, свяжитесь с нами:",
+            ],
+            contact: true,
+          },
+          {
+            paragraphs: ["Последнее обновление: Декабрь 2024"],
+            muted: true,
+          },
+        ],
+      },
+      terms: {
+        title: "Условия использования",
+        accept: "Я прочитал и согласен с условиями",
+        sections: [
+          {
+            heading: "Добро пожаловать в Alau.ai",
+            paragraphs: [
+              "Настоящие Условия использования регулируют ваш доступ и использование платформы Alau.ai и связанных с ней сервисов автоматизации бизнеса с помощью искусственного интеллекта. Используя наши услуги, вы соглашаетесь с этими условиями.",
+            ],
+          },
+          {
+            heading: "1. Описание услуг",
+            paragraphs: [
+              "Alau.ai предоставляет платформу ИИ-агентов для автоматизации бизнес-процессов, включая обработку обращений клиентов через SMS, WhatsApp и Telegram, планирование встреч, аналитику коммуникаций и интеграцию с бизнес-системами. Наши услуги предназначены для малого и среднего бизнеса в Республике Казахстан.",
+            ],
+          },
+          {
+            heading: "2. Регистрация и аккаунт",
+            paragraphs: ["Для использования наших услуг вы должны:"],
+            list: [
+              "Предоставить точную и актуальную информацию о компании",
+              "Поддерживать безопасность вашего аккаунта и пароля",
+              "Немедленно уведомлять нас о любом несанкционированном использовании",
+              "Нести ответственность за все действия, совершенные через ваш аккаунт",
+            ],
+          },
+          {
+            heading: "3. Использование сервиса",
+            paragraphs: ["Вы соглашаетесь использовать наши услуги только:"],
+            list: [
+              "В законных коммерческих целях",
+              "В соответствии с законодательством Республики Казахстан",
+              "Без нарушения прав третьих лиц",
+              "Без попыток взлома или нарушения безопасности системы",
+              "Без отправки спама или нежелательных сообщений",
+            ],
+          },
+          {
+            heading: "4. Тарифы и оплата",
+            paragraphs: [
+              "Стоимость услуг указана на нашем сайте в выбранном тарифном плане. Оплата производится ежемесячно или ежегодно в соответствии с выбранным планом. Мы оставляем за собой право изменять цены с предварительным уведомлением за 30 дней. Возврат средств возможен в течение 14 дней с момента первой оплаты.",
+            ],
+          },
+          {
+            heading: "5. Интеллектуальная собственность",
+            paragraphs: [
+              "Все материалы, контент, логотипы, товарные знаки и технологии, используемые на платформе Alau.ai, являются нашей интеллектуальной собственностью или собственностью наших лицензиаров. Вы получаете ограниченную лицензию на использование сервиса, но не приобретаете никаких прав на технологии или контент.",
+            ],
+          },
+          {
+            heading: "6. Ограничение ответственности",
+            paragraphs: [
+              "Наши услуги предоставляются «как есть». Мы не гарантируем бесперебойную работу сервиса и не несем ответственности за косвенные убытки, упущенную выгоду или потерю данных. Наша максимальная ответственность ограничена суммой, уплаченной вами за услуги в течение последних 12 месяцев.",
+            ],
+          },
+          {
+            heading: "7. Прекращение обслуживания",
+            paragraphs: [
+              "Мы оставляем за собой право приостановить или прекратить предоставление услуг при нарушении настоящих Условий использования, неоплате услуг или по другим законным основаниям. Вы можете отменить подписку в любое время через личный кабинет.",
+            ],
+          },
+          {
+            heading: "8. Изменения условий",
+            paragraphs: [
+              "Мы можем обновлять настоящие Условия использования время от времени. Существенные изменения будут сообщены вам по электронной почте или через уведомление на платформе за 30 дней до вступления в силу. Продолжение использования сервиса после изменений означает ваше согласие с новыми условиями.",
+            ],
+          },
+          {
+            heading: "9. Применимое право",
+            paragraphs: [
+              "Настоящие Условия регулируются законодательством Республики Казахстан. Все споры подлежат разрешению в судах Республики Казахстан по месту нахождения компании Alau.ai.",
+            ],
+          },
+          {
+            heading: "10. Контактная информация",
+            paragraphs: ["По вопросам, связанным с настоящими Условиями использования, обращайтесь:"],
+            contact: true,
+          },
+          {
+            paragraphs: ["Последнее обновление: Декабрь 2024"],
+            muted: true,
+          },
+        ],
+      },
+    },
+    auth: {
+      backHome: "← Вернуться на главную",
+      welcome: "Добро пожаловать",
+      accountPrompt: "Войдите в свой аккаунт Alau.ai",
+      loginTab: "Вход",
+      registerTab: "Регистрация",
+      password: "Пароль",
+      confirmPassword: "Подтвердите пароль",
+      loginButton: "Войти",
+      loginLoading: "Вход...",
+      registerButton: "Зарегистрироваться",
+      registerLoading: "Регистрация...",
+      marketingTitle: "Добро пожаловать в Alau.ai",
+      marketingSubtitle: "Преобразуйте общение с клиентами с помощью автоматизации на базе ИИ",
+      bullets: [
+        "Автоматизация поддержки клиентов на нескольких каналах",
+        "Интеллектуальный анализ разговоров на базе ИИ",
+        "Беспроблемная интеграция с вашими существующими инструментами",
+      ],
+      quote:
+        "Alau.ai революционизировал то, как мы обрабатываем поддержку клиентов. Время отклика улучшилось на 80%, а показатели удовлетворенности клиентов достигли рекордного уровня.",
+      quoteAuthor: "— Сара Чен, Менеджер по работе с клиентами",
+      toasts: {
+        loginErrorTitle: "Ошибка входа",
+        loginErrorDefault: "Произошла ошибка при входе",
+        invalidCredentials: "Неверный email или пароль",
+        emailNotConfirmed: "Email не подтверждён",
+        successTitle: "Успешно!",
+        loginSuccess: "Вход выполнен успешно",
+        registerErrorTitle: "Ошибка регистрации",
+        registerErrorDefault: "Произошла ошибка при регистрации",
+        registerSuccess: "Регистрация прошла успешно",
+        errorTitle: "Ошибка",
+        passwordsMismatch: "Пароли не совпадают",
+        passwordTooShort: "Пароль должен содержать минимум 6 символов",
+        alreadyRegistered: "Пользователь с таким email уже зарегистрирован",
+      },
+    },
+    dashboard: {
+      navigation: "Навигация",
+      logout: "Выйти",
+      overview: "Обзор",
+      assistants: "Ассистенты",
+      conversations: "Разговоры",
+      followUp: "Последующие",
+      promptSettings: "Настройки промпта",
+      aiSettings: "Настройки AI",
+      title: "Панель управления",
+      welcome: "Добро пожаловать",
+      upgradePlan: "Обновить план",
+      realtimeStats: "Статистика в реальном времени",
+      startedConversations: "Начато разговоров",
+      completedConversations: "Завершено разговоров",
+      bookedMeetings: "Забронировано встреч",
+      conversion: "Конверсия",
+      previousPeriod: "от предыдущего периода",
+      weeklyStarted: "Еженедельные начатые разговоры",
+      conversationsPastWeek: "Разговоры за прошедшую неделю",
+      tooltipConversations: "разговоров",
+      days: ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
+      periods: {
+        today: "Сегодня",
+        sevenDays: "7 дней",
+        thirtyDays: "30 дней",
+        sixtyDays: "60 дней",
+        ninetyDays: "90 дней",
+      },
+      prompt: {
+        title: "Настройки промпта AI",
+        subtitle: "Управляйте системным промптом AI-ассистента",
+        systemPrompt: "Системный промпт",
+        description: "Редактируйте промпт, который определяет, как AI-ассистент ведет себя и отвечает клиентам",
+        placeholder: "Введите системный промпт...",
+        saveChanges: "Сохранить изменения",
+      },
+      assistantList: {
+        subtitle: "Управление AI-ассистентами",
+        searchPlaceholder: "Поиск ассистентов...",
+        newAssistant: "Новый ассистент",
+        name: "Имя",
+        type: "Тип",
+        empty: "Ассистенты не найдены. Создайте нового ассистента.",
+        unnamed: "Без имени",
+        dialogTitle: "Новый ассистент",
+        dialogDescription: "Выберите тип ассистента и заполните поля подключения.",
+        assistantName: "Имя ассистента",
+        assistantNamePlaceholder: "Мой ассистент",
+        botToken: "Токен бота",
+        authTokenPlaceholder: "Введите AuthToken",
+        createLoading: "Создание...",
+        create: "Создать",
+        createdTitle: "Ассистент создан",
+        createdDescription: "Сохраните токен - он показывается только один раз.",
+        tokenCopied: "Токен скопирован",
+        twilioCreatedTitle: "Twilio ассистент создан",
+        twilioDescription: "Привяжите webhook Twilio Messages к этому эндпоинту, чтобы входящие сообщения попадали в ассистента.",
+        webhookCopied: "Webhook URL скопирован",
+        formReady: "Форма готова",
+        endpointNext: "Эндпоинт для {{type}} подключим следующим шагом.",
+        errors: {
+          title: "Ошибка",
+          load: "Не удалось загрузить ассистентов",
+          create: "Не удалось создать ассистента",
+          createTitle: "Ошибка создания",
+          createTwilioTitle: "Ошибка создания Twilio",
+          createTwilio: "Не удалось создать Twilio ассистента",
+        },
+      },
+      assistantDetails: {
+        back: "Назад к ассистентам",
+        notFoundTitle: "Ассистент не найден",
+        notFoundDescription: "Попробуйте обновить данные или вернуться к списку.",
+        retry: "Повторить",
+        save: "Сохранить",
+        type: "Тип",
+        requiredTitle: "Заполните поля",
+        requiredDescription: "Имя и configuration обязательны для сохранения.",
+        saved: "Ассистент сохранён",
+        saveErrorTitle: "Ошибка сохранения",
+        saveError: "Не удалось сохранить ассистента",
+        loadError: "Не удалось загрузить ассистента",
+      },
+      conversationsPage: {
+        subtitle: "Список чатов с клиентами",
+        searchPlaceholder: "Поиск по Customer ID...",
+        filterByAssistants: "Фильтр по ассистентам",
+        all: "Все",
+        clear: "Очистить",
+        emptySearch: "По вашему запросу ничего не найдено.",
+        selectOneAssistant: "Выберите хотя бы одного ассистента в фильтре.",
+        empty: "Разговоры не найдены.",
+        searchErrorTitle: "Ошибка поиска",
+        searchError: "Не удалось выполнить поиск",
+        loadAssistantsError: "Не удалось загрузить ассистентов",
+        loadConversationsError: "Не удалось загрузить разговоры",
+        loadPageError: "Не удалось загрузить страницу",
+      },
+      chat: {
+        title: "Чат",
+        empty: "Сообщений пока нет",
+        info: "Информация о чате",
+        connectionErrorTitle: "Ошибка подключения",
+        connectionError: "Не удалось подключиться к чату",
+        closedTitle: "Соединение закрыто",
+        closedDescription: "Не удалось получить сообщения чата",
+        openError: "Не удалось открыть чат",
+      },
+    },
+  },
+  en: {
+    common: {
+      userFallback: "User",
+      languageSelector: "Language selection",
+      notSpecified: "Not specified",
+      close: "Close",
+      cancel: "Cancel",
+      save: "Save",
+      search: "Search",
+      created: "Created",
+      updated: "Updated",
+      platform: "Platform",
+      messages: "Messages",
+    },
+    seo: {
+      title: "Alau.ai - AI agents for business in Kazakhstan",
+      description:
+        "An AI agent platform for automating small and medium-sized businesses in Kazakhstan. Smart solutions for sales, customer support, and business workflows.",
+    },
+    header: {
+      nav: {
+        features: "Features",
+        forWho: "Who it is for",
+        about: "About us",
+        pricing: "Pricing",
+      },
+      account: "Personal account",
+      logout: "Log out",
+      loginRegister: "Sign in / Sign up",
+      contact: "Contact us",
+    },
+    landing: {
+      hero: {
+        title: "AI agents that work for you",
+        subtitle: "Business automation through SMS, WhatsApp, and Telegram powered by smart AI solutions",
+        primaryCta: "Try for free",
+        secondaryCta: "Learn more",
+      },
+      features: {
+        title: "Platform Features",
+        subtitle: "Smart AI agents for automating any business task",
+        cards: [
+          {
+            title: "AI agents for sales",
+            description: "Automate order processing, customer consultations, and increase sales conversion.",
+          },
+          {
+            title: "AI agents for support",
+            description: "Instant answers to customer questions 24/7 through SMS, WhatsApp, and Telegram.",
+          },
+          {
+            title: "Process automation",
+            description: "Integration with 1C, CRM, and ERP systems for complete business process automation.",
+          },
+          {
+            title: "Analytics and data",
+            description: "Deep analytics of customer interactions and automatic data processing.",
+          },
+        ],
+      },
+      channels: {
+        title: "We work across every popular platform",
+        subtitle: "Your customers can reach AI agents through the channel that suits them best",
+        mainBadge: "Primary channel",
+        cards: [
+          {
+            name: "SMS",
+            description: "The core platform for AI agents. 100% availability and works on any phone.",
+          },
+          {
+            name: "WhatsApp",
+            description: "Automate orders, consultations, and customer requests through a popular messenger.",
+          },
+          {
+            name: "Telegram",
+            description: "Instant customer support and notifications through a fast, convenient channel.",
+          },
+        ],
+      },
+      forWho: {
+        title: "Who is Alau.ai for?",
+        subtitle: "Solutions for any business in Kazakhstan",
+        cards: [
+          {
+            title: "Stores and retail",
+            description: "Sales automation and order processing",
+          },
+          {
+            title: "Services",
+            description: "Client bookings and consultations",
+          },
+          {
+            title: "Beauty salons",
+            description: "Online booking and reminders",
+          },
+          {
+            title: "Medical centers",
+            description: "Appointment scheduling and patient support",
+          },
+          {
+            title: "Logistics",
+            description: "Order tracking and notifications",
+          },
+          {
+            title: "SMB companies",
+            description: "Complete process automation",
+          },
+        ],
+      },
+      about: {
+        title: "About us",
+        subtitle: "We make AI accessible for every business in Kazakhstan",
+        cards: [
+          {
+            title: "Our mission",
+            description: "Make AI technology accessible to small and medium-sized businesses",
+          },
+          {
+            title: "Reliability",
+            description: "Local support and a guarantee that your data stays secure",
+          },
+          {
+            title: "Integrations",
+            description: "SMS (primary channel), WhatsApp, Telegram, 1C, CRM, ERP, and other systems",
+          },
+        ],
+        paragraph:
+          "is a next-generation platform that helps Kazakhstani businesses use artificial intelligence without complex setup or huge budgets. We create smart agents that work for you 24/7.",
+      },
+      pricing: {
+        title: "Simple and transparent pricing",
+        subtitle: "Choose the right plan for your business",
+        popular: "Popular",
+        choosePlan: "Choose plan",
+        consultation: "Need advice? We will help you choose the best plan",
+        contact: "Contact us",
+        plans: [
+          {
+            name: "Starter",
+            price: "$600",
+            period: "per month",
+            features: [
+              "1 AI agent",
+              "Up to 1,000 requests/month",
+              "WhatsApp or Telegram integration",
+              "Basic analytics",
+              "Email support",
+            ],
+          },
+          {
+            name: "Business",
+            price: "$1,000",
+            period: "per month",
+            features: [
+              "Up to 5 AI agents",
+              "Up to 5,000 requests/month",
+              "All communication channels",
+              "1C/CRM integration",
+              "Advanced analytics",
+              "Priority support",
+            ],
+          },
+          {
+            name: "Enterprise",
+            price: "Custom",
+            period: "",
+            features: [
+              "Unlimited agents",
+              "Unlimited requests",
+              "All integrations",
+              "Personal account manager",
+              "SLA guarantees",
+              "Custom development",
+            ],
+          },
+        ],
+      },
+      contact: {
+        title: "Contact us",
+        subtitle: "Ready to start? Leave a request and we will get back to you",
+        namePlaceholder: "Your name *",
+        phonePlaceholder: "Phone",
+        messagePlaceholder: "Tell us about your project *",
+        submit: "Send request",
+        toastTitle: "Request sent!",
+        toastDescription: "We will contact you soon.",
+      },
+    },
+    footer: {
+      privacyLink: "Privacy Policy",
+      termsLink: "Terms of Use",
+      rights: "© 2024 Alau.ai. All rights reserved.",
+      phoneLabel: "Phone",
+      privacy: {
+        title: "Privacy Policy",
+        accept: "I have read and agree to the policy",
+        sections: [
+          {
+            heading: "Your privacy matters to us",
+            paragraphs: [
+              "At Alau.ai, we are committed to protecting your privacy and keeping your personal information secure. This Privacy Policy explains how we collect, use, disclose, and protect your data when you use our AI services for business automation in Kazakhstan.",
+            ],
+          },
+          {
+            heading: "1. Information we collect",
+            paragraphs: ["We collect information that you provide to us directly, including:"],
+            list: [
+              "Company name and contact details",
+              "Customer phone numbers and communication history",
+              "Appointment data and scheduling information",
+              "Service preferences and interaction patterns",
+              "Usage data, device information, and analytics used to improve our services",
+            ],
+          },
+          {
+            heading: "2. How we use your information",
+            paragraphs: ["We use the information we collect to:"],
+            list: [
+              "Provide and support our AI automation services",
+              "Process and manage customer communications on your behalf",
+              "Schedule appointments and automate business workflows",
+              "Analyze and improve the quality of our services",
+              "Enforce our terms of service and legal obligations",
+              "Send important service updates and notifications",
+            ],
+          },
+          {
+            heading: "3. Data security",
+            paragraphs: [
+              "We apply strong security measures to protect your data, including encryption, secure data storage, and regular security audits. All data is stored in line with international security standards and the laws of the Republic of Kazakhstan.",
+            ],
+          },
+          {
+            heading: "4. Data sharing",
+            paragraphs: [
+              "We do not sell or transfer your personal information to third parties. We may share data only with trusted partners who help us provide our services, and only to the extent required for them to perform their functions. All partners must keep your data confidential.",
+            ],
+          },
+          {
+            heading: "5. Your rights",
+            paragraphs: ["Under the laws of the Republic of Kazakhstan, you have the right to:"],
+            list: [
+              "Request access to your personal data",
+              "Correct inaccurate data",
+              "Request deletion of your data",
+              "Restrict processing of your data",
+              "Object to processing of your data",
+              "Receive a copy of your data",
+            ],
+          },
+          {
+            heading: "6. Data retention",
+            paragraphs: [
+              "We keep your data only for as long as needed to provide our services or meet legal obligations. After you stop using our services, your data will be securely deleted according to our retention policy.",
+            ],
+          },
+          {
+            heading: "7. Contact information",
+            paragraphs: [
+              "If you have questions about this Privacy Policy or our data processing practices, please contact us:",
+            ],
+            contact: true,
+          },
+          {
+            paragraphs: ["Last updated: December 2024"],
+            muted: true,
+          },
+        ],
+      },
+      terms: {
+        title: "Terms of Use",
+        accept: "I have read and agree to the terms",
+        sections: [
+          {
+            heading: "Welcome to Alau.ai",
+            paragraphs: [
+              "These Terms of Use govern your access to and use of the Alau.ai platform and related AI-powered business automation services. By using our services, you agree to these terms.",
+            ],
+          },
+          {
+            heading: "1. Service description",
+            paragraphs: [
+              "Alau.ai provides an AI agent platform for automating business processes, including customer request handling through SMS, WhatsApp, and Telegram, appointment scheduling, communication analytics, and integration with business systems. Our services are designed for small and medium-sized businesses in the Republic of Kazakhstan.",
+            ],
+          },
+          {
+            heading: "2. Registration and account",
+            paragraphs: ["To use our services, you must:"],
+            list: [
+              "Provide accurate and up-to-date company information",
+              "Keep your account and password secure",
+              "Notify us immediately about any unauthorized use",
+              "Remain responsible for all actions performed through your account",
+            ],
+          },
+          {
+            heading: "3. Use of the service",
+            paragraphs: ["You agree to use our services only:"],
+            list: [
+              "For lawful commercial purposes",
+              "In compliance with the laws of the Republic of Kazakhstan",
+              "Without violating third-party rights",
+              "Without attempting to hack or compromise system security",
+              "Without sending spam or unwanted messages",
+            ],
+          },
+          {
+            heading: "4. Plans and payment",
+            paragraphs: [
+              "Service pricing is shown on our website in the selected plan. Payment is made monthly or annually according to the chosen plan. We reserve the right to change prices with 30 days' prior notice. Refunds are available within 14 days of the first payment.",
+            ],
+          },
+          {
+            heading: "5. Intellectual property",
+            paragraphs: [
+              "All materials, content, logos, trademarks, and technologies used on the Alau.ai platform are our intellectual property or the property of our licensors. You receive a limited license to use the service, but you do not acquire rights to the technology or content.",
+            ],
+          },
+          {
+            heading: "6. Limitation of liability",
+            paragraphs: [
+              "Our services are provided as is. We do not guarantee uninterrupted service and are not liable for indirect damages, lost profits, or data loss. Our maximum liability is limited to the amount you paid for the services during the previous 12 months.",
+            ],
+          },
+          {
+            heading: "7. Termination of service",
+            paragraphs: [
+              "We reserve the right to suspend or terminate services if these Terms of Use are violated, payment is not made, or other lawful grounds apply. You may cancel your subscription at any time through your personal account.",
+            ],
+          },
+          {
+            heading: "8. Changes to terms",
+            paragraphs: [
+              "We may update these Terms of Use from time to time. Material changes will be communicated by email or through an in-platform notice 30 days before they take effect. Continuing to use the service after changes means you accept the new terms.",
+            ],
+          },
+          {
+            heading: "9. Governing law",
+            paragraphs: [
+              "These Terms are governed by the laws of the Republic of Kazakhstan. All disputes are subject to resolution in the courts of the Republic of Kazakhstan at the location of Alau.ai.",
+            ],
+          },
+          {
+            heading: "10. Contact information",
+            paragraphs: ["For questions related to these Terms of Use, contact us:"],
+            contact: true,
+          },
+          {
+            paragraphs: ["Last updated: December 2024"],
+            muted: true,
+          },
+        ],
+      },
+    },
+    auth: {
+      backHome: "← Back to home",
+      welcome: "Welcome",
+      accountPrompt: "Sign in to your Alau.ai account",
+      loginTab: "Sign in",
+      registerTab: "Sign up",
+      password: "Password",
+      confirmPassword: "Confirm password",
+      loginButton: "Sign in",
+      loginLoading: "Signing in...",
+      registerButton: "Create account",
+      registerLoading: "Creating account...",
+      marketingTitle: "Welcome to Alau.ai",
+      marketingSubtitle: "Transform customer communication with AI-powered automation",
+      bullets: [
+        "Automate customer support across multiple channels",
+        "AI-powered conversation intelligence",
+        "Seamless integration with your existing tools",
+      ],
+      quote:
+        "Alau.ai revolutionized how we handle customer support. Response time improved by 80%, and customer satisfaction reached an all-time high.",
+      quoteAuthor: "— Sarah Chen, Customer Success Manager",
+      toasts: {
+        loginErrorTitle: "Sign-in error",
+        loginErrorDefault: "An error occurred during sign-in",
+        invalidCredentials: "Invalid email or password",
+        emailNotConfirmed: "Email has not been confirmed",
+        successTitle: "Success!",
+        loginSuccess: "Signed in successfully",
+        registerErrorTitle: "Registration error",
+        registerErrorDefault: "An error occurred during registration",
+        registerSuccess: "Registration completed successfully",
+        errorTitle: "Error",
+        passwordsMismatch: "Passwords do not match",
+        passwordTooShort: "Password must contain at least 6 characters",
+        alreadyRegistered: "A user with this email is already registered",
+      },
+    },
+    dashboard: {
+      navigation: "Navigation",
+      logout: "Log out",
+      overview: "Overview",
+      assistants: "Assistants",
+      conversations: "Conversations",
+      followUp: "Follow-up",
+      promptSettings: "Prompt settings",
+      aiSettings: "AI settings",
+      title: "Dashboard",
+      welcome: "Welcome",
+      upgradePlan: "Upgrade plan",
+      realtimeStats: "Real-time statistics",
+      startedConversations: "Started conversations",
+      completedConversations: "Completed conversations",
+      bookedMeetings: "Booked meetings",
+      conversion: "Conversion",
+      previousPeriod: "from previous period",
+      weeklyStarted: "Weekly started conversations",
+      conversationsPastWeek: "Conversations over the past week",
+      tooltipConversations: "conversations",
+      days: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      periods: {
+        today: "Today",
+        sevenDays: "7 days",
+        thirtyDays: "30 days",
+        sixtyDays: "60 days",
+        ninetyDays: "90 days",
+      },
+      prompt: {
+        title: "AI prompt settings",
+        subtitle: "Manage the AI assistant system prompt",
+        systemPrompt: "System prompt",
+        description: "Edit the prompt that defines how the AI assistant behaves and responds to customers",
+        placeholder: "Enter the system prompt...",
+        saveChanges: "Save changes",
+      },
+      assistantList: {
+        subtitle: "Manage AI assistants",
+        searchPlaceholder: "Search assistants...",
+        newAssistant: "New assistant",
+        name: "Name",
+        type: "Type",
+        empty: "No assistants found. Create a new assistant.",
+        unnamed: "Unnamed",
+        dialogTitle: "New assistant",
+        dialogDescription: "Choose an assistant type and fill in the connection fields.",
+        assistantName: "Assistant name",
+        assistantNamePlaceholder: "My assistant",
+        botToken: "Bot token",
+        authTokenPlaceholder: "Enter AuthToken",
+        createLoading: "Creating...",
+        create: "Create",
+        createdTitle: "Assistant created",
+        createdDescription: "Save the token. It is shown only once.",
+        tokenCopied: "Token copied",
+        twilioCreatedTitle: "Twilio assistant created",
+        twilioDescription: "Connect the Twilio Messages webhook to this endpoint so incoming messages reach the assistant.",
+        webhookCopied: "Webhook URL copied",
+        formReady: "Form ready",
+        endpointNext: "The endpoint for {{type}} will be connected in the next step.",
+        errors: {
+          title: "Error",
+          load: "Failed to load assistants",
+          create: "Failed to create assistant",
+          createTitle: "Creation error",
+          createTwilioTitle: "Twilio creation error",
+          createTwilio: "Failed to create Twilio assistant",
+        },
+      },
+      assistantDetails: {
+        back: "Back to assistants",
+        notFoundTitle: "Assistant not found",
+        notFoundDescription: "Try refreshing the data or returning to the list.",
+        retry: "Retry",
+        save: "Save",
+        type: "Type",
+        requiredTitle: "Fill in the fields",
+        requiredDescription: "Name and configuration are required before saving.",
+        saved: "Assistant saved",
+        saveErrorTitle: "Save error",
+        saveError: "Failed to save assistant",
+        loadError: "Failed to load assistant",
+      },
+      conversationsPage: {
+        subtitle: "List of customer chats",
+        searchPlaceholder: "Search by Customer ID...",
+        filterByAssistants: "Filter by assistants",
+        all: "All",
+        clear: "Clear",
+        emptySearch: "Nothing was found for your search.",
+        selectOneAssistant: "Select at least one assistant in the filter.",
+        empty: "No conversations found.",
+        searchErrorTitle: "Search error",
+        searchError: "Search failed",
+        loadAssistantsError: "Failed to load assistants",
+        loadConversationsError: "Failed to load conversations",
+        loadPageError: "Failed to load page",
+      },
+      chat: {
+        title: "Chat",
+        empty: "No messages yet",
+        info: "Chat information",
+        connectionErrorTitle: "Connection error",
+        connectionError: "Could not connect to the chat",
+        closedTitle: "Connection closed",
+        closedDescription: "Could not get chat messages",
+        openError: "Could not open chat",
+      },
+    },
+  },
+} as const;
+
+export type Language = keyof typeof translations;
+export type Translation = (typeof translations)["ru"];

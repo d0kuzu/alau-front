@@ -2,36 +2,27 @@ import { Card } from "@/shared/ui/card";
 import { Target, Shield, Zap } from "lucide-react";
 import AnimatedSection from "../components/AnimatedSection";
 import AnimatedCard from "../components/AnimatedCard";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
 
-const aboutCards = [
-  {
-    icon: Target,
-    title: "Наша миссия",
-    description: "Сделать ИИ-технологии доступными для малого и среднего бизнеса",
-  },
-  {
-    icon: Shield,
-    title: "Надёжность",
-    description: "Локальная поддержка и гарантия безопасности ваших данных",
-  },
-  {
-    icon: Zap,
-    title: "Интеграции",
-    description: "SMS (основной канал), WhatsApp, Telegram, 1C, CRM, ERP и другие системы",
-  },
-];
+const aboutIcons = [Target, Shield, Zap];
 
 const About = () => {
+  const { t } = useLanguage();
+  const aboutCards = t.landing.about.cards.map((card, index) => ({
+    ...card,
+    icon: aboutIcons[index],
+  }));
+
   return (
     <section id="about" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <AnimatedSection className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              О нас
+              {t.landing.about.title}
             </h2>
             <p className="text-xl text-muted-foreground">
-              Мы делаем ИИ доступным для каждого бизнеса в Казахстане
+              {t.landing.about.subtitle}
             </p>
           </AnimatedSection>
 
@@ -61,10 +52,7 @@ const About = () => {
           <AnimatedSection delay={400}>
             <Card className="p-8 bg-primary/5 border-2 border-primary/20">
               <p className="text-lg text-foreground leading-relaxed text-center">
-                <strong className="text-primary">Alau.ai</strong> — это платформа нового поколения, 
-                которая позволяет казахстанскому бизнесу использовать возможности 
-                искусственного интеллекта без сложных настроек и огромных бюджетов. 
-                Мы создаём умных агентов, которые работают за вас 24/7.
+                <strong className="text-primary">Alau.ai</strong> {t.landing.about.paragraph}
               </p>
             </Card>
           </AnimatedSection>

@@ -7,9 +7,11 @@ import { useState } from "react";
 import { useToast } from "@/shared/hooks/use-toast";
 import AnimatedSection from "../components/AnimatedSection";
 import AnimatedCard from "../components/AnimatedCard";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
 
 const Contact = () => {
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -20,8 +22,8 @@ const Contact = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast({
-      title: "Заявка отправлена!",
-      description: "Мы свяжемся с вами в ближайшее время.",
+      title: t.landing.contact.toastTitle,
+      description: t.landing.contact.toastDescription,
     });
     setFormData({ name: "", email: "", phone: "", message: "" });
   };
@@ -32,10 +34,10 @@ const Contact = () => {
         <div className="max-w-4xl mx-auto">
           <AnimatedSection className="text-center mb-10 md:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Свяжитесь с нами
+              {t.landing.contact.title}
             </h2>
             <p className="text-lg md:text-xl text-muted-foreground">
-              Готовы начать? Оставьте заявку, и мы свяжемся с вами
+              {t.landing.contact.subtitle}
             </p>
           </AnimatedSection>
 
@@ -97,7 +99,7 @@ const Contact = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <Input
-                  placeholder="Ваше имя *"
+                  placeholder={t.landing.contact.namePlaceholder}
                   value={formData.name}
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
@@ -120,7 +122,7 @@ const Contact = () => {
                 />
                 <Input
                   type="tel"
-                  placeholder="Телефон"
+                  placeholder={t.landing.contact.phonePlaceholder}
                   value={formData.phone}
                   onChange={(e) =>
                     setFormData({ ...formData, phone: e.target.value })
@@ -130,7 +132,7 @@ const Contact = () => {
               </div>
 
               <Textarea
-                placeholder="Расскажите о вашем проекте *"
+                placeholder={t.landing.contact.messagePlaceholder}
                 value={formData.message}
                 onChange={(e) =>
                   setFormData({ ...formData, message: e.target.value })
@@ -143,7 +145,7 @@ const Contact = () => {
                 type="submit"
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-12 text-lg"
               >
-                Отправить заявку
+                {t.landing.contact.submit}
               </Button>
             </form>
             </Card>

@@ -56,14 +56,14 @@ const assistantTypeMeta = assistantTypeOptions.reduce(
   {} as Record<AssistantType, AssistantTypeOption>,
 );
 
-export const getAssistantTypeMeta = (type?: AssistantType): AssistantTypeOption => {
+export const getAssistantTypeMeta = (type?: AssistantType, fallbackLabel = "Не указан"): AssistantTypeOption => {
   if (type && assistantTypeMeta[type]) {
     return assistantTypeMeta[type];
   }
 
   return {
     id: "api",
-    label: "Не указан",
+    label: fallbackLabel,
     icon: Bot,
   };
 };

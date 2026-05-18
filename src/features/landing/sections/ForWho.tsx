@@ -1,50 +1,26 @@
 import { Card } from "@/shared/ui/card";
 import { Store, Scissors, Stethoscope, Truck, Briefcase, Building2 } from "lucide-react";
 import AnimatedCard from "../components/AnimatedCard";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
 
-const businesses = [
-  {
-    icon: Store,
-    title: "Магазины и ритейл",
-    description: "Автоматизация продаж и обработка заказов",
-  },
-  {
-    icon: Briefcase,
-    title: "Услуги",
-    description: "Запись клиентов и консультации",
-  },
-  {
-    icon: Scissors,
-    title: "Салоны красоты",
-    description: "Онлайн-запись и напоминания",
-  },
-  {
-    icon: Stethoscope,
-    title: "Медицинские центры",
-    description: "Запись на приём и поддержка пациентов",
-  },
-  {
-    icon: Truck,
-    title: "Логистика",
-    description: "Отслеживание заказов и уведомления",
-  },
-  {
-    icon: Building2,
-    title: "SMB-компании",
-    description: "Полная автоматизация процессов",
-  },
-];
+const businessIcons = [Store, Briefcase, Scissors, Stethoscope, Truck, Building2];
 
 const ForWho = () => {
+  const { t } = useLanguage();
+  const businesses = t.landing.forWho.cards.map((business, index) => ({
+    ...business,
+    icon: businessIcons[index],
+  }));
+
   return (
     <section id="for-who" className="py-20 bg-secondary/30" style={{ backgroundColor: 'rgba(248, 250, 252, 1)' }}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Для кого Alau.ai?
+            {t.landing.forWho.title}
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Решения для любого бизнеса в Казахстане
+            {t.landing.forWho.subtitle}
           </p>
         </div>
 

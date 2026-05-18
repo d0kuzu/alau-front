@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/shared/ui/table";
 import { useToast } from "@/shared/hooks/use-toast";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
 import {
   fetchAssistants,
   fetchChats,
@@ -28,13 +29,13 @@ const gradientStyle = {
   background: "linear-gradient(90deg, rgba(113, 181, 234, 1) 0%, rgba(81, 194, 251, 1) 80%)",
 };
 
-const formatDate = (iso: string) => {
+const formatDate = (iso: string, locale: string) => {
   if (!iso) {
     return "-";
   }
 
   try {
-    return new Date(iso).toLocaleString("ru-RU", {
+    return new Date(iso).toLocaleString(locale, {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
@@ -48,6 +49,7 @@ const formatDate = (iso: string) => {
 
 const ConversationsPage = () => {
   const { toast } = useToast();
+  const { t, dateLocale } = useLanguage();
   const [assistants, setAssistants] = useState<Assistant[]>([]);
   const [selectedAssistantIds, setSelectedAssistantIds] = useState<Set<string>>(new Set());
   const [assistantsLoaded, setAssistantsLoaded] = useState(false);
@@ -87,8 +89,8 @@ const ConversationsPage = () => {
         setSelectedAssistantIds(new Set(data.map((assistant) => assistant.id)));
       } catch (error) {
         toast({
-          title: "Ошибка",
-          description: error instanceof Error ? error.message : "Не удалось загрузить ассистентов",
+          title: t.dashboard.assistantList.errors.title,
+          description: error instanceof Error ? error.message : t.dashboard.conversationsPage.loadAssistantsError,
           variant: "destructive",
         });
       } finally {
@@ -115,8 +117,8 @@ const ConversationsPage = () => {
         setCurrentPage(page);
       } catch (error) {
         toast({
-          title: "Ошибка",
-          description: error instanceof Error ? error.message : "Не удалось загрузить разговоры",
+          title: t.dashboard.assistantList.errors.title,
+          description: error instanceof Error ? error.message : t.dashboard.conversationsPage.loadConversationsError,
           variant: "destructive",
         });
       } finally {
@@ -178,8 +180,8 @@ const ConversationsPage = () => {
       setCurrentPage(1);
     } catch (error) {
       toast({
-        title: "Ошибка поиска",
-        description: error instanceof Error ? error.message : "Не удалось выполнить поиск",
+        title: t.dashboard.conversationsPage.searchErrorTitle,
+        description: error instanceof Error ? error.message : t.dashboard.conversationsPage.searchError,
         variant: "destructive",
       });
     } finally {
@@ -202,8 +204,8 @@ const ConversationsPage = () => {
         setCurrentPage(page);
       } catch (error) {
         toast({
-          title: "Ошибка",
-          description: error instanceof Error ? error.message : "Не удалось загрузить страницу",
+          title: t.dashboard.assistantList.errors.title,
+          description: error instanceof Error ? error.message : t.dashboard.conversationsPage.loadPageError,
           variant: "destructive",
         });
       } finally {
@@ -285,15 +287,15 @@ const ConversationsPage = () => {
   return (
     <div>
       <div className="mb-6 md:mb-8">
-        <h1 className="mb-1 text-2xl font-bold text-slate-900 md:text-3xl">Разговоры</h1>
-        <p className="text-sm text-slate-600 md:text-base">Список чатов с клиентами</p>
+        <h1 className="mb-1 text-2xl font-bold text-slate-900 md:text-3xl">{t.dashboard.conversations}</h1>
+        <p className="text-sm text-slate-600 md:text-base">{t.dashboard.conversationsPage.subtitle}</p>
       </div>
 
       <div className="mb-4 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
           <Input
-            placeholder="Поиск по Customer ID..."
+            placeholder={t.dashboard.conversationsPage.searchPlaceholder}
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
             onKeyDown={(event) => {
@@ -306,7 +308,7 @@ const ConversationsPage = () => {
         </div>
         <Button type="button" variant="outline" onClick={() => void handleSearch()} className="border-slate-200">
           <Search className="mr-2 h-4 w-4" />
-          Поиск
+          {t.common.search}
         </Button>
       </div>
 
@@ -320,7 +322,7 @@ const ConversationsPage = () => {
             className="border-slate-200 bg-white text-slate-700"
           >
             <SlidersHorizontal className="mr-2 h-4 w-4" />
-            Фильтр по ассистентам
+            {t.dashboard.conversationsPage.filterByAssistants}
             <span className="ml-2 text-xs text-slate-400">
               ({selectedAssistantIds.size}/{assistants.length})
             </span>
@@ -329,13 +331,13 @@ const ConversationsPage = () => {
           {filterOpen && (
             <div className="absolute left-0 top-full z-20 mt-1 w-72 rounded-lg border border-slate-200 bg-white shadow-lg">
               <div className="flex items-center justify-between border-b border-slate-100 px-3 py-2">
-                <span className="text-xs font-semibold uppercase text-slate-500">Ассистенты</span>
+                <span className="text-xs font-semibold uppercase text-slate-500">{t.dashboard.assistants}</span>
                 <div className="flex gap-2">
                   <button type="button" onClick={selectAll} className="text-xs text-[#1896d4] hover:underline">
-                    Все
+                    {t.dashboard.conversationsPage.all}
                   </button>
                   <button type="button" onClick={deselectAll} className="text-xs text-slate-400 hover:underline">
-                    Очистить
+                    {t.dashboard.conversationsPage.clear}
                   </button>
                 </div>
               </div>
@@ -373,10 +375,10 @@ const ConversationsPage = () => {
             <TableRow className="bg-slate-50">
               <TableHead className="font-semibold text-slate-700">Assistant ID</TableHead>
               <TableHead className="font-semibold text-slate-700">Customer ID</TableHead>
-              <TableHead className="font-semibold text-slate-700">Платформа</TableHead>
-              <TableHead className="font-semibold text-slate-700">Создан</TableHead>
-              <TableHead className="font-semibold text-slate-700">Обновлён</TableHead>
-              <TableHead className="text-right font-semibold text-slate-700">Сообщения</TableHead>
+              <TableHead className="font-semibold text-slate-700">{t.common.platform}</TableHead>
+              <TableHead className="font-semibold text-slate-700">{t.common.created}</TableHead>
+              <TableHead className="font-semibold text-slate-700">{t.common.updated}</TableHead>
+              <TableHead className="text-right font-semibold text-slate-700">{t.common.messages}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -392,10 +394,10 @@ const ConversationsPage = () => {
               <TableRow>
                 <TableCell colSpan={6} className="h-32 text-center text-slate-500">
                   {isSearchMode
-                    ? "По вашему запросу ничего не найдено."
+                    ? t.dashboard.conversationsPage.emptySearch
                     : selectedAssistantIds.size === 0
-                      ? "Выберите хотя бы одного ассистента в фильтре."
-                      : "Разговоры не найдены."}
+                      ? t.dashboard.conversationsPage.selectOneAssistant
+                      : t.dashboard.conversationsPage.empty}
                 </TableCell>
               </TableRow>
             ) : (
@@ -406,8 +408,8 @@ const ConversationsPage = () => {
                   </TableCell>
                   <TableCell className="font-medium text-slate-900">{chat.customer_id || "-"}</TableCell>
                   <TableCell className="text-slate-600">{chat.platform || "-"}</TableCell>
-                  <TableCell className="text-slate-600">{formatDate(chat.created_at)}</TableCell>
-                  <TableCell className="text-slate-600">{formatDate(chat.updated_at)}</TableCell>
+                  <TableCell className="text-slate-600">{formatDate(chat.created_at, dateLocale)}</TableCell>
+                  <TableCell className="text-slate-600">{formatDate(chat.updated_at, dateLocale)}</TableCell>
                   <TableCell className="text-right">
                     <span className="inline-flex min-w-7 items-center justify-center rounded-full bg-[#51C2FB]/10 px-2 py-0.5 text-xs font-semibold text-[#1896d4]">
                       {chat.message_count}

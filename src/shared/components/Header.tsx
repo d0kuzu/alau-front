@@ -5,12 +5,23 @@ import { Menu, User, LogOut } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/shared/contexts/AuthContext";
-import logo from "@/assets/logo.png";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
+import LanguageSelector from "@/shared/components/LanguageSelector";
+
+const accountBlueButtonStyle = {
+  color: 'rgba(240, 240, 240, 1)',
+  backgroundColor: 'rgba(81, 194, 251, 1)',
+  borderStyle: 'solid',
+  borderWidth: '1px',
+  borderColor: 'rgba(81, 194, 251, 1)'
+};
+
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useLanguage();
   const {
     user,
     profile,
@@ -22,7 +33,7 @@ const Header = () => {
   const getUserDisplayName = () => {
     if (profile?.name) return profile.name;
     if (user?.email) return user.email.split('@')[0];
-    return "Пользователь";
+    return t.common.userFallback;
   };
   const handleLogout = async () => {
     await signOut();
@@ -47,16 +58,16 @@ const Header = () => {
   };
   const navItems = [{
     id: "features",
-    label: "Возможности"
+    label: t.header.nav.features
   }, {
     id: "for-who",
-    label: "Для кого"
+    label: t.header.nav.forWho
   }, {
     id: "about",
-    label: "О нас"
+    label: t.header.nav.about
   }, {
     id: "pricing",
-    label: "Цены"
+    label: t.header.nav.pricing
   }];
 
   // Отслеживание скролла
@@ -89,17 +100,16 @@ const Header = () => {
 
           {/* Right side: Account button, Contact button (desktop) and Mobile menu */}
           <div className="flex justify-end items-center gap-4">
+            <LanguageSelector />
             {isAuthenticated && user ? <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="hidden md:flex items-center gap-2 px-3" style={{
-                color: 'rgba(240, 240, 240, 1)',
-                backgroundColor: 'rgba(81, 194, 251, 1)',
-                borderStyle: 'solid',
-                borderWidth: '1px',
-                borderColor: 'rgba(81, 194, 251, 1)'
+                  <Button variant="ghost" className="hidden md:flex items-center px-3" style={{
+                ...accountBlueButtonStyle
               }}>
-                    <User className="h-4 w-4" />
-                    <span className="font-medium">{getUserDisplayName()}</span>
+                    <span className="inline-flex items-center justify-center gap-2 leading-none">
+                      <User className="h-4 w-4 shrink-0" />
+                      <span className="block font-medium leading-none">{getUserDisplayName()}</span>
+                    </span>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
@@ -110,25 +120,21 @@ const Header = () => {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => navigate("/dashboard")} className="cursor-pointer">
                     <User className="mr-2 h-4 w-4" />
-                    <span>Личный кабинет</span>
+                    <span>{t.header.account}</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
                     <LogOut className="mr-2 h-4 w-4" />
-                    <span>Выйти</span>
+                    <span>{t.header.logout}</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu> : <Button onClick={() => navigate("/auth")} variant="ghost" size="icon" className="hidden md:flex" style={{
-            color: 'rgba(240, 240, 240, 1)',
-            backgroundColor: 'rgba(81, 194, 251, 1)',
-            borderStyle: 'solid',
-            borderWidth: '1px',
-            borderColor: 'rgba(81, 194, 251, 1)'
+            ...accountBlueButtonStyle
           }}>
                 <User className="h-5 w-5" />
               </Button>}
             <Button onClick={() => scrollToSection("contact")} className="hidden md:flex bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg whitespace-nowrap">
-              Связаться
+              {t.header.contact}
             </Button>
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild className="md:hidden ml-2">
@@ -148,6 +154,8 @@ const Header = () => {
                   {navItems.map(item => <button key={item.id} onClick={() => scrollToSection(item.id)} className="text-lg text-foreground/80 hover:text-foreground transition-colors text-left py-2 border-b border-border/50">
                       {item.label}
                     </button>)}
+
+                  <LanguageSelector fullWidth className="mt-1" />
                   
                   {isAuthenticated && user ? <>
                       <div className="px-2 py-2 border-b border-border/50">
@@ -159,22 +167,22 @@ const Header = () => {
                     setIsOpen(false);
                   }} variant="ghost" className="text-lg text-foreground/80 hover:text-foreground transition-colors text-left py-2 border-b border-border/50 justify-start">
                         <User className="h-5 w-5 mr-2" />
-                        Личный кабинет
+                        {t.header.account}
                       </Button>
                       <Button onClick={() => {
                     handleLogout();
                     setIsOpen(false);
                   }} variant="ghost" className="text-lg text-foreground/80 hover:text-foreground transition-colors text-left py-2 border-b border-border/50 justify-start">
                         <LogOut className="h-5 w-5 mr-2" />
-                        Выйти
+                        {t.header.logout}
                       </Button>
                     </> : <Button onClick={() => navigate("/auth")} variant="ghost" className="text-lg text-foreground/80 hover:text-foreground transition-colors text-left py-2 border-b border-border/50 justify-start">
                       <User className="h-5 w-5 mr-2" />
-                      Вход / Регистрация
+                      {t.header.loginRegister}
                     </Button>}
                   
                   <Button onClick={() => scrollToSection("contact")} className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg mt-4" size="lg">
-                    Связаться
+                    {t.header.contact}
                   </Button>
                 </div>
               </SheetContent>

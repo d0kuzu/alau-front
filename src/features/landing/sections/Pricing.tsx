@@ -2,50 +2,15 @@ import { Button } from "@/shared/ui/button";
 import { Card } from "@/shared/ui/card";
 import { Check } from "lucide-react";
 import AnimatedCard from "../components/AnimatedCard";
-
-const plans = [
-  {
-    name: "Стартовый",
-    price: "100 000 ₸",
-    period: "в месяц",
-    features: [
-      "1 ИИ-агент",
-      "До 1000 обращений/месяц",
-      "Интеграция WhatsApp или Telegram",
-      "Базовая аналитика",
-      "Email поддержка",
-    ],
-  },
-  {
-    name: "Бизнес",
-    price: "149 000 ₸",
-    period: "в месяц",
-    popular: true,
-    features: [
-      "До 5 ИИ-агентов",
-      "До 5000 обращений/месяц",
-      "Все каналы связи",
-      "Интеграция с 1C/CRM",
-      "Продвинутая аналитика",
-      "Приоритетная поддержка",
-    ],
-  },
-  {
-    name: "Корпоративный",
-    price: "Индивидуально",
-    period: "",
-    features: [
-      "Неограниченное количество агентов",
-      "Неограниченные обращения",
-      "Все интеграции",
-      "Персональный менеджер",
-      "SLA гарантии",
-      "Кастомные разработки",
-    ],
-  },
-];
+import { useLanguage } from "@/shared/contexts/LanguageContext";
 
 const Pricing = () => {
+  const { t } = useLanguage();
+  const plans = t.landing.pricing.plans.map((plan, index) => ({
+    ...plan,
+    popular: index === 1,
+  }));
+
   const scrollToContact = () => {
     const element = document.getElementById("contact");
     element?.scrollIntoView({ behavior: "smooth" });
@@ -56,10 +21,10 @@ const Pricing = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-10 md:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Простые и понятные тарифы
+            {t.landing.pricing.title}
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            Выберите подходящий план для вашего бизнеса
+            {t.landing.pricing.subtitle}
           </p>
         </div>
 
@@ -75,7 +40,7 @@ const Pricing = () => {
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-semibold">
-                    Популярный
+                    {t.landing.pricing.popular}
                   </div>
                 )}
 
@@ -109,7 +74,7 @@ const Pricing = () => {
                       : "bg-secondary hover:bg-secondary/80 text-secondary-foreground"
                   }`}
                 >
-                  Выбрать план
+                  {t.landing.pricing.choosePlan}
                 </Button>
               </Card>
             </AnimatedCard>
@@ -118,14 +83,14 @@ const Pricing = () => {
 
         <div className="text-center mt-12">
           <p className="text-muted-foreground mb-4">
-            Нужна консультация? Мы поможем подобрать оптимальный тариф
+            {t.landing.pricing.consultation}
           </p>
           <Button
             onClick={scrollToContact}
             variant="outline"
             className="border-2 border-primary/20"
           >
-            Связаться с нами
+            {t.landing.pricing.contact}
           </Button>
         </div>
       </div>

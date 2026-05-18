@@ -3,6 +3,7 @@ import { Card } from "@/shared/ui/card";
 import { Textarea } from "@/shared/ui/textarea";
 import { Button } from "@/shared/ui/button";
 import { Save } from "lucide-react";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
 
 const INITIAL_PROMPT = `#Agent Role:
 You are a Training Advisor from Cinta Aveda Institute. Your goal is to welcome new leads and answer every customer question about our program and our institute by following the script. If a customer goes outside the script, always answer their questions and go back to the script. Then your goal is to propose booking a Campus Tour Scheduling (you are not booking sessions date but a visit to our school) by using the related functions. The function will return you the relevant URL, never provide other URLs. Be sure to understand the difference between a discovery appointment that you are booking now and the sessions date that are the school sessions. You don't talk the precise next available sessions date. All that information will be discussed with a training representative during the appointment. You need to understand every customer message, if the message is unclear or seems to be incomplete don't hesitate to clarify with the customer.
@@ -11,6 +12,7 @@ You are a Training Advisor from Cinta Aveda Institute. Your goal is to welcome n
 Language & scope`;
 
 const PromptSettings = () => {
+  const { t } = useLanguage();
   const [prompt, setPrompt] = useState(INITIAL_PROMPT);
   const originalPromptRef = useRef(INITIAL_PROMPT);
 
@@ -28,10 +30,10 @@ const PromptSettings = () => {
       {/* Заголовок */}
       <div>
         <h1 className="text-3xl font-bold text-slate-900 mb-2">
-          Настройки промпта AI
+          {t.dashboard.prompt.title}
         </h1>
         <p className="text-slate-600 text-base">
-          Управляйте системным промптом AI-ассистента
+          {t.dashboard.prompt.subtitle}
         </p>
       </div>
 
@@ -39,10 +41,10 @@ const PromptSettings = () => {
       <Card className="p-6 bg-white border border-slate-200 shadow-sm">
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-slate-900 mb-2">
-            Системный промпт
+            {t.dashboard.prompt.systemPrompt}
           </h2>
           <p className="text-sm text-slate-600">
-            Редактируйте промпт, который определяет, как AI-ассистент ведет себя и отвечает клиентам
+            {t.dashboard.prompt.description}
           </p>
         </div>
 
@@ -51,7 +53,7 @@ const PromptSettings = () => {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             className="flex min-h-[500px] font-mono text-sm leading-relaxed border-slate-200 focus:border-[#51C2FB] focus:ring-2 focus:ring-[#51C2FB]/20 resize-y"
-            placeholder="Введите системный промпт..."
+            placeholder={t.dashboard.prompt.placeholder}
             style={{
               fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace',
               justifyContent: 'flex-start',
@@ -69,7 +71,7 @@ const PromptSettings = () => {
                 }}
               >
                 <Save className="w-4 h-4 mr-2" />
-                Сохранить изменения
+                {t.dashboard.prompt.saveChanges}
               </Button>
             </div>
           )}

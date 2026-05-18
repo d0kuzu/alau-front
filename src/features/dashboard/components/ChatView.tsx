@@ -3,6 +3,7 @@ import { ArrowLeft } from "lucide-react";
 
 import { Button } from "@/shared/ui/button";
 import { useToast } from "@/shared/hooks/use-toast";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
 import { getValidAccessToken, type Chat } from "@/services/api/api";
 
 type ChatMessage = {
@@ -15,13 +16,13 @@ type ChatViewProps = {
   onBack: () => void;
 };
 
-const formatDate = (iso: string) => {
+const formatDate = (iso: string, locale: string) => {
   if (!iso) {
     return "-";
   }
 
   try {
-    return new Date(iso).toLocaleString("ru-RU", {
+    return new Date(iso).toLocaleString(locale, {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
@@ -61,6 +62,7 @@ const normalizeBody = (value: unknown) => {
 
 const ChatView = ({ chat, onBack }: ChatViewProps) => {
   const { toast } = useToast();
+  const { t, dateLocale } = useLanguage();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isConnecting, setIsConnecting] = useState(true);
   const wsRef = useRef<WebSocket | null>(null);
@@ -135,8 +137,8 @@ const ChatView = ({ chat, onBack }: ChatViewProps) => {
           }
 
           toast({
-            title: "Ошибка подключения",
-            description: "Не удалось подключиться к чату",
+            title: t.dashboard.chat.connectionErrorTitle,
+            description: t.dashboard.chat.connectionError,
             variant: "destructive",
           });
         };
@@ -147,8 +149,8 @@ const ChatView = ({ chat, onBack }: ChatViewProps) => {
           }
 
           toast({
-            title: "Соединение закрыто",
-            description: "Не удалось получить сообщения чата",
+            title: t.dashboard.chat.closedTitle,
+            description: t.dashboard.chat.closedDescription,
             variant: "destructive",
           });
         };
@@ -159,8 +161,8 @@ const ChatView = ({ chat, onBack }: ChatViewProps) => {
 
         setIsConnecting(false);
         toast({
-          title: "Ошибка",
-          description: error instanceof Error ? error.message : "Не удалось открыть чат",
+          title: t.dashboard.assistantList.errors.title,
+          description: error instanceof Error ? error.message : t.dashboard.chat.openError,
           variant: "destructive",
         });
       }
@@ -182,7 +184,7 @@ const ChatView = ({ chat, onBack }: ChatViewProps) => {
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <div className="min-w-0">
-          <h1 className="text-lg font-bold text-slate-900 md:text-xl">Чат</h1>
+          <h1 className="text-lg font-bold text-slate-900 md:text-xl">{t.dashboard.chat.title}</h1>
           <p className="max-w-[320px] truncate font-mono text-xs text-slate-500">{chat.id}</p>
         </div>
       </div>
@@ -196,7 +198,7 @@ const ChatView = ({ chat, onBack }: ChatViewProps) => {
               </div>
             ) : messages.length === 0 ? (
               <div className="flex h-full items-center justify-center text-sm text-slate-500">
-                Сообщений пока нет
+                {t.dashboard.chat.empty}
               </div>
             ) : (
               <>
@@ -224,14 +226,14 @@ const ChatView = ({ chat, onBack }: ChatViewProps) => {
 
         <div className="hidden w-72 shrink-0 flex-col overflow-y-auto rounded-lg border border-slate-200 bg-white p-5 lg:flex">
           <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-slate-500">
-            Информация о чате
+            {t.dashboard.chat.info}
           </h2>
           <div className="space-y-4">
             <InfoItem label="Assistant ID" value={chat.assistant_id} mono />
             <InfoItem label="Customer ID" value={chat.customer_id} />
-            <InfoItem label="Платформа" value={chat.platform} />
-            <InfoItem label="Создан" value={formatDate(chat.created_at)} />
-            <InfoItem label="Обновлён" value={formatDate(chat.updated_at)} />
+            <InfoItem label={t.common.platform} value={chat.platform} />
+            <InfoItem label={t.common.created} value={formatDate(chat.created_at, dateLocale)} />
+            <InfoItem label={t.common.updated} value={formatDate(chat.updated_at, dateLocale)} />
           </div>
         </div>
       </div>

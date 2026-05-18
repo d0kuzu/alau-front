@@ -6,12 +6,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import { Label } from "@/shared/ui/label";
 import { useToast } from "@/shared/hooks/use-toast";
 import { useAuth } from "@/shared/contexts/AuthContext";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
 import Header from "@/shared/components/Header";
 
 const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { signIn, signUp, isAuthenticated, isLoading: authLoading } = useAuth();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [registerData, setRegisterData] = useState({ 
@@ -35,15 +37,15 @@ const Auth = () => {
       const { error } = await signIn(loginData.email, loginData.password);
       
       if (error) {
-        let message = "Произошла ошибка при входе";
+        let message = t.auth.toasts.loginErrorDefault;
         if (error.message.includes("Invalid login credentials")) {
-          message = "Неверный email или пароль";
+          message = t.auth.toasts.invalidCredentials;
         } else if (error.message.includes("Email not confirmed")) {
-          message = "Email не подтверждён";
+          message = t.auth.toasts.emailNotConfirmed;
         }
         
         toast({
-          title: "Ошибка входа",
+          title: t.auth.toasts.loginErrorTitle,
           description: message,
           variant: "destructive",
         });
@@ -51,15 +53,15 @@ const Auth = () => {
       }
       
       toast({
-        title: "Успешно!",
-        description: "Вход выполнен успешно",
+        title: t.auth.toasts.successTitle,
+        description: t.auth.toasts.loginSuccess,
       });
 
       navigate("/dashboard");
     } catch (error) {
       toast({
-        title: "Ошибка входа",
-        description: error instanceof Error ? error.message : "Произошла ошибка при входе",
+        title: t.auth.toasts.loginErrorTitle,
+        description: error instanceof Error ? error.message : t.auth.toasts.loginErrorDefault,
         variant: "destructive",
       });
     } finally {
@@ -73,8 +75,8 @@ const Auth = () => {
     // Валидация паролей
     if (registerData.password !== registerData.confirmPassword) {
       toast({
-        title: "Ошибка",
-        description: "Пароли не совпадают",
+        title: t.auth.toasts.errorTitle,
+        description: t.auth.toasts.passwordsMismatch,
         variant: "destructive",
       });
       return;
@@ -82,8 +84,8 @@ const Auth = () => {
 
     if (registerData.password.length < 6) {
       toast({
-        title: "Ошибка",
-        description: "Пароль должен содержать минимум 6 символов",
+        title: t.auth.toasts.errorTitle,
+        description: t.auth.toasts.passwordTooShort,
         variant: "destructive",
       });
       return;
@@ -98,13 +100,13 @@ const Auth = () => {
       );
 
       if (error) {
-        let message = "Произошла ошибка при регистрации";
+        let message = t.auth.toasts.registerErrorDefault;
         if (error.message.includes("User already registered")) {
-          message = "Пользователь с таким email уже зарегистрирован";
+          message = t.auth.toasts.alreadyRegistered;
         }
         
         toast({
-          title: "Ошибка регистрации",
+          title: t.auth.toasts.registerErrorTitle,
           description: message,
           variant: "destructive",
         });
@@ -112,8 +114,8 @@ const Auth = () => {
       }
 
       toast({
-        title: "Успешно!",
-        description: "Регистрация прошла успешно",
+        title: t.auth.toasts.successTitle,
+        description: t.auth.toasts.registerSuccess,
       });
 
       // Очистка формы
@@ -126,8 +128,8 @@ const Auth = () => {
       navigate("/dashboard");
     } catch (error) {
       toast({
-        title: "Ошибка регистрации",
-        description: error instanceof Error ? error.message : "Произошла ошибка при регистрации",
+        title: t.auth.toasts.registerErrorTitle,
+        description: error instanceof Error ? error.message : t.auth.toasts.registerErrorDefault,
         variant: "destructive",
       });
     } finally {
@@ -155,20 +157,20 @@ const Auth = () => {
               onClick={() => navigate("/")}
               className="text-muted-foreground hover:text-foreground mb-2 md:mb-4"
             >
-              ← Вернуться на главную
+              {t.auth.backHome}
             </Button>
             
             <div className="space-y-2">
-              <h1 className="text-2xl md:text-3xl font-bold text-foreground">Добро пожаловать</h1>
+              <h1 className="text-2xl md:text-3xl font-bold text-foreground">{t.auth.welcome}</h1>
               <p className="text-sm md:text-base text-muted-foreground">
-                Войдите в свой аккаунт Alau.ai
+                {t.auth.accountPrompt}
               </p>
             </div>
 
             <Tabs defaultValue="login" className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-6">
-                <TabsTrigger value="login">Вход</TabsTrigger>
-                <TabsTrigger value="register">Регистрация</TabsTrigger>
+                <TabsTrigger value="login">{t.auth.loginTab}</TabsTrigger>
+                <TabsTrigger value="register">{t.auth.registerTab}</TabsTrigger>
               </TabsList>
               
               <TabsContent value="login" className="space-y-4">
@@ -185,7 +187,7 @@ const Auth = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="login-password">Пароль</Label>
+                    <Label htmlFor="login-password">{t.auth.password}</Label>
                     <Input
                       id="login-password"
                       type="password"
@@ -200,7 +202,7 @@ const Auth = () => {
                     className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
                     disabled={isLoading}
                   >
-                    {isLoading ? "Вход..." : "Войти"}
+                    {isLoading ? t.auth.loginLoading : t.auth.loginButton}
                   </Button>
                 </form>
               </TabsContent>
@@ -219,7 +221,7 @@ const Auth = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="register-password">Пароль</Label>
+                    <Label htmlFor="register-password">{t.auth.password}</Label>
                     <Input
                       id="register-password"
                       type="password"
@@ -230,7 +232,7 @@ const Auth = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="register-confirm">Подтвердите пароль</Label>
+                    <Label htmlFor="register-confirm">{t.auth.confirmPassword}</Label>
                     <Input
                       id="register-confirm"
                       type="password"
@@ -245,7 +247,7 @@ const Auth = () => {
                     className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
                     disabled={isLoading}
                   >
-                    {isLoading ? "Регистрация..." : "Зарегистрироваться"}
+                    {isLoading ? t.auth.registerLoading : t.auth.registerButton}
                   </Button>
                 </form>
               </TabsContent>
@@ -263,32 +265,22 @@ const Auth = () => {
           <div className="max-w-lg space-y-8">
             <div className="space-y-4">
               <h2 className="text-4xl md:text-5xl font-bold text-foreground">
-                Добро пожаловать в Alau.ai
+                {t.auth.marketingTitle}
               </h2>
               <p className="text-xl text-muted-foreground">
-                Преобразуйте общение с клиентами с помощью автоматизации на базе ИИ
+                {t.auth.marketingSubtitle}
               </p>
             </div>
 
             <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <div className="w-2 h-2 rounded-full bg-primary"></div>
-                </div>
-                <span className="text-foreground">Автоматизация поддержки клиентов на нескольких каналах</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <div className="w-2 h-2 rounded-full bg-primary"></div>
-                </div>
-                <span className="text-foreground">Интеллектуальный анализ разговоров на базе ИИ</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <div className="w-2 h-2 rounded-full bg-primary"></div>
-                </div>
-                <span className="text-foreground">Беспроблемная интеграция с вашими существующими инструментами</span>
-              </li>
+              {t.auth.bullets.map((bullet) => (
+                <li key={bullet} className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <div className="w-2 h-2 rounded-full bg-primary"></div>
+                  </div>
+                  <span className="text-foreground">{bullet}</span>
+                </li>
+              ))}
             </ul>
 
             <div 
@@ -299,10 +291,10 @@ const Auth = () => {
               }}
             >
               <p className="text-foreground italic mb-3">
-                "Alau.ai революционизировал то, как мы обрабатываем поддержку клиентов. Время отклика улучшилось на 80%, а показатели удовлетворенности клиентов достигли рекордного уровня."
+                "{t.auth.quote}"
               </p>
               <p className="text-sm text-muted-foreground">
-                — Сара Чен, Менеджер по работе с клиентами
+                {t.auth.quoteAuthor}
               </p>
             </div>
           </div>

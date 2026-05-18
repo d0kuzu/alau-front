@@ -1,12 +1,15 @@
 import { Button } from "@/shared/ui/button";
 import { ArrowRight } from "lucide-react";
 import heroBgVideo from "@/assets/hero-bg.mp4";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
 
 interface HeroProps {
   onVideoLoad?: () => void;
 }
 
 const Hero = ({ onVideoLoad }: HeroProps) => {
+  const { t } = useLanguage();
+
   const scrollToContact = () => {
     const element = document.getElementById("contact");
     element?.scrollIntoView({ behavior: "smooth" });
@@ -32,10 +35,10 @@ const Hero = ({ onVideoLoad }: HeroProps) => {
       <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold text-foreground mb-4 md:mb-6 leading-tight opacity-0 animate-[fade-in_0.8s_ease-out_0.2s_forwards]">
-            AI-агенты, которые работают за вас
+            {t.landing.hero.title}
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-6 md:mb-8 max-w-2xl mx-auto opacity-0 animate-[fade-in_0.8s_ease-out_0.4s_forwards]">
-            Автоматизация бизнеса через SMS, WhatsApp и Telegram с помощью умных ИИ-решений
+            {t.landing.hero.subtitle}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center opacity-0 animate-[fade-in_0.8s_ease-out_0.6s_forwards]">
             <Button
@@ -43,7 +46,7 @@ const Hero = ({ onVideoLoad }: HeroProps) => {
               size="lg"
               className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground text-base md:text-lg px-6 md:px-8 py-5 md:py-6 rounded-xl shadow-lg transition-colors group"
             >
-              Попробовать бесплатно
+              {t.landing.hero.primaryCta}
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
             <Button
@@ -55,7 +58,7 @@ const Hero = ({ onVideoLoad }: HeroProps) => {
               size="lg"
               className="w-full sm:w-auto text-base md:text-lg px-6 md:px-8 py-5 md:py-6 rounded-xl border-2 border-primary/20"
             >
-              Узнать больше
+              {t.landing.hero.secondaryCta}
             </Button>
           </div>
         </div>

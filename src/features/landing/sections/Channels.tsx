@@ -3,39 +3,43 @@ import { Badge } from "@/shared/ui/badge";
 import { MessageSquare, MessageCircle, Send } from "lucide-react";
 import AnimatedSection from "../components/AnimatedSection";
 import AnimatedCard from "../components/AnimatedCard";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
 
-const channels = [
+const channelMeta = [
   {
     icon: MessageSquare,
-    name: "SMS",
-    badge: "Основной канал",
-    description: "Главная платформа для работы ИИ-агентов. Доступность 100%, работает на любом телефоне.",
+    hasBadge: true,
     featured: false,
   },
   {
     icon: MessageCircle,
-    name: "WhatsApp",
-    description: "Автоматизация заказов, консультаций и обработка запросов клиентов через популярный мессенджер.",
+    hasBadge: false,
     featured: false,
   },
   {
     icon: Send,
-    name: "Telegram",
-    description: "Мгновенная поддержка клиентов и уведомления через быстрый и удобный канал связи.",
+    hasBadge: false,
     featured: false,
   },
 ];
 
 const Channels = () => {
+  const { t } = useLanguage();
+  const channels = t.landing.channels.cards.map((channel, index) => ({
+    ...channel,
+    ...channelMeta[index],
+    badge: channelMeta[index].hasBadge ? t.landing.channels.mainBadge : undefined,
+  }));
+
   return (
     <section id="channels" className="py-20 bg-gradient-to-b from-background to-secondary/20" style={{ backgroundColor: 'rgba(244, 248, 251, 1)' }}>
       <div className="container mx-auto px-4">
         <AnimatedSection className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Работаем на всех популярных платформах
+            {t.landing.channels.title}
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Ваши клиенты могут связаться с ИИ-агентами удобным для них способом
+            {t.landing.channels.subtitle}
           </p>
         </AnimatedSection>
 

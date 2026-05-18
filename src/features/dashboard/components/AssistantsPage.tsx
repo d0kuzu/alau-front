@@ -22,6 +22,7 @@ import {
   TableRow,
 } from "@/shared/ui/table";
 import { useToast } from "@/shared/hooks/use-toast";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
 import {
   fetchAssistants,
   loadAuthSession,
@@ -89,13 +90,13 @@ const saveCachedAssistants = (assistants: Assistant[]) => {
   window.localStorage.setItem(getAssistantsCacheKey(), JSON.stringify(assistants));
 };
 
-const formatDate = (date?: string) => {
+const formatDate = (date: string | undefined, locale: string) => {
   if (!date) {
     return "-";
   }
 
   try {
-    return new Date(date).toLocaleString("ru-RU", {
+    return new Date(date).toLocaleString(locale, {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
@@ -110,6 +111,7 @@ const formatDate = (date?: string) => {
 const AssistantsPage = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { t, dateLocale } = useLanguage();
   const [assistants, setAssistants] = useState<Assistant[]>(loadCachedAssistants);
   const hadCachedAssistantsRef = useRef(assistants.length > 0);
   const [search, setSearch] = useState("");
@@ -137,8 +139,8 @@ const AssistantsPage = () => {
       } catch (error) {
         if (showErrorToast) {
           toast({
-            title: "Ошибка",
-            description: error instanceof Error ? error.message : "Не удалось загрузить ассистентов",
+            title: t.dashboard.assistantList.errors.title,
+            description: error instanceof Error ? error.message : t.dashboard.assistantList.errors.load,
             variant: "destructive",
           });
         }
@@ -187,8 +189,8 @@ const AssistantsPage = () => {
         void loadAssistants();
       } catch (error) {
         toast({
-          title: "Ошибка создания",
-          description: error instanceof Error ? error.message : "Не удалось создать ассистента",
+          title: t.dashboard.assistantList.errors.createTitle,
+          description: error instanceof Error ? error.message : t.dashboard.assistantList.errors.create,
           variant: "destructive",
         });
       } finally {
@@ -214,8 +216,8 @@ const AssistantsPage = () => {
         void loadAssistants();
       } catch (error) {
         toast({
-          title: "Ошибка создания Twilio",
-          description: error instanceof Error ? error.message : "Не удалось создать Twilio ассистента",
+          title: t.dashboard.assistantList.errors.createTwilioTitle,
+          description: error instanceof Error ? error.message : t.dashboard.assistantList.errors.createTwilio,
           variant: "destructive",
         });
       } finally {
@@ -226,8 +228,8 @@ const AssistantsPage = () => {
     }
 
     toast({
-      title: "Форма готова",
-      description: `Эндпоинт для ${selectedType.label} подключим следующим шагом.`,
+      title: t.dashboard.assistantList.formReady,
+      description: t.dashboard.assistantList.endpointNext.replace("{{type}}", selectedType.label),
     });
   };
 
@@ -237,15 +239,15 @@ const AssistantsPage = () => {
         <>
           <FormField
             id="telegram-assistant-name"
-            label="Имя ассистента"
-            placeholder="Мой ассистент"
+            label={t.dashboard.assistantList.assistantName}
+            placeholder={t.dashboard.assistantList.assistantNamePlaceholder}
             value={form.name}
             onChange={(value) => updateForm("name", value)}
             required
           />
           <FormField
             id="telegram-bot-token"
-            label="Токен бота"
+            label={t.dashboard.assistantList.botToken}
             placeholder="1234567890:AA..."
             value={form.botToken}
             onChange={(value) => updateForm("botToken", value)}
@@ -261,8 +263,8 @@ const AssistantsPage = () => {
         <>
           <FormField
             id="twilio-assistant-name"
-            label="Имя"
-            placeholder="Мой ассистент"
+            label={t.dashboard.assistantList.name}
+            placeholder={t.dashboard.assistantList.assistantNamePlaceholder}
             value={form.name}
             onChange={(value) => updateForm("name", value)}
             required
@@ -270,7 +272,7 @@ const AssistantsPage = () => {
           <FormField
             id="twilio-auth-token"
             label="AuthToken"
-            placeholder="Введите AuthToken"
+            placeholder={t.dashboard.assistantList.authTokenPlaceholder}
             value={form.authToken}
             onChange={(value) => updateForm("authToken", value)}
             type="password"
@@ -300,8 +302,8 @@ const AssistantsPage = () => {
     return (
       <FormField
         id="api-assistant-name"
-        label="Имя ассистента"
-        placeholder="Мой ассистент"
+        label={t.dashboard.assistantList.assistantName}
+        placeholder={t.dashboard.assistantList.assistantNamePlaceholder}
         value={form.name}
         onChange={(value) => updateForm("name", value)}
         required
@@ -312,15 +314,15 @@ const AssistantsPage = () => {
   return (
     <div>
       <div className="mb-6 md:mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-1">Ассистенты</h1>
-        <p className="text-slate-600 text-sm md:text-base">Управление AI-ассистентами</p>
+        <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-1">{t.dashboard.assistants}</h1>
+        <p className="text-slate-600 text-sm md:text-base">{t.dashboard.assistantList.subtitle}</p>
       </div>
 
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-6">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <Input
-            placeholder="Поиск ассистентов..."
+            placeholder={t.dashboard.assistantList.searchPlaceholder}
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             className="pl-9 bg-white border-slate-200"
@@ -333,7 +335,7 @@ const AssistantsPage = () => {
           style={gradientStyle}
         >
           <Plus className="w-4 h-4 mr-2" />
-          Новый ассистент
+          {t.dashboard.assistantList.newAssistant}
         </Button>
       </div>
 
@@ -341,10 +343,10 @@ const AssistantsPage = () => {
         <Table>
           <TableHeader>
             <TableRow className="bg-slate-50">
-              <TableHead className="font-semibold text-slate-700">Имя</TableHead>
-              <TableHead className="font-semibold text-slate-700">Тип</TableHead>
-              <TableHead className="font-semibold text-slate-700">Создан</TableHead>
-              <TableHead className="font-semibold text-slate-700">Обновлён</TableHead>
+              <TableHead className="font-semibold text-slate-700">{t.dashboard.assistantList.name}</TableHead>
+              <TableHead className="font-semibold text-slate-700">{t.dashboard.assistantList.type}</TableHead>
+              <TableHead className="font-semibold text-slate-700">{t.common.created}</TableHead>
+              <TableHead className="font-semibold text-slate-700">{t.common.updated}</TableHead>
               <TableHead className="w-10" />
             </TableRow>
           </TableHeader>
@@ -360,12 +362,12 @@ const AssistantsPage = () => {
             ) : assistants.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={5} className="h-32 text-center text-slate-500">
-                  Ассистенты не найдены. Создайте нового ассистента.
+                  {t.dashboard.assistantList.empty}
                 </TableCell>
               </TableRow>
             ) : (
               assistants.map((assistant) => {
-                const typeMeta = getAssistantTypeMeta(assistant.type);
+                const typeMeta = getAssistantTypeMeta(assistant.type, t.common.notSpecified);
                 const TypeIcon = typeMeta.icon;
 
                 return (
@@ -383,7 +385,7 @@ const AssistantsPage = () => {
                     className="cursor-pointer transition-colors hover:bg-slate-50 focus-visible:bg-slate-50 focus-visible:outline-none"
                   >
                     <TableCell className="font-medium text-slate-900">
-                      {assistant.name || "Без имени"}
+                      {assistant.name || t.dashboard.assistantList.unnamed}
                     </TableCell>
                     <TableCell className="text-slate-600">
                       <div className="flex items-center gap-2">
@@ -393,8 +395,8 @@ const AssistantsPage = () => {
                         {typeMeta.label}
                       </div>
                     </TableCell>
-                    <TableCell className="text-slate-600">{formatDate(assistant.created_at)}</TableCell>
-                    <TableCell className="text-slate-600">{formatDate(assistant.updated_at)}</TableCell>
+                    <TableCell className="text-slate-600">{formatDate(assistant.created_at, dateLocale)}</TableCell>
+                    <TableCell className="text-slate-600">{formatDate(assistant.updated_at, dateLocale)}</TableCell>
                     <TableCell className="text-right text-slate-400">
                       <ChevronRight className="ml-auto h-4 w-4" />
                     </TableCell>
@@ -410,8 +412,8 @@ const AssistantsPage = () => {
         <DialogContent className="sm:max-w-xl">
           <form onSubmit={handleCreateAssistant}>
             <DialogHeader>
-              <DialogTitle>Новый ассистент</DialogTitle>
-              <DialogDescription>Выберите тип ассистента и заполните поля подключения.</DialogDescription>
+              <DialogTitle>{t.dashboard.assistantList.dialogTitle}</DialogTitle>
+              <DialogDescription>{t.dashboard.assistantList.dialogDescription}</DialogDescription>
             </DialogHeader>
 
             <div className="space-y-5 py-4">
@@ -449,11 +451,11 @@ const AssistantsPage = () => {
 
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => handleCreateOpenChange(false)} disabled={isCreating}>
-                Отмена
+                {t.common.cancel}
               </Button>
               <Button type="submit" className="text-white hover:opacity-90" style={gradientStyle} disabled={isCreating}>
                 <SelectedTypeIcon className="w-4 h-4 mr-2" />
-                {isCreating ? "Создание..." : `Создать ${selectedType.label}`}
+                {isCreating ? t.dashboard.assistantList.createLoading : `${t.dashboard.assistantList.create} ${selectedType.label}`}
               </Button>
             </DialogFooter>
           </form>
@@ -463,8 +465,8 @@ const AssistantsPage = () => {
       <Dialog open={!!apiToken} onOpenChange={(open) => !open && setApiToken(null)}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>Ассистент создан</DialogTitle>
-            <DialogDescription>Сохраните токен - он показывается только один раз.</DialogDescription>
+            <DialogTitle>{t.dashboard.assistantList.createdTitle}</DialogTitle>
+            <DialogDescription>{t.dashboard.assistantList.createdDescription}</DialogDescription>
           </DialogHeader>
 
           <div className="flex items-center gap-2 py-2">
@@ -482,7 +484,7 @@ const AssistantsPage = () => {
                 }
 
                 await navigator.clipboard.writeText(apiToken);
-                toast({ title: "Токен скопирован" });
+                toast({ title: t.dashboard.assistantList.tokenCopied });
               }}
             >
               <Copy className="h-4 w-4" />
@@ -491,7 +493,7 @@ const AssistantsPage = () => {
 
           <DialogFooter>
             <Button type="button" onClick={() => setApiToken(null)}>
-              Закрыть
+              {t.common.close}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -500,9 +502,9 @@ const AssistantsPage = () => {
       <Dialog open={!!webhookUrl} onOpenChange={(open) => !open && setWebhookUrl(null)}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>Twilio ассистент создан</DialogTitle>
+            <DialogTitle>{t.dashboard.assistantList.twilioCreatedTitle}</DialogTitle>
             <DialogDescription>
-              Привяжите webhook Twilio Messages к этому эндпоинту, чтобы входящие сообщения попадали в ассистента.
+              {t.dashboard.assistantList.twilioDescription}
             </DialogDescription>
           </DialogHeader>
 
@@ -521,7 +523,7 @@ const AssistantsPage = () => {
                 }
 
                 await navigator.clipboard.writeText(webhookUrl);
-                toast({ title: "Webhook URL скопирован" });
+                toast({ title: t.dashboard.assistantList.webhookCopied });
               }}
             >
               <Copy className="h-4 w-4" />
@@ -530,7 +532,7 @@ const AssistantsPage = () => {
 
           <DialogFooter>
             <Button type="button" onClick={() => setWebhookUrl(null)}>
-              Закрыть
+              {t.common.close}
             </Button>
           </DialogFooter>
         </DialogContent>

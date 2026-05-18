@@ -2,40 +2,26 @@ import { Card } from "@/shared/ui/card";
 import { Headset, ShoppingCart, Settings, BarChart3 } from "lucide-react";
 import AnimatedCard from "../components/AnimatedCard";
 import AnimatedSection from "../components/AnimatedSection";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
 
-const features = [
-  {
-    icon: ShoppingCart,
-    title: "ИИ-агенты для продаж",
-    description: "Автоматизируйте обработку заказов, консультацию клиентов и увеличьте конверсию продаж.",
-  },
-  {
-    icon: Headset,
-    title: "ИИ-агенты для поддержки",
-    description: "Мгновенные ответы на вопросы клиентов 24/7 через SMS, WhatsApp и Telegram.",
-  },
-  {
-    icon: Settings,
-    title: "Автоматизация процессов",
-    description: "Интеграция с 1C, CRM, ERP системами для полной автоматизации бизнес-процессов.",
-  },
-  {
-    icon: BarChart3,
-    title: "Аналитика и данные",
-    description: "Глубокая аналитика взаимодействий с клиентами и автоматическая обработка данных.",
-  },
-];
+const featureIcons = [ShoppingCart, Headset, Settings, BarChart3];
 
 const Features = () => {
+  const { t } = useLanguage();
+  const features = t.landing.features.cards.map((feature, index) => ({
+    ...feature,
+    icon: featureIcons[index],
+  }));
+
   return (
     <section id="features" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <AnimatedSection className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Возможности платформы
+            {t.landing.features.title}
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Умные ИИ-агенты для автоматизации любых бизнес-задач
+            {t.landing.features.subtitle}
           </p>
         </AnimatedSection>
 
