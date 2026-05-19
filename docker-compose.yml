@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  alau-front:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: alau-front
+    ports:
+      - "8080:80"
+    restart: always
