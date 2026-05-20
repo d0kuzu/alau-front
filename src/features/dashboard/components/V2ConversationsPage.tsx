@@ -218,7 +218,7 @@ const V2ConversationsPage = () => {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-[2.25rem] font-bold leading-tight text-[#071225]">Conversations (Testing)</h1>
+        <h1 className="text-[2.25rem] font-bold leading-tight text-[#071225]">Conversations</h1>
         <p className="mt-3 text-[1.45rem] font-medium text-[#465468]">
           Manage your AI-powered conversations through WebSocket
         </p>
