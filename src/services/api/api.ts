@@ -802,3 +802,9 @@ export const registerApiAssistant = async (name: string) => {
     return normalizeApiRegisterResponse(fallbackResponse);
   }
 };
+
+export const clearAllChats = async () => {
+  await backendRequest<unknown>("/ai/chats/clear_all", {
+    method: "DELETE",
+  });
+};

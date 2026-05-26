@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, MoreHorizontal, Plus, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, MoreHorizontal, Plus, Search, Trash2 } from "lucide-react";
 
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
@@ -17,6 +17,7 @@ import {
   fetchChats,
   fetchChatsPagination,
   searchChats,
+  clearAllChats,
   type Chat,
 } from "@/services/api/api";
 import { V2_ASSISTANT_ID } from "../constants/v2";
@@ -50,6 +51,7 @@ const V2ConversationsPage = () => {
   const [totalCount, setTotalCount] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchMode, setIsSearchMode] = useState(false);
+  const [isClearing, setIsClearing] = useState(false);
 
   useEffect(() => {
     const loadAssistant = async () => {
@@ -159,6 +161,30 @@ const V2ConversationsPage = () => {
     await loadChats(page);
   };
 
+  const handleClearAll = async () => {
+    if (!window.confirm("Are you sure you want to delete all conversations? This action cannot be undone.")) {
+      return;
+    }
+
+    setIsClearing(true);
+    try {
+      await clearAllChats();
+      toast({
+        title: "Success",
+        description: "All conversations have been deleted.",
+      });
+      void loadChats(1);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to delete conversations",
+        variant: "destructive",
+      });
+    } finally {
+      setIsClearing(false);
+    }
+  };
+
   const renderPageButtons = () => {
     if (totalPages <= 1) {
       return null;
@@ -250,6 +276,16 @@ const V2ConversationsPage = () => {
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <Button
+            type="button"
+            onClick={handleClearAll}
+            disabled={isClearing}
+            variant="destructive"
+            className="h-[50px] rounded-[7px] px-6 text-lg font-semibold shadow-none"
+          >
+            <Trash2 className="mr-3 h-5 w-5" />
+            Delete All
+          </Button>
           <Button
             type="button"
             className="h-[50px] rounded-[7px] bg-[#ff8f6a] px-6 text-lg font-semibold text-white shadow-none hover:bg-[#ff7d53]"

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Check, ChevronLeft, ChevronRight, Search, SlidersHorizontal } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Search, SlidersHorizontal, Trash2 } from "lucide-react";
 
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
@@ -18,6 +18,7 @@ import {
   fetchChats,
   fetchChatsPagination,
   searchChats,
+  clearAllChats,
   type Assistant,
   type Chat,
 } from "@/services/api/api";
@@ -61,6 +62,7 @@ const ConversationsPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchMode, setIsSearchMode] = useState(false);
+  const [isClearing, setIsClearing] = useState(false);
   const filterRef = useRef<HTMLDivElement>(null);
 
   const getAssistantIdsString = useCallback(
@@ -218,6 +220,30 @@ const ConversationsPage = () => {
     await loadChats(page);
   };
 
+  const handleClearAll = async () => {
+    if (!window.confirm("Are you sure you want to delete all conversations? This action cannot be undone.")) {
+      return;
+    }
+
+    setIsClearing(true);
+    try {
+      await clearAllChats();
+      toast({
+        title: "Success",
+        description: "All conversations have been deleted.",
+      });
+      void loadChats(1);
+    } catch (error) {
+      toast({
+        title: t.dashboard.assistantList.errors.title,
+        description: error instanceof Error ? error.message : "Failed to delete conversations",
+        variant: "destructive",
+      });
+    } finally {
+      setIsClearing(false);
+    }
+  };
+
   const renderPageButtons = () => {
     const pages: Array<number | "ellipsis"> = [];
     const maxVisible = 5;
@@ -309,6 +335,10 @@ const ConversationsPage = () => {
         <Button type="button" variant="outline" onClick={() => void handleSearch()} className="border-slate-200">
           <Search className="mr-2 h-4 w-4" />
           {t.common.search}
+        </Button>
+        <Button type="button" variant="destructive" onClick={handleClearAll} disabled={isClearing}>
+          <Trash2 className="mr-2 h-4 w-4" />
+          Delete All
         </Button>
       </div>
 
