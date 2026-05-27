@@ -57,7 +57,7 @@ const LegalDialog = ({
               )}
               {section.contact && (
                 <p className="text-muted-foreground mt-2">
-                  Email: <a href="mailto:hello@alau.ai" className="text-primary hover:underline">hello@alau.ai</a><br />
+                  Email: <a href="mailto:hello@zerde.ai" className="text-primary hover:underline">hello@zerde.ai</a><br />
                   {phoneLabel}: +7 700 000 00 00<br />
                   Telegram: @alauai
                 </p>

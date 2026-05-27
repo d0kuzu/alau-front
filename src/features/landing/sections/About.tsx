@@ -52,7 +52,7 @@ const About = () => {
           <AnimatedSection delay={400}>
             <Card className="p-8 bg-primary/5 border-2 border-primary/20">
               <p className="text-lg text-foreground leading-relaxed text-center">
-                <strong className="text-primary">Alau.ai</strong> {t.landing.about.paragraph}
+                <strong className="text-primary">Zerde.ai</strong> {t.landing.about.paragraph}
               </p>
             </Card>
           </AnimatedSection>

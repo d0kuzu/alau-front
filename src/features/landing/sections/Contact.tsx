@@ -68,10 +68,10 @@ const Contact = () => {
                 </div>
                 <h3 className="font-semibold text-foreground mb-2">Email</h3>
                 <a
-                  href="mailto:hello@alau.ai"
+                  href="mailto:hello@zerde.ai"
                   className="text-primary hover:underline text-sm md:text-base"
                 >
-                  hello@alau.ai
+                  hello@zerde.ai
                 </a>
               </Card>
             </AnimatedCard>

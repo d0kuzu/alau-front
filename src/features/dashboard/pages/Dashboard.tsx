@@ -243,7 +243,7 @@ const Dashboard = () => {
           className="text-xl font-bold text-slate-900 cursor-pointer" 
           onClick={() => navigate("/")}
         >
-          Alau<span className="text-[#51C2FB]">.ai</span>
+          Zerde<span className="text-[#51C2FB]">.ai</span>
         </h1>
         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
           <SheetTrigger asChild>
@@ -260,7 +260,7 @@ const Dashboard = () => {
                   setMobileMenuOpen(false);
                 }}
               >
-                Alau<span className="text-[#51C2FB]">.ai</span>
+                Zerde<span className="text-[#51C2FB]">.ai</span>
               </h1>
             </div>
             <nav className="flex-1 p-4">
@@ -291,7 +291,7 @@ const Dashboard = () => {
             className="text-2xl font-bold text-slate-900 cursor-pointer hover:opacity-80 transition-opacity" 
             onClick={() => navigate("/")}
           >
-            Alau<span className="text-[#51C2FB]">.ai</span>
+            Zerde<span className="text-[#51C2FB]">.ai</span>
           </h1>
         </div>
 

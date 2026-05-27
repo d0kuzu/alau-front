@@ -88,7 +88,7 @@ const Header = () => {
       <div className="container mx-auto px-4 py-6">
         <div className="flex items-center justify-between">
           <button onClick={() => navigate("/")} className="text-2xl font-bold text-foreground hover:opacity-80 transition-opacity cursor-pointer">
-            Alau<span className="text-primary">.ai</span>
+            Zerde<span className="text-primary">.ai</span>
           </button>
 
           {/* Desktop Navigation */}
@@ -147,7 +147,7 @@ const Header = () => {
                   <div className="flex items-center gap-3 mb-4">
                     
                     <span className="text-xl font-bold text-foreground">
-                      Alau<span className="text-primary">.ai</span>
+                      Zerde<span className="text-primary">.ai</span>
                     </span>
                   </div>
                   

@@ -14,7 +14,7 @@ export const translations = {
       messages: "Сообщения",
     },
     seo: {
-      title: "Alau.ai - AI-агенты для бизнеса в Казахстане",
+      title: "Zerde.ai - Transform your customer conversations with AI-powered automation",
       description:
         "Платформа ИИ-агентов для автоматизации малого и среднего бизнеса в Казахстане. Умные решения для продаж, поддержки клиентов и бизнес-процессов.",
     },
@@ -79,7 +79,7 @@ export const translations = {
         ],
       },
       forWho: {
-        title: "Для кого Alau.ai?",
+        title: "Для кого Zerde.ai?",
         subtitle: "Решения для любого бизнеса в Казахстане",
         cards: [
           {
@@ -190,7 +190,7 @@ export const translations = {
     footer: {
       privacyLink: "Политика конфиденциальности",
       termsLink: "Условия использования",
-      rights: "© 2024 Alau.ai. Все права защищены.",
+      rights: "© 2024 Zerde.ai. Все права защищены.",
       phoneLabel: "Телефон",
       privacy: {
         title: "Политика конфиденциальности",
@@ -199,7 +199,7 @@ export const translations = {
           {
             heading: "Ваша конфиденциальность важна для нас",
             paragraphs: [
-              "В Alau.ai мы привержены защите вашей конфиденциальности и обеспечению безопасности вашей личной информации. Настоящая Политика конфиденциальности объясняет, как мы собираем, используем, раскрываем и защищаем ваши данные при использовании наших ИИ-сервисов для автоматизации бизнеса в Казахстане.",
+              "В Zerde.ai мы привержены защите вашей конфиденциальности и обеспечению безопасности вашей личной информации. Настоящая Политика конфиденциальности объясняет, как мы собираем, используем, раскрываем и защищаем ваши данные при использовании наших ИИ-сервисов для автоматизации бизнеса в Казахстане.",
             ],
           },
           {
@@ -273,15 +273,15 @@ export const translations = {
         accept: "Я прочитал и согласен с условиями",
         sections: [
           {
-            heading: "Добро пожаловать в Alau.ai",
+            heading: "Добро пожаловать в Zerde.ai",
             paragraphs: [
-              "Настоящие Условия использования регулируют ваш доступ и использование платформы Alau.ai и связанных с ней сервисов автоматизации бизнеса с помощью искусственного интеллекта. Используя наши услуги, вы соглашаетесь с этими условиями.",
+              "Настоящие Условия использования регулируют ваш доступ и использование платформы Zerde.ai и связанных с ней сервисов автоматизации бизнеса с помощью искусственного интеллекта. Используя наши услуги, вы соглашаетесь с этими условиями.",
             ],
           },
           {
             heading: "1. Описание услуг",
             paragraphs: [
-              "Alau.ai предоставляет платформу ИИ-агентов для автоматизации бизнес-процессов, включая обработку обращений клиентов через SMS, WhatsApp и Telegram, планирование встреч, аналитику коммуникаций и интеграцию с бизнес-системами. Наши услуги предназначены для малого и среднего бизнеса в Республике Казахстан.",
+              "Zerde.ai предоставляет платформу ИИ-агентов для автоматизации бизнес-процессов, включая обработку обращений клиентов через SMS, WhatsApp и Telegram, планирование встреч, аналитику коммуникаций и интеграцию с бизнес-системами. Наши услуги предназначены для малого и среднего бизнеса в Республике Казахстан.",
             ],
           },
           {
@@ -314,7 +314,7 @@ export const translations = {
           {
             heading: "5. Интеллектуальная собственность",
             paragraphs: [
-              "Все материалы, контент, логотипы, товарные знаки и технологии, используемые на платформе Alau.ai, являются нашей интеллектуальной собственностью или собственностью наших лицензиаров. Вы получаете ограниченную лицензию на использование сервиса, но не приобретаете никаких прав на технологии или контент.",
+              "Все материалы, контент, логотипы, товарные знаки и технологии, используемые на платформе Zerde.ai, являются нашей интеллектуальной собственностью или собственностью наших лицензиаров. Вы получаете ограниченную лицензию на использование сервиса, но не приобретаете никаких прав на технологии или контент.",
             ],
           },
           {
@@ -338,7 +338,7 @@ export const translations = {
           {
             heading: "9. Применимое право",
             paragraphs: [
-              "Настоящие Условия регулируются законодательством Республики Казахстан. Все споры подлежат разрешению в судах Республики Казахстан по месту нахождения компании Alau.ai.",
+              "Настоящие Условия регулируются законодательством Республики Казахстан. Все споры подлежат разрешению в судах Республики Казахстан по месту нахождения компании Zerde.ai.",
             ],
           },
           {
@@ -356,7 +356,7 @@ export const translations = {
     auth: {
       backHome: "← Вернуться на главную",
       welcome: "Добро пожаловать",
-      accountPrompt: "Войдите в свой аккаунт Alau.ai",
+      accountPrompt: "Войдите в свой аккаунт Zerde.ai",
       loginTab: "Вход",
       registerTab: "Регистрация",
       password: "Пароль",
@@ -365,7 +365,7 @@ export const translations = {
       loginLoading: "Вход...",
       registerButton: "Зарегистрироваться",
       registerLoading: "Регистрация...",
-      marketingTitle: "Добро пожаловать в Alau.ai",
+      marketingTitle: "Добро пожаловать в Zerde.ai",
       marketingSubtitle: "Преобразуйте общение с клиентами с помощью автоматизации на базе ИИ",
       bullets: [
         "Автоматизация поддержки клиентов на нескольких каналах",
@@ -373,7 +373,7 @@ export const translations = {
         "Беспроблемная интеграция с вашими существующими инструментами",
       ],
       quote:
-        "Alau.ai революционизировал то, как мы обрабатываем поддержку клиентов. Время отклика улучшилось на 80%, а показатели удовлетворенности клиентов достигли рекордного уровня.",
+        "Zerde.ai революционизировал то, как мы обрабатываем поддержку клиентов. Время отклика улучшилось на 80%, а показатели удовлетворенности клиентов достигли рекордного уровня.",
       quoteAuthor: "— Сара Чен, Менеджер по работе с клиентами",
       toasts: {
         loginErrorTitle: "Ошибка входа",
@@ -517,7 +517,7 @@ export const translations = {
       messages: "Messages",
     },
     seo: {
-      title: "Alau.ai - AI agents for business in Kazakhstan",
+      title: "Zerde.ai - Transform your customer conversations with AI-powered automation",
       description:
         "An AI agent platform for automating small and medium-sized businesses in Kazakhstan. Smart solutions for sales, customer support, and business workflows.",
     },
@@ -582,7 +582,7 @@ export const translations = {
         ],
       },
       forWho: {
-        title: "Who is Alau.ai for?",
+        title: "Who is Zerde.ai for?",
         subtitle: "Solutions for any business in Kazakhstan",
         cards: [
           {
@@ -693,7 +693,7 @@ export const translations = {
     footer: {
       privacyLink: "Privacy Policy",
       termsLink: "Terms of Use",
-      rights: "© 2024 Alau.ai. All rights reserved.",
+      rights: "© 2024 Zerde.ai. All rights reserved.",
       phoneLabel: "Phone",
       privacy: {
         title: "Privacy Policy",
@@ -702,7 +702,7 @@ export const translations = {
           {
             heading: "Your privacy matters to us",
             paragraphs: [
-              "At Alau.ai, we are committed to protecting your privacy and keeping your personal information secure. This Privacy Policy explains how we collect, use, disclose, and protect your data when you use our AI services for business automation in Kazakhstan.",
+              "At Zerde.ai, we are committed to protecting your privacy and keeping your personal information secure. This Privacy Policy explains how we collect, use, disclose, and protect your data when you use our AI services for business automation in Kazakhstan.",
             ],
           },
           {
@@ -776,15 +776,15 @@ export const translations = {
         accept: "I have read and agree to the terms",
         sections: [
           {
-            heading: "Welcome to Alau.ai",
+            heading: "Welcome to Zerde.ai",
             paragraphs: [
-              "These Terms of Use govern your access to and use of the Alau.ai platform and related AI-powered business automation services. By using our services, you agree to these terms.",
+              "These Terms of Use govern your access to and use of the Zerde.ai platform and related AI-powered business automation services. By using our services, you agree to these terms.",
             ],
           },
           {
             heading: "1. Service description",
             paragraphs: [
-              "Alau.ai provides an AI agent platform for automating business processes, including customer request handling through SMS, WhatsApp, and Telegram, appointment scheduling, communication analytics, and integration with business systems. Our services are designed for small and medium-sized businesses in the Republic of Kazakhstan.",
+              "Zerde.ai provides an AI agent platform for automating business processes, including customer request handling through SMS, WhatsApp, and Telegram, appointment scheduling, communication analytics, and integration with business systems. Our services are designed for small and medium-sized businesses in the Republic of Kazakhstan.",
             ],
           },
           {
@@ -817,7 +817,7 @@ export const translations = {
           {
             heading: "5. Intellectual property",
             paragraphs: [
-              "All materials, content, logos, trademarks, and technologies used on the Alau.ai platform are our intellectual property or the property of our licensors. You receive a limited license to use the service, but you do not acquire rights to the technology or content.",
+              "All materials, content, logos, trademarks, and technologies used on the Zerde.ai platform are our intellectual property or the property of our licensors. You receive a limited license to use the service, but you do not acquire rights to the technology or content.",
             ],
           },
           {
@@ -841,7 +841,7 @@ export const translations = {
           {
             heading: "9. Governing law",
             paragraphs: [
-              "These Terms are governed by the laws of the Republic of Kazakhstan. All disputes are subject to resolution in the courts of the Republic of Kazakhstan at the location of Alau.ai.",
+              "These Terms are governed by the laws of the Republic of Kazakhstan. All disputes are subject to resolution in the courts of the Republic of Kazakhstan at the location of Zerde.ai.",
             ],
           },
           {
@@ -859,7 +859,7 @@ export const translations = {
     auth: {
       backHome: "← Back to home",
       welcome: "Welcome",
-      accountPrompt: "Sign in to your Alau.ai account",
+      accountPrompt: "Sign in to your Zerde.ai account",
       loginTab: "Sign in",
       registerTab: "Sign up",
       password: "Password",
@@ -868,7 +868,7 @@ export const translations = {
       loginLoading: "Signing in...",
       registerButton: "Create account",
       registerLoading: "Creating account...",
-      marketingTitle: "Welcome to Alau.ai",
+      marketingTitle: "Welcome to Zerde.ai",
       marketingSubtitle: "Transform customer communication with AI-powered automation",
       bullets: [
         "Automate customer support across multiple channels",
@@ -876,7 +876,7 @@ export const translations = {
         "Seamless integration with your existing tools",
       ],
       quote:
-        "Alau.ai revolutionized how we handle customer support. Response time improved by 80%, and customer satisfaction reached an all-time high.",
+        "Zerde.ai revolutionized how we handle customer support. Response time improved by 80%, and customer satisfaction reached an all-time high.",
       quoteAuthor: "— Sarah Chen, Customer Success Manager",
       toasts: {
         loginErrorTitle: "Sign-in error",

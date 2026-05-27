@@ -9,7 +9,7 @@ type LanguageContextValue = {
 };
 
 const LANGUAGE_STORAGE_KEY = "alau_language";
-const fallbackLanguage: Language = "ru";
+const fallbackLanguage: Language = "en";
 
 const LanguageContext = createContext<LanguageContextValue | undefined>(undefined);
 
