@@ -14,9 +14,8 @@ export const translations = {
       messages: "Сообщения",
     },
     seo: {
-      title: "Zerde.ai - Transform your customer conversations with AI-powered automation",
-      description:
-        "Платформа ИИ-агентов для автоматизации малого и среднего бизнеса в Казахстане. Умные решения для продаж, поддержки клиентов и бизнес-процессов.",
+      title: "Zerde AI - Your AI Assistant for Business",
+      description: "Simple and safe AI tools made for career school owners.",
     },
     header: {
       nav: {
@@ -517,9 +516,8 @@ export const translations = {
       messages: "Messages",
     },
     seo: {
-      title: "Zerde.ai - Transform your customer conversations with AI-powered automation",
-      description:
-        "An AI agent platform for automating small and medium-sized businesses in Kazakhstan. Smart solutions for sales, customer support, and business workflows.",
+      title: "Zerde AI - Your AI Assistant for Business",
+      description: "Simple and safe AI tools made for career school owners.",
     },
     header: {
       nav: {
