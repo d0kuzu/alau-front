@@ -84,6 +84,24 @@ const V2ChatView = ({ agentName, chat, onBack }: V2ChatViewProps) => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
+  const handleSendMessage = useCallback(() => {
+    const trimmed = manualMessage.trim();
+    if (!trimmed || isConnecting || !wsRef.current) {
+      return;
+    }
+
+    if (wsRef.current.readyState === WebSocket.OPEN) {
+      wsRef.current.send(trimmed);
+      setManualMessage("");
+    } else {
+      toast({
+        title: "Connection error",
+        description: "WebSocket is not connected.",
+        variant: "destructive",
+      });
+    }
+  }, [manualMessage, isConnecting, toast]);
+
   useEffect(() => {
     scrollToBottom();
   }, [messages, scrollToBottom]);
@@ -262,13 +280,20 @@ const V2ChatView = ({ agentName, chat, onBack }: V2ChatViewProps) => {
               <Input
                 value={manualMessage}
                 onChange={(event) => setManualMessage(event.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }
+                }}
                 placeholder="Type a manual message to send..."
                 className="h-[52px] rounded-[6px] border-[#dfe6ef] px-4 text-lg text-[#071225] placeholder:text-[#718199] focus-visible:ring-[#ff8f6a]/30"
               />
               <Button
                 type="button"
-                disabled
-                className="h-[52px] rounded-[8px] bg-[#ffb39d] px-6 text-lg font-semibold text-white opacity-100 shadow-none hover:bg-[#ffb39d]"
+                disabled={!manualMessage.trim() || isConnecting}
+                onClick={handleSendMessage}
+                className="h-[52px] rounded-[8px] bg-[#ff8f6a] px-6 text-lg font-semibold text-white shadow-none hover:bg-[#ff8f6a]/90 disabled:bg-[#ffb39d] disabled:opacity-100"
               >
                 <Send className="mr-2 h-4 w-4" />
                 Send
