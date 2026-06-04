@@ -22,23 +22,11 @@ import {
 } from "@/services/api/api";
 import { V2_ASSISTANT_ID } from "../constants/v2";
 import V2ChatView from "./V2ChatView";
+import { formatShortDate } from "@/shared/lib/date";
 
 const CHATS_PER_PAGE = 10;
 
-const formatCreatedDate = (iso: string) => {
-  if (!iso) {
-    return "-";
-  }
 
-  try {
-    return new Intl.DateTimeFormat("en-US", {
-      month: "short",
-      day: "numeric",
-    }).format(new Date(iso));
-  } catch {
-    return iso;
-  }
-};
 
 const V2ConversationsPage = () => {
   const { toast } = useToast();
@@ -348,7 +336,7 @@ const V2ConversationsPage = () => {
                     </span>
                   </TableCell>
                   <TableCell className="px-5 text-lg font-medium text-[#66748a]">
-                    {formatCreatedDate(chat.created_at)}
+                    {formatShortDate(chat.created_at)}
                   </TableCell>
                   <TableCell className="px-5 text-right">
                     <MoreHorizontal className="ml-auto h-5 w-5 text-[#071225]" />

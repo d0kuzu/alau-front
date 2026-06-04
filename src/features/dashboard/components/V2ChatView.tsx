@@ -13,6 +13,7 @@ import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 import { useToast } from "@/shared/hooks/use-toast";
 import { getValidAccessToken, type Chat } from "@/services/api/api";
+import { formatDateTime } from "@/shared/lib/date";
 
 type ChatMessage = {
   author: "client" | "bot";
@@ -25,25 +26,7 @@ type V2ChatViewProps = {
   onBack: () => void;
 };
 
-const formatDateTime = (iso: string) => {
-  if (!iso) {
-    return "-";
-  }
 
-  try {
-    return new Intl.DateTimeFormat("en-GB", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-    }).format(new Date(iso));
-  } catch {
-    return iso;
-  }
-};
 
 const normalizeAuthor = (value: unknown): ChatMessage["author"] => {
   if (typeof value !== "string") {
