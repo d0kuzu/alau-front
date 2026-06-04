@@ -808,3 +808,30 @@ export const clearAllChats = async () => {
     method: "DELETE",
   });
 };
+
+export type AnalyticsPeriodData = {
+  started_conversations: number;
+  completed_conversations: number;
+  booked_meetings: number;
+  conversion_rate: number;
+  started_change_pct: number;
+  completed_change_pct: number;
+  booked_change_pct: number;
+  conversion_change_pct: number;
+};
+
+export type AnalyticsData = {
+  today: AnalyticsPeriodData;
+  "7_days": AnalyticsPeriodData;
+  "30_days": AnalyticsPeriodData;
+  "60_days": AnalyticsPeriodData;
+  "90_days": AnalyticsPeriodData;
+};
+
+export const fetchAnalytics = async (assistantId: string): Promise<AnalyticsData> => {
+  const query = buildQueryParams({ assistant_id: assistantId });
+  const response = await backendRequest<unknown>(`/ai/analytics${query}`);
+  const payload = getAnswerPayload(response, "Не удалось загрузить аналитику");
+  
+  return payload as AnalyticsData;
+};

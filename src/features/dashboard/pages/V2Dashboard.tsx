@@ -9,46 +9,19 @@ import {
   MessageCircle,
   Phone,
   TrendingUp,
+  Loader2,
 } from "lucide-react";
 
 import { Button } from "@/shared/ui/button";
 import { useAuth } from "@/shared/contexts/AuthContext";
 import V2ConversationsPage from "../components/V2ConversationsPage";
 import V2PromptSettings from "../components/V2PromptSettings";
+import { fetchAnalytics, type AnalyticsData } from "@/services/api/api";
+import { V2_ASSISTANT_ID } from "../constants/v2";
 
 const periods = ["Today", "7 days", "30 days", "60 days", "90 days"];
 const chartDays = ["Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed"];
 
-const stats = [
-  {
-    title: "Conversations Started",
-    value: "0",
-    change: "0%",
-    note: "new conversations today",
-    icon: Phone,
-  },
-  {
-    title: "Conversations Completed",
-    value: "0",
-    change: "0%",
-    note: "customers who responded",
-    icon: MessageCircle,
-  },
-  {
-    title: "Booked Appointments",
-    value: "1",
-    change: "-67%",
-    note: "appointments booked today",
-    icon: CalendarDays,
-  },
-  {
-    title: "Conversion Rate",
-    value: "0%",
-    change: "0%",
-    note: "appointments to conversations ratio",
-    icon: TrendingUp,
-  },
-];
 
 const navItems = [
   { id: "overview", label: "Overview", icon: BarChart3 },
@@ -73,6 +46,28 @@ const V2Dashboard = () => {
   const [activeNav, setActiveNav] = useState("overview");
   const [selectedPeriod, setSelectedPeriod] = useState("Today");
   const [showWelcomePopup, setShowWelcomePopup] = useState(false);
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
+  const [isAnalyticsLoading, setIsAnalyticsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    let isMounted = true;
+    
+    const loadAnalytics = async () => {
+      setIsAnalyticsLoading(true);
+      try {
+        const data = await fetchAnalytics(V2_ASSISTANT_ID);
+        if (isMounted) setAnalyticsData(data);
+      } catch (error) {
+        console.error("Failed to fetch analytics:", error);
+      } finally {
+        if (isMounted) setIsAnalyticsLoading(false);
+      }
+    };
+    
+    loadAnalytics();
+    return () => { isMounted = false; };
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -103,6 +98,62 @@ const V2Dashboard = () => {
   };
 
   const userName = profile?.name || user?.email?.split("@")[0] || "kawka";
+
+  const periodKey = ({
+    "Today": "today",
+    "7 days": "7_days",
+    "30 days": "30_days",
+    "60 days": "60_days",
+    "90 days": "90_days",
+  } as Record<string, keyof AnalyticsData>)[selectedPeriod];
+
+  const currentStatsData = analyticsData?.[periodKey];
+
+  const formatPct = (val?: number) => {
+    if (val === undefined || val === null) return "0%";
+    const formatted = val.toFixed(1);
+    return val > 0 ? `+${formatted}%` : `${formatted}%`;
+  };
+
+  const getPctColor = (val?: number) => {
+    if (val === undefined || val === null || val === 0) return "text-[#64748b]";
+    return val > 0 ? "text-[#16a34a]" : "text-[#ef4444]";
+  };
+
+  const stats = [
+    {
+      title: "Conversations Started",
+      value: currentStatsData?.started_conversations?.toString() ?? "-",
+      change: formatPct(currentStatsData?.started_change_pct),
+      changeColor: getPctColor(currentStatsData?.started_change_pct),
+      note: `new conversations ${selectedPeriod.toLowerCase()}`,
+      icon: Phone,
+    },
+    {
+      title: "Conversations Completed",
+      value: currentStatsData?.completed_conversations?.toString() ?? "-",
+      change: formatPct(currentStatsData?.completed_change_pct),
+      changeColor: getPctColor(currentStatsData?.completed_change_pct),
+      note: "customers who responded",
+      icon: MessageCircle,
+    },
+    {
+      title: "Booked Appointments",
+      value: currentStatsData?.booked_meetings?.toString() ?? "-",
+      change: formatPct(currentStatsData?.booked_change_pct),
+      changeColor: getPctColor(currentStatsData?.booked_change_pct),
+      note: `appointments booked ${selectedPeriod.toLowerCase()}`,
+      icon: CalendarDays,
+    },
+    {
+      title: "Conversion Rate",
+      value: currentStatsData?.conversion_rate ? `${currentStatsData.conversion_rate.toFixed(1)}%` : "-",
+      change: formatPct(currentStatsData?.conversion_change_pct),
+      changeColor: getPctColor(currentStatsData?.conversion_change_pct),
+      note: "appointments to conversations ratio",
+      icon: TrendingUp,
+    },
+  ];
 
   if (isLoading) {
     return (
@@ -218,9 +269,11 @@ const V2Dashboard = () => {
                     <div className="flex items-start justify-between gap-6">
                       <div>
                         <p className="mb-4 text-[1.05rem] font-semibold text-[#64748b]">{stat.title}</p>
-                        <p className="text-[2rem] font-bold leading-none text-[#010817]">{stat.value}</p>
+                        <div className="flex h-[32px] items-center text-[2rem] font-bold leading-none text-[#010817]">
+                          {isAnalyticsLoading ? <Loader2 className="h-6 w-6 animate-spin text-[#ff8f6a]" /> : stat.value}
+                        </div>
                         <p className="mt-3 text-base text-[#68788f]">
-                          <span className="mr-2 font-semibold text-[#16a34a]">{stat.change}</span>
+                          <span className={`mr-2 font-semibold ${stat.changeColor}`}>{stat.change}</span>
                           from previous period
                         </p>
                         <p className="mt-1 text-base text-[#68788f]">{stat.note}</p>
