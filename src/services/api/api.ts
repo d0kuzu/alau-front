@@ -700,7 +700,7 @@ export const searchChats = async (queryText: string, assistantIds: string, page 
     assistant_ids: assistantIds,
     page,
   });
-  const response = await backendRequest<unknown>(`/ai/search_chat${query}`);
+  const response = await backendRequest<unknown>(`/ai/chats/search_chat${query}`);
 
   if (!response || typeof response !== "object") {
     return { answer: [], total_count: 0 };
