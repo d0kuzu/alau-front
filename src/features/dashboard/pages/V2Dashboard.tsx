@@ -345,54 +345,51 @@ const V2Dashboard = () => {
 
                     {/* Chart area */}
                     <div className="relative flex-1" style={{ height: chartH }}>
-                      {/* Grid lines */}
-                      <div
-                        className="absolute inset-x-0 top-0"
-                        style={{ height: barAreaH }}
-                      >
-                        {yLabels.map((val) => (
-                          <div
-                            key={val}
-                            className="absolute inset-x-0 border-b border-dashed border-[#e7ebf1]"
-                            style={{
-                              top: `${
-                                ((maxCount - val) / maxCount) * 100
-                              }%`,
-                            }}
-                          />
-                        ))}
-                      </div>
+                      {/* Grid lines — absolute, pixel top */}
+                      {yLabels.map((val) => (
+                        <div
+                          key={val}
+                          className="absolute inset-x-0 border-b border-dashed border-[#e7ebf1]"
+                          style={{
+                            top: Math.round(((maxCount - val) / maxCount) * barAreaH),
+                          }}
+                        />
+                      ))}
 
-                      {/* Bars + x-labels */}
-                      <div
-                        className="absolute inset-x-0 top-0 flex items-end justify-around"
-                        style={{ height: barAreaH }}
-                      >
-                        {weeklyData.map((point) => {
-                          const pct = (point.count / maxCount) * 100;
-                          return (
-                            <div
-                              key={point.date}
-                              className="group relative flex flex-col items-center justify-end"
-                              style={{ height: "100%", flex: 1 }}
+                      {/* Bars */}
+                      {weeklyData.map((point, i) => {
+                        const barH = Math.round((point.count / maxCount) * barAreaH);
+                        const slotW = 100 / weeklyData.length;
+                        return (
+                          <div
+                            key={point.date}
+                            className="group absolute bottom-8"
+                            style={{
+                              left: `${slotW * i}%`,
+                              width: `${slotW}%`,
+                              height: barAreaH,
+                            }}
+                          >
+                            {/* Tooltip */}
+                            <div className="pointer-events-none absolute left-1/2 -translate-x-1/2 whitespace-nowrap rounded-[6px] bg-[#071225] px-3 py-1.5 text-sm font-semibold text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100"
+                              style={{ bottom: barH + 8 }}
                             >
-                              {/* Tooltip on hover */}
-                              <div className="pointer-events-none absolute bottom-[calc(100%+6px)] left-1/2 -translate-x-1/2 whitespace-nowrap rounded-[6px] bg-[#071225] px-3 py-1.5 text-sm font-semibold text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                                {point.count}
-                              </div>
-                              {/* Bar */}
-                              <div
-                                className="w-10 rounded-t-[5px] bg-[#ff8f6a] transition-all duration-300 group-hover:bg-[#ff6f2d]"
-                                style={{ height: `${pct}%`, minHeight: point.count > 0 ? 4 : 0 }}
-                              />
+                              {point.count}
                             </div>
-                          );
-                        })}
-                      </div>
+                            {/* Bar */}
+                            {barH > 0 && (
+                              <div
+                                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 rounded-t-[5px] bg-[#ff8f6a] transition-colors duration-200 group-hover:bg-[#ff6f2d]"
+                                style={{ height: Math.max(barH, 3) }}
+                              />
+                            )}
+                          </div>
+                        );
+                      })}
 
                       {/* X-axis labels */}
                       <div
-                        className="absolute inset-x-0 flex justify-around"
+                        className="absolute inset-x-0 flex"
                         style={{ top: barAreaH + 8 }}
                       >
                         {weeklyData.map((point) => (
