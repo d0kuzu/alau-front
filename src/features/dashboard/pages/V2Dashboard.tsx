@@ -20,7 +20,6 @@ import { fetchAnalytics, type AnalyticsData } from "@/services/api/api";
 import { V2_ASSISTANT_ID } from "../constants/v2";
 
 const periods = ["Today", "7 days", "30 days", "60 days", "90 days"];
-const chartDays = ["Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed"];
 
 
 const navItems = [
@@ -292,31 +291,124 @@ const V2Dashboard = () => {
               <p className="mt-1 text-lg font-medium text-[#68788f]">Conversations for the past week</p>
             </div>
 
-            <div className="grid h-[390px] grid-cols-[44px_1fr] grid-rows-[1fr_32px]">
-              <div className="row-span-1 flex flex-col justify-between pr-3 text-right text-base text-[#79828d]">
-                {[4, 3, 2, 1, 0].map((value) => (
-                  <span key={value}>{value}</span>
-                ))}
-              </div>
-              <div className="relative border border-dashed border-[#e7ebf1]">
-                <div className="absolute inset-0 grid grid-rows-4">
-                  {[0, 1, 2, 3].map((line) => (
-                    <span key={line} className="border-b border-dashed border-[#e7ebf1]" />
-                  ))}
+            {(() => {
+              const weeklyData = analyticsData?.weekly_conversations_started;
+
+              if (isAnalyticsLoading) {
+                return (
+                  <div className="flex h-[390px] items-center justify-center">
+                    <Loader2 className="h-8 w-8 animate-spin text-[#ff8f6a]" />
+                  </div>
+                );
+              }
+
+              if (!weeklyData || weeklyData.length === 0) {
+                return (
+                  <div className="flex h-[390px] items-center justify-center text-base text-[#79828d]">
+                    No data available
+                  </div>
+                );
+              }
+
+              const maxCount = Math.max(...weeklyData.map((d) => d.count), 1);
+              const chartH = 320;
+              const barAreaH = chartH - 32; // leave 32px for x-axis labels
+              const ySteps = 5;
+              const yLabels = Array.from({ length: ySteps + 1 }, (_, i) =>
+                Math.round((maxCount / ySteps) * (ySteps - i))
+              );
+
+              const formatBarDate = (iso: string) => {
+                try {
+                  return new Intl.DateTimeFormat("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    timeZone: "America/Winnipeg",
+                  }).format(new Date(iso));
+                } catch {
+                  return iso;
+                }
+              };
+
+              return (
+                <div className="overflow-x-auto">
+                  <div className="flex min-w-0 gap-4">
+                    {/* Y-axis labels */}
+                    <div
+                      className="flex shrink-0 flex-col justify-between pr-2 text-right text-sm text-[#79828d]"
+                      style={{ height: barAreaH }}
+                    >
+                      {yLabels.map((val) => (
+                        <span key={val}>{val}</span>
+                      ))}
+                    </div>
+
+                    {/* Chart area */}
+                    <div className="relative flex-1" style={{ height: chartH }}>
+                      {/* Grid lines */}
+                      <div
+                        className="absolute inset-x-0 top-0"
+                        style={{ height: barAreaH }}
+                      >
+                        {yLabels.map((val) => (
+                          <div
+                            key={val}
+                            className="absolute inset-x-0 border-b border-dashed border-[#e7ebf1]"
+                            style={{
+                              top: `${
+                                ((maxCount - val) / maxCount) * 100
+                              }%`,
+                            }}
+                          />
+                        ))}
+                      </div>
+
+                      {/* Bars + x-labels */}
+                      <div
+                        className="absolute inset-x-0 top-0 flex items-end justify-around"
+                        style={{ height: barAreaH }}
+                      >
+                        {weeklyData.map((point) => {
+                          const pct = (point.count / maxCount) * 100;
+                          return (
+                            <div
+                              key={point.date}
+                              className="group relative flex flex-col items-center justify-end"
+                              style={{ height: "100%", flex: 1 }}
+                            >
+                              {/* Tooltip on hover */}
+                              <div className="pointer-events-none absolute bottom-[calc(100%+6px)] left-1/2 -translate-x-1/2 whitespace-nowrap rounded-[6px] bg-[#071225] px-3 py-1.5 text-sm font-semibold text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                                {point.count}
+                              </div>
+                              {/* Bar */}
+                              <div
+                                className="w-10 rounded-t-[5px] bg-[#ff8f6a] transition-all duration-300 group-hover:bg-[#ff6f2d]"
+                                style={{ height: `${pct}%`, minHeight: point.count > 0 ? 4 : 0 }}
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* X-axis labels */}
+                      <div
+                        className="absolute inset-x-0 flex justify-around"
+                        style={{ top: barAreaH + 8 }}
+                      >
+                        {weeklyData.map((point) => (
+                          <span
+                            key={point.date}
+                            className="flex-1 text-center text-sm font-medium text-[#79828d]"
+                          >
+                            {formatBarDate(point.date)}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="absolute inset-0 grid grid-cols-7">
-                  {chartDays.map((day) => (
-                    <span key={day} className="border-r border-dashed border-[#edf0f5] last:border-r-0" />
-                  ))}
-                </div>
-              </div>
-              <div />
-              <div className="grid grid-cols-7 pt-2 text-center text-base font-medium text-[#79828d]">
-                {chartDays.map((day) => (
-                  <span key={day}>{day}</span>
-                ))}
-              </div>
-            </div>
+              );
+            })()}
           </section>
 
             </>

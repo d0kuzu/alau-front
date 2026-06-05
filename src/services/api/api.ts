@@ -820,12 +820,18 @@ export type AnalyticsPeriodData = {
   conversion_change_pct: number;
 };
 
+export type WeeklyConversationPoint = {
+  date: string;
+  count: number;
+};
+
 export type AnalyticsData = {
   today: AnalyticsPeriodData;
   "7_days": AnalyticsPeriodData;
   "30_days": AnalyticsPeriodData;
   "60_days": AnalyticsPeriodData;
   "90_days": AnalyticsPeriodData;
+  weekly_conversations_started?: WeeklyConversationPoint[];
 };
 
 export const fetchAnalytics = async (assistantId: string): Promise<AnalyticsData> => {
