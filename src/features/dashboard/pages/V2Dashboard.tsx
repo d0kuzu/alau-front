@@ -323,7 +323,7 @@ const V2Dashboard = () => {
                   return new Intl.DateTimeFormat("en-US", {
                     month: "short",
                     day: "numeric",
-                    timeZone: "America/Winnipeg",
+                    timeZone: "UTC",
                   }).format(new Date(iso));
                 } catch {
                   return iso;
