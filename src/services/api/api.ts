@@ -841,3 +841,19 @@ export const fetchAnalytics = async (assistantId: string): Promise<AnalyticsData
   
   return payload as AnalyticsData;
 };
+
+export type BlockedCustomer = {
+  user_id: string;
+};
+
+export const getBlockedCustomers = async (): Promise<BlockedCustomer[]> => {
+  const response = await backendRequest<{ answer: BlockedCustomer[] }>("/ai/blocked-customers/");
+  return response?.answer || [];
+};
+
+export const blockCustomer = async (userId: string): Promise<void> => {
+  await backendRequest<unknown>("/ai/blocked-customers/", {
+    method: "POST",
+    body: JSON.stringify({ user_id: userId }),
+  });
+};
