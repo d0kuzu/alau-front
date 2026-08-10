@@ -1,1 +1,1 @@
-export const V2_ASSISTANT_ID = "9ea4234f-2554-4e64-900e-f8e5c4bf85b3";
+export const V2_ASSISTANT_ID = "194f277c-0911-4ca7-bba2-665036627bc0";
