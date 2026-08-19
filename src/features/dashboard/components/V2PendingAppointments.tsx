@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
-import { Loader2, CheckCircle2, Calendar, Clock, AlertCircle } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Loader2, CheckCircle2, Calendar, Clock, AlertCircle, ArrowUpDown } from "lucide-react";
 import { fetchPendingAppointments, syncPendingAppointment, type PendingAppointment } from "@/services/api/api";
 import { Button } from "@/shared/ui/button";
+
+type SortKey = "created_at" | "start_time";
 
 const formatTimeString = (dateStr: string) => {
   if (!dateStr) return new Date();
   // Remove 'Z' or '+00:00' to parse as local time and prevent browser timezone shifting
-  const localStr = dateStr.replace(/(Z|[+-]00:00)$/, '');
+  const localStr = dateStr.replace(/(Z|[+-]00:00)$/, "");
   return new Date(localStr);
 };
 
@@ -14,6 +16,7 @@ const V2PendingAppointments = () => {
   const [appointments, setAppointments] = useState<PendingAppointment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [syncingId, setSyncingId] = useState<string | null>(null);
+  const [sortKey, setSortKey] = useState<SortKey>("created_at");
 
   useEffect(() => {
     loadAppointments();
@@ -43,6 +46,14 @@ const V2PendingAppointments = () => {
     }
   };
 
+  const sortedAppointments = useMemo(() => {
+    return [...appointments].sort((a, b) => {
+      const dateA = formatTimeString(a[sortKey]).getTime();
+      const dateB = formatTimeString(b[sortKey]).getTime();
+      return dateB - dateA; // newest first
+    });
+  }, [appointments, sortKey]);
+
   if (isLoading) {
     return (
       <div className="flex h-[400px] items-center justify-center">
@@ -60,9 +71,39 @@ const V2PendingAppointments = () => {
             Appointments that failed to sync with CampusLogin
           </p>
         </div>
+
+        {/* Sort controls */}
+        <div className="flex shrink-0 items-center gap-2 self-start">
+          <ArrowUpDown className="h-4 w-4 text-[#94a3b8]" />
+          <span className="text-sm font-medium text-[#64748b]">Sort by:</span>
+          <div className="inline-flex rounded-[7px] bg-[#f1f5f9] p-1">
+            <button
+              type="button"
+              onClick={() => setSortKey("created_at")}
+              className={`h-8 rounded-[5px] px-3.5 text-sm font-semibold transition-colors ${
+                sortKey === "created_at"
+                  ? "bg-white text-[#020817] shadow-sm"
+                  : "text-[#66748a] hover:text-[#020817]"
+              }`}
+            >
+              Created
+            </button>
+            <button
+              type="button"
+              onClick={() => setSortKey("start_time")}
+              className={`h-8 rounded-[5px] px-3.5 text-sm font-semibold transition-colors ${
+                sortKey === "start_time"
+                  ? "bg-white text-[#020817] shadow-sm"
+                  : "text-[#66748a] hover:text-[#020817]"
+              }`}
+            >
+              Appointment Date
+            </button>
+          </div>
+        </div>
       </div>
 
-      {appointments.length === 0 ? (
+      {sortedAppointments.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-[8px] border border-[#dfe6ef] bg-white py-16 text-center shadow-sm">
           <CheckCircle2 className="mb-4 h-12 w-12 text-[#16a34a]" />
           <h3 className="text-xl font-bold text-[#010817]">All caught up!</h3>
@@ -70,7 +111,7 @@ const V2PendingAppointments = () => {
         </div>
       ) : (
         <div className="grid gap-4">
-          {appointments.map((appointment) => (
+          {sortedAppointments.map((appointment) => (
             <div
               key={appointment.id}
               className="flex flex-col justify-between rounded-[8px] border border-[#dfe6ef] bg-white p-6 shadow-sm transition-shadow hover:shadow-md sm:flex-row sm:items-center"
@@ -94,9 +135,9 @@ const V2PendingAppointments = () => {
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4 shrink-0 text-[#94a3b8]" />
                     <span>
-                      {formatTimeString(appointment.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      {formatTimeString(appointment.start_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                       {" - "}
-                      {formatTimeString(appointment.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      {formatTimeString(appointment.end_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                     </span>
                   </div>
                 </div>
