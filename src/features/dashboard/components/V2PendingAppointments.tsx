@@ -3,6 +3,13 @@ import { Loader2, CheckCircle2, Calendar, Clock, AlertCircle } from "lucide-reac
 import { fetchPendingAppointments, syncPendingAppointment, type PendingAppointment } from "@/services/api/api";
 import { Button } from "@/shared/ui/button";
 
+const formatTimeString = (dateStr: string) => {
+  if (!dateStr) return new Date();
+  // Remove 'Z' or '+00:00' to parse as local time and prevent browser timezone shifting
+  const localStr = dateStr.replace(/(Z|[+-]00:00)$/, '');
+  return new Date(localStr);
+};
+
 const V2PendingAppointments = () => {
   const [appointments, setAppointments] = useState<PendingAppointment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -81,15 +88,15 @@ const V2PendingAppointments = () => {
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 shrink-0 text-[#94a3b8]" />
                     <span>
-                      {new Date(appointment.start_time).toLocaleDateString()}
+                      {formatTimeString(appointment.start_time).toLocaleDateString()}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4 shrink-0 text-[#94a3b8]" />
                     <span>
-                      {new Date(appointment.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      {formatTimeString(appointment.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       {" - "}
-                      {new Date(appointment.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      {formatTimeString(appointment.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
                 </div>
@@ -99,7 +106,7 @@ const V2PendingAppointments = () => {
                   {appointment.description && (
                     <p className="mt-1"><span className="font-medium">Description:</span> {appointment.description}</p>
                   )}
-                  <p className="mt-1"><span className="font-medium">Created:</span> {new Date(appointment.created_at).toLocaleString()}</p>
+                  <p className="mt-1"><span className="font-medium">Created:</span> {formatTimeString(appointment.created_at).toLocaleString()}</p>
                 </div>
               </div>
 
