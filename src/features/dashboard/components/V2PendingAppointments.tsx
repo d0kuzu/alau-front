@@ -163,7 +163,7 @@ const V2PendingAppointments = () => {
                 </div>
 
                 <div className="text-sm text-[#475569]">
-                  <p><span className="font-medium">Status:</span> {appointment.status}</p>
+
                   {appointment.description && (
                     <p className="mt-1"><span className="font-medium">Description:</span> {appointment.description}</p>
                   )}
