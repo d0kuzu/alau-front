@@ -5,12 +5,34 @@ import { Button } from "@/shared/ui/button";
 
 type SortKey = "created_at" | "start_time";
 
-const formatTimeString = (dateStr: string) => {
-  if (!dateStr) return new Date();
-  // Remove 'Z' or '+00:00' to parse as local time and prevent browser timezone shifting
-  const localStr = dateStr.replace(/(Z|[+-]00:00)$/, "");
-  return new Date(localStr);
-};
+const WINNIPEG_TZ = "America/Winnipeg";
+
+const parseDate = (dateStr: string) => new Date(dateStr);
+
+const formatDate = (dateStr: string) =>
+  new Intl.DateTimeFormat("en-CA", {
+    timeZone: WINNIPEG_TZ,
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  }).format(parseDate(dateStr));
+
+const formatTime = (dateStr: string) =>
+  new Intl.DateTimeFormat("en-CA", {
+    timeZone: WINNIPEG_TZ,
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(parseDate(dateStr));
+
+const formatDateTime = (dateStr: string) =>
+  new Intl.DateTimeFormat("en-CA", {
+    timeZone: WINNIPEG_TZ,
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(parseDate(dateStr));
 
 const V2PendingAppointments = () => {
   const [appointments, setAppointments] = useState<PendingAppointment[]>([]);
@@ -48,8 +70,8 @@ const V2PendingAppointments = () => {
 
   const sortedAppointments = useMemo(() => {
     return [...appointments].sort((a, b) => {
-      const dateA = formatTimeString(a[sortKey]).getTime();
-      const dateB = formatTimeString(b[sortKey]).getTime();
+      const dateA = parseDate(a[sortKey]).getTime();
+      const dateB = parseDate(b[sortKey]).getTime();
       return dateB - dateA; // newest first
     });
   }, [appointments, sortKey]);
@@ -128,16 +150,14 @@ const V2PendingAppointments = () => {
                 <div className="mb-3 grid gap-2 text-sm text-[#64748b] sm:grid-cols-2">
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 shrink-0 text-[#94a3b8]" />
-                    <span>
-                      {formatTimeString(appointment.start_time).toLocaleDateString()}
-                    </span>
+                    <span>{formatDate(appointment.start_time)}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4 shrink-0 text-[#94a3b8]" />
                     <span>
-                      {formatTimeString(appointment.start_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                      {formatTime(appointment.start_time)}
                       {" - "}
-                      {formatTimeString(appointment.end_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                      {formatTime(appointment.end_time)}
                     </span>
                   </div>
                 </div>
@@ -147,7 +167,7 @@ const V2PendingAppointments = () => {
                   {appointment.description && (
                     <p className="mt-1"><span className="font-medium">Description:</span> {appointment.description}</p>
                   )}
-                  <p className="mt-1"><span className="font-medium">Created:</span> {formatTimeString(appointment.created_at).toLocaleString()}</p>
+                  <p className="mt-1"><span className="font-medium">Created:</span> {formatDateTime(appointment.created_at)}</p>
                 </div>
               </div>
 
