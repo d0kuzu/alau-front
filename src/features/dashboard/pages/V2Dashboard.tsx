@@ -11,6 +11,7 @@ import {
   TrendingUp,
   Loader2,
   Ban,
+  AlertCircle,
 } from "lucide-react";
 
 import { Button } from "@/shared/ui/button";
@@ -18,6 +19,7 @@ import { useAuth } from "@/shared/contexts/AuthContext";
 import V2ConversationsPage from "../components/V2ConversationsPage";
 import V2PromptSettings from "../components/V2PromptSettings";
 import V2BlockedCustomers from "../components/V2BlockedCustomers";
+import V2PendingAppointments from "../components/V2PendingAppointments";
 import { fetchAnalytics, type AnalyticsData } from "@/services/api/api";
 import { V2_ASSISTANT_ID } from "../constants/v2";
 
@@ -29,6 +31,7 @@ const navItems = [
   { id: "conversations", label: "Conversations", icon: MessageCircle },
   { id: "prompt-settings", label: "AI Prompt Settings", icon: FileText },
   { id: "blocked", label: "Blocked Customers", icon: Ban },
+  { id: "pending", label: "Pending Sync", icon: AlertCircle },
 ];
 
 const getLoginPath = (pathname: string) =>
@@ -224,6 +227,8 @@ const V2Dashboard = () => {
             <V2PromptSettings />
           ) : activeNav === "blocked" ? (
             <V2BlockedCustomers />
+          ) : activeNav === "pending" ? (
+            <V2PendingAppointments />
           ) : (
             <>
           <div className="mb-7 flex flex-col gap-5 md:flex-row md:items-start md:justify-between">

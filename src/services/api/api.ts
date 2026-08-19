@@ -857,3 +857,28 @@ export const blockCustomer = async (userId: string): Promise<void> => {
     body: JSON.stringify({ user_id: userId }),
   });
 };
+
+export type PendingAppointment = {
+  id: string;
+  google_event_id: string;
+  title: string;
+  start_time: string;
+  end_time: string;
+  status: string;
+  description: string;
+  calendar_id: string;
+  campus_login: boolean;
+  created_at: string;
+};
+
+export const fetchPendingAppointments = async (): Promise<PendingAppointment[]> => {
+  const response = await backendRequest<{ appointments: PendingAppointment[] }>("/ai/campuslogin/appointments/pending");
+  return response?.appointments || [];
+};
+
+export const syncPendingAppointment = async (id: string): Promise<void> => {
+  await backendRequest<unknown>(`/ai/campuslogin/appointments/${encodeURIComponent(id)}/sync`, {
+    method: "PUT",
+    body: JSON.stringify({ campus_login: true }),
+  });
+};
