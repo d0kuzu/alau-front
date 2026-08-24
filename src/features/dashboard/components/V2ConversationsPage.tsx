@@ -264,23 +264,6 @@ const V2ConversationsPage = () => {
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Button
-            type="button"
-            onClick={handleClearAll}
-            disabled={isClearing}
-            variant="destructive"
-            className="h-[50px] rounded-[7px] px-6 text-lg font-semibold shadow-none"
-          >
-            <Trash2 className="mr-3 h-5 w-5" />
-            Delete All
-          </Button>
-          <Button
-            type="button"
-            className="h-[50px] rounded-[7px] bg-[#ff8f6a] px-6 text-lg font-semibold text-white shadow-none hover:bg-[#ff7d53]"
-          >
-            <Plus className="mr-3 h-5 w-5" />
-            Create Conversation
-          </Button>
           <span className="text-lg font-medium text-[#465468]">
             Total: {totalCount ?? chats.length} conversations
           </span>
