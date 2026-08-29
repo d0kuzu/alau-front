@@ -6,10 +6,10 @@ import { Textarea } from "@/shared/ui/textarea";
 import { useToast } from "@/shared/hooks/use-toast";
 import {
   fetchAssistant,
+  fetchAssistants,
   updateAssistant,
   type Assistant,
 } from "@/services/api/api";
-import { V2_ASSISTANT_ID } from "../constants/v2";
 
 type PromptForm = {
   name: string;
@@ -33,7 +33,13 @@ const V2PromptSettings = () => {
     setIsLoading(true);
 
     try {
-      const data = await fetchAssistant(V2_ASSISTANT_ID);
+      const assistants = await fetchAssistants();
+      if (assistants.length === 0) {
+        throw new Error("No assistants found");
+      }
+      
+      const firstAssistant = assistants[0];
+      const data = await fetchAssistant(firstAssistant.id);
       const nextForm = getPromptForm(data);
 
       setAssistant(data);
@@ -78,7 +84,10 @@ const V2PromptSettings = () => {
     setIsSaving(true);
 
     try {
-      const updatedAssistant = await updateAssistant(V2_ASSISTANT_ID, {
+      if (!assistant) {
+        throw new Error("No assistant loaded");
+      }
+      const updatedAssistant = await updateAssistant(assistant.id, {
         name: form.name.trim(),
         configuration: form.configuration,
       });
