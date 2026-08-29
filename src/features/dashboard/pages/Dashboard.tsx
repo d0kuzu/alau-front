@@ -11,6 +11,7 @@ import AssistantsPage from "../components/AssistantsPage";
 import AssistantDetailsPage from "../components/AssistantDetailsPage";
 import ConversationsPage from "../components/ConversationsPage";
 import LanguageSelector from "@/shared/components/LanguageSelector";
+import { fetchAnalytics, fetchAssistants, type AnalyticsData } from "@/services/api/api";
 
 // Иконки для Telegram и WhatsApp
 const TelegramIcon = ({
@@ -52,6 +53,32 @@ const Dashboard = () => {
   });
   const [tooltipValue, setTooltipValue] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
+  const [isAnalyticsLoading, setIsAnalyticsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    let isMounted = true;
+    
+    const loadAnalytics = async () => {
+      setIsAnalyticsLoading(true);
+      try {
+        const assistants = await fetchAssistants();
+        if (assistants.length > 0) {
+          const firstAssistantId = assistants[0].id;
+          const data = await fetchAnalytics(firstAssistantId);
+          if (isMounted) setAnalyticsData(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch analytics:", error);
+      } finally {
+        if (isMounted) setIsAnalyticsLoading(false);
+      }
+    };
+    
+    loadAnalytics();
+    return () => { isMounted = false; };
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -82,61 +109,74 @@ const Dashboard = () => {
   // Получаем имя пользователя из профиля
   const userName = profile?.name || user?.email?.split('@')[0] || t.common.userFallback;
 
-  // Данные для графика
-  const chartData = [{
-    day: t.dashboard.days[0],
-    value: 12
-  }, {
-    day: t.dashboard.days[1],
-    value: 8
-  }, {
-    day: t.dashboard.days[2],
-    value: 15
-  }, {
-    day: t.dashboard.days[3],
-    value: 10
-  }, {
-    day: t.dashboard.days[4],
-    value: 18
-  }, {
-    day: t.dashboard.days[5],
-    value: 6
-  }, {
-    day: t.dashboard.days[6],
-    value: 4
-  }];
-  const maxValue = Math.max(...chartData.map(d => d.value));
+  const periodKey = ({
+    "today": "today",
+    "7days": "7_days",
+    "30days": "30_days",
+    "60days": "60_days",
+    "90days": "90_days",
+  } as Record<string, keyof AnalyticsData>)[selectedPeriod] || "today";
+
+  const currentStatsData = analyticsData?.[periodKey];
+
+  const formatPct = (val?: number) => {
+    if (val === undefined || val === null) return "0%";
+    const formatted = val.toFixed(1);
+    return val > 0 ? `+${formatted}%` : `${formatted}%`;
+  };
+
+  const getPctChangeType = (val?: number) => {
+    if (val === undefined || val === null || val === 0) return "neutral";
+    return val > 0 ? "positive" : "negative";
+  };
+
+  const chartData = analyticsData?.weekly_conversations_started?.length
+    ? analyticsData.weekly_conversations_started.map(point => ({
+        day: new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(point.date)),
+        value: point.count
+      }))
+    : [{ day: "-", value: 0 }];
+
+  const maxValue = Math.max(...chartData.map(d => d.value), 1);
+  
+  const yLabels = [
+    maxValue,
+    Math.round(maxValue * 0.75),
+    Math.round(maxValue * 0.5),
+    Math.round(maxValue * 0.25),
+    0
+  ];
 
   // Статистика
   const stats = [{
     title: t.dashboard.startedConversations,
-    value: "7",
-    change: "-46%",
-    changeType: "negative",
+    value: currentStatsData?.started_conversations?.toString() ?? "-",
+    change: formatPct(currentStatsData?.started_change_pct),
+    changeType: getPctChangeType(currentStatsData?.started_change_pct),
     description: t.dashboard.previousPeriod,
     icon: Phone,
     iconColor: "text-[#51C2FB]"
   }, {
     title: t.dashboard.completedConversations,
-    value: "3",
-    change: "-25%",
-    changeType: "negative",
+    value: currentStatsData?.completed_conversations?.toString() ?? "-",
+    change: formatPct(currentStatsData?.completed_change_pct),
+    changeType: getPctChangeType(currentStatsData?.completed_change_pct),
     description: t.dashboard.previousPeriod,
     icon: MessageSquare,
     iconColor: "text-[#51C2FB]"
   }, {
     title: t.dashboard.bookedMeetings,
-    value: "1",
-    change: "+100%",
-    changeType: "positive",
+    value: currentStatsData?.booked_meetings?.toString() ?? "-",
+    change: formatPct(currentStatsData?.booked_change_pct),
+    changeType: getPctChangeType(currentStatsData?.booked_change_pct),
     description: t.dashboard.previousPeriod,
     icon: Calendar,
     iconColor: "text-[#51C2FB]"
   }, {
     title: t.dashboard.conversion,
-    value: "14%",
-    change: "+100%",
-    changeType: "positive",
+    value: currentStatsData?.conversion_rate ? `${currentStatsData.conversion_rate.toFixed(1)}%` : "-",
+    change: formatPct(currentStatsData?.conversion_change_pct),
+    changeType: getPctChangeType(currentStatsData?.conversion_change_pct),
     description: t.dashboard.previousPeriod,
     icon: TrendingUp,
     iconColor: "text-[#51C2FB]"
@@ -397,14 +437,16 @@ const Dashboard = () => {
                             <div className="flex items-start justify-between mb-3">
                               <div className="flex-1">
                                 <p className="text-xs md:text-sm text-slate-600 mb-2">{stat.title}</p>
-                                <p className="text-2xl md:text-3xl font-bold text-slate-900 mb-1">{stat.value}</p>
+                                <p className="text-2xl md:text-3xl font-bold text-slate-900 mb-1">
+                                  {isAnalyticsLoading ? <span className="inline-block animate-pulse h-8 w-16 bg-slate-200 rounded"></span> : stat.value}
+                                </p>
                                 <div className="flex items-center gap-1.5 flex-wrap">
                                   {stat.changeType === "positive" 
                                     ? <ArrowUp className="w-3 h-3 text-green-600" /> 
-                                    : <ArrowDown className="w-3 h-3 text-red-600" />
+                                    : stat.changeType === "negative" ? <ArrowDown className="w-3 h-3 text-red-600" /> : null
                                   }
                                   <span className={`text-xs md:text-sm font-medium ${
-                                    stat.changeType === "positive" ? "text-green-600" : "text-red-600"
+                                    stat.changeType === "positive" ? "text-green-600" : stat.changeType === "negative" ? "text-red-600" : "text-slate-500"
                                   }`}>
                                     {stat.change}
                                   </span>
@@ -446,8 +488,8 @@ const Dashboard = () => {
                     >
                       {/* Y-axis labels */}
                       <div className="absolute left-0 top-0 bottom-12 flex flex-col justify-between pr-2">
-                        {[24, 18, 12, 6, 0].map(val => (
-                          <span key={val} className="text-xs text-slate-500 text-right w-6 md:w-8">
+                        {yLabels.map((val, idx) => (
+                          <span key={idx} className="text-xs text-slate-500 text-right w-6 md:w-8">
                             {val}
                           </span>
                         ))}
@@ -457,8 +499,8 @@ const Dashboard = () => {
                       <div className="ml-8 md:ml-12 mr-2 md:mr-4 h-[calc(100%-3rem)] relative pb-8">
                         {/* Grid lines */}
                         <div className="absolute inset-0 flex flex-col justify-between">
-                          {[0, 6, 12, 18, 24].map(val => (
-                            <div key={val} className="w-full border-t border-dashed border-slate-200" />
+                          {yLabels.map((_, idx) => (
+                            <div key={idx} className="w-full border-t border-dashed border-slate-200" />
                           ))}
                         </div>
                         

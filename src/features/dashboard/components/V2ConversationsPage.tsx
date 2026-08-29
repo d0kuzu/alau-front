@@ -13,14 +13,12 @@ import {
 } from "@/shared/ui/table";
 import { useToast } from "@/shared/hooks/use-toast";
 import {
-  fetchAssistant,
+  fetchAssistants,
   fetchChats,
   fetchChatsPagination,
   searchChats,
-  clearAllChats,
   type Chat,
 } from "@/services/api/api";
-import { V2_ASSISTANT_ID } from "../constants/v2";
 import V2ChatView from "./V2ChatView";
 import { formatShortDate } from "@/shared/lib/date";
 
@@ -37,32 +35,36 @@ const V2ConversationsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState<number | null>(null);
+  const [assistantId, setAssistantId] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchMode, setIsSearchMode] = useState(false);
-  const [isClearing, setIsClearing] = useState(false);
 
   useEffect(() => {
-    const loadAssistant = async () => {
+    const init = async () => {
       try {
-        const assistant = await fetchAssistant(V2_ASSISTANT_ID);
-
-        setAgentName(assistant.name || "AVA");
+        const assistantsList = await fetchAssistants();
+        if (assistantsList.length > 0) {
+          const firstAssistant = assistantsList[0];
+          setAssistantId(firstAssistant.id);
+          setAgentName(firstAssistant.name || "AVA");
+        }
       } catch {
         setAgentName("AVA");
       }
     };
 
-    void loadAssistant();
+    void init();
   }, []);
 
   const loadChats = useCallback(
-    async (page: number) => {
+    async (page: number, currentAssistantId: string) => {
+      if (!currentAssistantId) return;
       setIsLoading(true);
 
       try {
         const [nextChats, nextTotalPages] = await Promise.all([
-          fetchChats(page, V2_ASSISTANT_ID),
-          fetchChatsPagination(V2_ASSISTANT_ID),
+          fetchChats(page, currentAssistantId),
+          fetchChatsPagination(currentAssistantId),
         ]);
 
         setChats(nextChats);
@@ -83,10 +85,12 @@ const V2ConversationsPage = () => {
   );
 
   useEffect(() => {
-    setIsSearchMode(false);
-    setSearchQuery("");
-    void loadChats(1);
-  }, [loadChats]);
+    if (assistantId) {
+      setIsSearchMode(false);
+      setSearchQuery("");
+      void loadChats(1, assistantId);
+    }
+  }, [loadChats, assistantId]);
 
   const handleSearch = async () => {
     const query = searchQuery.trim();
@@ -94,15 +98,17 @@ const V2ConversationsPage = () => {
     if (!query) {
       setIsSearchMode(false);
       setTotalCount(null);
-      await loadChats(1);
+      await loadChats(1, assistantId);
       return;
     }
+
+    if (!assistantId) return;
 
     setIsLoading(true);
     setIsSearchMode(true);
 
     try {
-      const data = await searchChats(query, V2_ASSISTANT_ID, 1);
+      const data = await searchChats(query, assistantId, 1);
 
       setChats(data.answer);
       setTotalCount(data.total_count || data.answer.length);
@@ -128,7 +134,7 @@ const V2ConversationsPage = () => {
       setIsLoading(true);
 
       try {
-        const data = await searchChats(searchQuery.trim(), V2_ASSISTANT_ID, page);
+        const data = await searchChats(searchQuery.trim(), assistantId, page);
 
         setChats(data.answer);
         setTotalCount(data.total_count || data.answer.length);
@@ -146,31 +152,7 @@ const V2ConversationsPage = () => {
       return;
     }
 
-    await loadChats(page);
-  };
-
-  const handleClearAll = async () => {
-    if (!window.confirm("Are you sure you want to delete all conversations? This action cannot be undone.")) {
-      return;
-    }
-
-    setIsClearing(true);
-    try {
-      await clearAllChats();
-      toast({
-        title: "Success",
-        description: "All conversations have been deleted.",
-      });
-      void loadChats(1);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to delete conversations",
-        variant: "destructive",
-      });
-    } finally {
-      setIsClearing(false);
-    }
+    await loadChats(page, assistantId);
   };
 
   const renderPageButtons = () => {

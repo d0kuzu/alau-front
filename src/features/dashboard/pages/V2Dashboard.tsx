@@ -20,8 +20,7 @@ import V2ConversationsPage from "../components/V2ConversationsPage";
 import V2PromptSettings from "../components/V2PromptSettings";
 import V2BlockedCustomers from "../components/V2BlockedCustomers";
 import V2PendingAppointments from "../components/V2PendingAppointments";
-import { fetchAnalytics, type AnalyticsData } from "@/services/api/api";
-import { V2_ASSISTANT_ID } from "../constants/v2";
+import { fetchAnalytics, fetchAssistants, type AnalyticsData } from "@/services/api/api";
 
 const periods = ["Today", "7 days", "30 days", "60 days", "90 days"];
 
@@ -61,8 +60,12 @@ const V2Dashboard = () => {
     const loadAnalytics = async () => {
       setIsAnalyticsLoading(true);
       try {
-        const data = await fetchAnalytics(V2_ASSISTANT_ID);
-        if (isMounted) setAnalyticsData(data);
+        const assistants = await fetchAssistants();
+        if (assistants.length > 0) {
+          const firstAssistantId = assistants[0].id;
+          const data = await fetchAnalytics(firstAssistantId);
+          if (isMounted) setAnalyticsData(data);
+        }
       } catch (error) {
         console.error("Failed to fetch analytics:", error);
       } finally {
