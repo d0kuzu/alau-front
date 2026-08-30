@@ -12,6 +12,7 @@ export const translations = {
       updated: "Обновлён",
       platform: "Платформа",
       messages: "Сообщения",
+      status: "Статус",
     },
     seo: {
       title: "Zerde AI - Your AI Assistant for Business",
@@ -514,6 +515,7 @@ export const translations = {
       updated: "Updated",
       platform: "Platform",
       messages: "Messages",
+      status: "Status",
     },
     seo: {
       title: "Zerde AI - Your AI Assistant for Business",

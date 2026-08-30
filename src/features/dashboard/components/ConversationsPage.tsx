@@ -378,6 +378,7 @@ const ConversationsPage = () => {
               <TableHead className="font-semibold text-slate-700">Assistant ID</TableHead>
               <TableHead className="font-semibold text-slate-700">Customer ID</TableHead>
               <TableHead className="font-semibold text-slate-700">{t.common.platform}</TableHead>
+              <TableHead className="font-semibold text-slate-700">{t.common.status}</TableHead>
               <TableHead className="font-semibold text-slate-700">{t.common.created}</TableHead>
               <TableHead className="font-semibold text-slate-700">{t.common.updated}</TableHead>
               <TableHead className="text-right font-semibold text-slate-700">{t.common.messages}</TableHead>
@@ -386,7 +387,7 @@ const ConversationsPage = () => {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={6} className="h-32 text-center">
+                <TableCell colSpan={7} className="h-32 text-center">
                   <div className="flex items-center justify-center">
                     <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-[#51C2FB]" />
                   </div>
@@ -394,7 +395,7 @@ const ConversationsPage = () => {
               </TableRow>
             ) : chats.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="h-32 text-center text-slate-500">
+                <TableCell colSpan={7} className="h-32 text-center text-slate-500">
                   {isSearchMode
                     ? t.dashboard.conversationsPage.emptySearch
                     : selectedAssistantIds.size === 0
@@ -410,6 +411,17 @@ const ConversationsPage = () => {
                   </TableCell>
                   <TableCell className="font-medium text-slate-900">{chat.customer_id || "-"}</TableCell>
                   <TableCell className="text-slate-600">{chat.platform || "-"}</TableCell>
+                  <TableCell>
+                    <span
+                      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${
+                        chat.is_end
+                          ? "border-rose-200 bg-rose-50 text-rose-700"
+                          : "border-emerald-200 bg-emerald-50 text-emerald-700"
+                      }`}
+                    >
+                      {chat.is_end ? "closed" : "open"}
+                    </span>
+                  </TableCell>
                   <TableCell className="text-slate-600">{formatDate(chat.created_at, dateLocale)}</TableCell>
                   <TableCell className="text-slate-600">{formatDate(chat.updated_at, dateLocale)}</TableCell>
                   <TableCell className="text-right">

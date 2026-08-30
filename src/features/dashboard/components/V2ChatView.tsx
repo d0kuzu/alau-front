@@ -211,8 +211,14 @@ const V2ChatView = ({ agentName, chat, onBack }: V2ChatViewProps) => {
             </div>
           </div>
 
-          <span className="mt-1 rounded-full border border-[#b8f0c9] bg-[#d9fbe4] px-4 py-1.5 text-base font-semibold text-[#15803d]">
-            Active
+          <span
+            className={`mt-1 rounded-full border px-4 py-1.5 text-base font-semibold ${
+              chat.is_end
+                ? "border-[#fecdd3] bg-[#ffe4e6] text-[#be123c]"
+                : "border-[#b8f0c9] bg-[#d9fbe4] text-[#15803d]"
+            }`}
+          >
+            {chat.is_end ? "closed" : "open"}
           </span>
         </div>
       </header>

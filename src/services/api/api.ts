@@ -45,6 +45,7 @@ export type Chat = {
   created_at: string;
   updated_at: string;
   message_count: number;
+  is_end: boolean;
 };
 
 type UpdateAssistantPayload = {
@@ -490,6 +491,23 @@ const getNumberValue = (value: unknown) => {
   return undefined;
 };
 
+const getBooleanValue = (value: unknown): boolean => {
+  if (typeof value === "boolean") {
+    return value;
+  }
+
+  if (typeof value === "number") {
+    return value === 1;
+  }
+
+  if (typeof value === "string") {
+    const normalized = value.trim().toLowerCase();
+    return normalized === "true" || normalized === "1";
+  }
+
+  return false;
+};
+
 const buildQueryParams = (params: Record<string, string | number | undefined>) => {
   const entries = Object.entries(params)
     .filter(([, value]) => value !== undefined)
@@ -641,6 +659,7 @@ const normalizeChat = (item: unknown): Chat | null => {
     created_at: getFirstString(record.created_at, record.createdAt) ?? "",
     updated_at: getFirstString(record.updated_at, record.updatedAt) ?? "",
     message_count: getNumberValue(record.message_count ?? record.messageCount ?? record.messages_count) ?? 0,
+    is_end: getBooleanValue(record.is_end ?? record.isEnd ?? record.is_ended ?? record.isEnded),
   };
 };
 

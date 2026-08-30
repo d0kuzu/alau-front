@@ -291,8 +291,14 @@ const V2ConversationsPage = () => {
                   </TableCell>
                   <TableCell className="px-5 text-lg font-medium text-[#1f2937]">{agentName || "AVA"}</TableCell>
                   <TableCell className="px-5">
-                    <span className="rounded-full border border-[#b8f0c9] bg-[#d9fbe4] px-3 py-1 text-base font-semibold text-[#15803d]">
-                      Active
+                    <span
+                      className={`inline-flex items-center rounded-full border px-3.5 py-1 text-base font-semibold ${
+                        chat.is_end
+                          ? "border-[#fecdd3] bg-[#ffe4e6] text-[#be123c]"
+                          : "border-[#b8f0c9] bg-[#d9fbe4] text-[#15803d]"
+                      }`}
+                    >
+                      {chat.is_end ? "closed" : "open"}
                     </span>
                   </TableCell>
                   <TableCell className="px-5">

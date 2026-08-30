@@ -232,6 +232,7 @@ const ChatView = ({ chat, onBack }: ChatViewProps) => {
             <InfoItem label="Assistant ID" value={chat.assistant_id} mono />
             <InfoItem label="Customer ID" value={chat.customer_id} />
             <InfoItem label={t.common.platform} value={chat.platform} />
+            <InfoItem label={t.common.status} value={chat.is_end ? "closed" : "open"} />
             <InfoItem label={t.common.created} value={formatDate(chat.created_at, dateLocale)} />
             <InfoItem label={t.common.updated} value={formatDate(chat.updated_at, dateLocale)} />
           </div>
