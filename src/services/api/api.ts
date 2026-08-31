@@ -364,6 +364,9 @@ export const refreshAuthSession = async () => {
     });
   } catch (error) {
     clearAuthSession();
+    if (typeof window !== "undefined") {
+      window.location.href = "/login";
+    }
     throw error;
   }
 
@@ -392,6 +395,9 @@ export const getValidAccessToken = async () => {
   const session = loadAuthSession();
 
   if (!session?.access_token) {
+    if (typeof window !== "undefined") {
+      window.location.href = "/login";
+    }
     throw new Error("Не найден токен авторизации. Войдите в аккаунт заново.");
   }
 
@@ -645,6 +651,7 @@ const normalizeChat = (item: unknown): Chat | null => {
   }
 
   const record = item as Record<string, unknown>;
+  console.log("[Chat Debug] normalizeChat record:", record);
   const id = getFirstString(record.id, record.chat_id, record.uuid);
 
   if (!id) {

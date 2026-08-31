@@ -64,6 +64,7 @@ const V2Dashboard = () => {
         if (assistants.length > 0) {
           const firstAssistantId = assistants[0].id;
           const data = await fetchAnalytics(firstAssistantId);
+          console.log(`[V2Dashboard] fetched analytics for ${firstAssistantId}:`, data);
           if (isMounted) setAnalyticsData(data);
         }
       } catch (error) {
