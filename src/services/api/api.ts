@@ -365,7 +365,8 @@ export const refreshAuthSession = async () => {
   } catch (error) {
     clearAuthSession();
     if (typeof window !== "undefined") {
-      window.location.href = "/login";
+      const isFrontend = window.location.pathname.startsWith('/frontend');
+      window.location.href = isFrontend ? '/frontend/login' : '/login';
     }
     throw error;
   }
@@ -396,7 +397,8 @@ export const getValidAccessToken = async () => {
 
   if (!session?.access_token) {
     if (typeof window !== "undefined") {
-      window.location.href = "/login";
+      const isFrontend = window.location.pathname.startsWith('/frontend');
+      window.location.href = isFrontend ? '/frontend/login' : '/login';
     }
     throw new Error("Не найден токен авторизации. Войдите в аккаунт заново.");
   }
