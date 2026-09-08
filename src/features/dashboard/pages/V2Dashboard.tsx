@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   BarChart3,
   CalendarDays,
-  Crown,
   FileText,
   LogOut,
   MessageCircle,
@@ -14,7 +13,6 @@ import {
   AlertCircle,
 } from "lucide-react";
 
-import { Button } from "@/shared/ui/button";
 import { useAuth } from "@/shared/contexts/AuthContext";
 import V2ConversationsPage from "../components/V2ConversationsPage";
 import V2PromptSettings from "../components/V2PromptSettings";
@@ -235,18 +233,11 @@ const V2Dashboard = () => {
             <V2PendingAppointments />
           ) : (
             <>
-          <div className="mb-7 flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
+          <div className="mb-7">
             <div>
               <h2 className="text-[2.25rem] font-bold leading-tight text-[#010817]">Dashboard</h2>
               <p className="mt-2 text-[1.45rem] font-medium text-[#6f7e95]">Welcome back, {userName}</p>
             </div>
-            <Button
-              type="button"
-              className="h-[52px] rounded-[8px] bg-[#ff8f6a] px-5 text-lg font-semibold text-white shadow-none hover:bg-[#ff7d53]"
-            >
-              <Crown className="mr-3 h-5 w-5" strokeWidth={1.9} />
-              Upgrade Plan
-            </Button>
           </div>
 
           <section>

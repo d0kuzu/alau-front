@@ -5,7 +5,7 @@ import { useLanguage } from "@/shared/contexts/LanguageContext";
 import { Card } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/shared/ui/sheet";
-import { CreditCard, Settings, MessageSquare, Phone, Calendar, TrendingUp, ArrowUp, ArrowDown, BarChart3, MessageCircle, Clock, ArrowRight, FileText, Menu, Bot } from "lucide-react";
+import { Settings, MessageSquare, Phone, Calendar, TrendingUp, ArrowUp, ArrowDown, BarChart3, MessageCircle, Clock, ArrowRight, FileText, Menu, Bot } from "lucide-react";
 import PromptSettings from "../components/PromptSettings";
 import AssistantsPage from "../components/AssistantsPage";
 import AssistantDetailsPage from "../components/AssistantDetailsPage";
@@ -370,7 +370,7 @@ const Dashboard = () => {
               ) : (
                 <>
                   {/* Заголовок */}
-                  <div className="mb-6 md:mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="mb-6 md:mb-8">
                     <div>
                       <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-1">
                         {t.dashboard.title}
@@ -379,24 +379,6 @@ const Dashboard = () => {
                         {t.dashboard.welcome}, {userName}
                       </p>
                     </div>
-                    <Button 
-                      onClick={() => {
-                        navigate("/");
-                        setTimeout(() => {
-                          const element = document.getElementById("pricing");
-                          element?.scrollIntoView({
-                            behavior: "smooth"
-                          });
-                        }, 100);
-                      }} 
-                      style={{
-                        background: "linear-gradient(90deg, rgba(113, 181, 234, 1) 0%, rgba(81, 194, 251, 1) 80%)"
-                      }} 
-                      className="hover:opacity-90 text-white font-medium shadow-md w-full sm:w-auto"
-                    >
-                      <CreditCard className="w-4 h-4 mr-2" />
-                      {t.dashboard.upgradePlan}
-                    </Button>
                   </div>
 
                   {/* Статистика в реальном времени */}
