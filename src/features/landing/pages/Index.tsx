@@ -5,7 +5,6 @@ import Features from "../sections/Features";
 import Channels from "../sections/Channels";
 import ForWho from "../sections/ForWho";
 import About from "../sections/About";
-import Pricing from "../sections/Pricing";
 import Contact from "../sections/Contact";
 import Footer from "@/shared/components/Footer";
 import LoadingScreen from "@/shared/components/LoadingScreen";
@@ -31,7 +30,6 @@ const Index = () => {
       <Channels />
       <ForWho />
       <About />
-      <Pricing />
       <Contact />
       <Footer />
     </div>

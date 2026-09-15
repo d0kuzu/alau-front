@@ -65,9 +65,6 @@ const Header = () => {
   }, {
     id: "about",
     label: t.header.nav.about
-  }, {
-    id: "pricing",
-    label: t.header.nav.pricing
   }];
 
   // Отслеживание скролла
