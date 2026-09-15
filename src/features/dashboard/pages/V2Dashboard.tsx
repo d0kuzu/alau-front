@@ -46,6 +46,7 @@ const V2Dashboard = () => {
     refreshProfile,
   } = useAuth();
   const [activeNav, setActiveNav] = useState("overview");
+  const [conversationsResetKey, setConversationsResetKey] = useState(0);
   const [selectedPeriod, setSelectedPeriod] = useState("Today");
   const [showWelcomePopup, setShowWelcomePopup] = useState(false);
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
@@ -194,7 +195,12 @@ const V2Dashboard = () => {
                 <button
                   key={item.id}
                   type="button"
-                  onClick={() => setActiveNav(item.id)}
+                  onClick={() => {
+                    if (item.id === "conversations") {
+                      setConversationsResetKey((prev) => prev + 1);
+                    }
+                    setActiveNav(item.id);
+                  }}
                   className={`flex h-10 w-full items-center gap-3 rounded-[7px] px-3 text-left text-[1.05rem] transition-colors ${
                     isActive
                       ? "bg-[#f1f1f3] font-semibold text-[#071225]"
@@ -224,7 +230,7 @@ const V2Dashboard = () => {
       <div className="min-h-screen md:pl-[320px]">
         <div className="mx-auto max-w-[1660px] px-5 py-8 md:px-10 md:py-12">
           {activeNav === "conversations" ? (
-            <V2ConversationsPage />
+            <V2ConversationsPage resetKey={conversationsResetKey} />
           ) : activeNav === "prompt-settings" ? (
             <V2PromptSettings />
           ) : activeNav === "blocked" ? (

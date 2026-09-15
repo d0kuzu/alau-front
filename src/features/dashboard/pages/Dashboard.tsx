@@ -46,6 +46,7 @@ const Dashboard = () => {
   } = useAuth();
   const [selectedPeriod, setSelectedPeriod] = useState("today");
   const [activeNav, setActiveNav] = useState(requestedActiveNav ?? "overview");
+  const [conversationsResetKey, setConversationsResetKey] = useState(0);
   const [hoveredBar, setHoveredBar] = useState<number | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({
     x: 0,
@@ -234,6 +235,9 @@ const Dashboard = () => {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                if (item.id === "conversations") {
+                  setConversationsResetKey((prev) => prev + 1);
+                }
                 setActiveNav(item.id);
                 if (assistantId) {
                   navigate("/dashboard", { state: { activeNav: item.id } });
@@ -366,7 +370,7 @@ const Dashboard = () => {
               ) : activeNav === "assistants" ? (
                 <AssistantsPage />
               ) : activeNav === "conversations" ? (
-                <ConversationsPage />
+                <ConversationsPage resetKey={conversationsResetKey} />
               ) : (
                 <>
                   {/* Заголовок */}

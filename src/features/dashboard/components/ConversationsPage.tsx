@@ -47,7 +47,11 @@ const formatDate = (iso: string, locale: string) => {
   }
 };
 
-const ConversationsPage = () => {
+type ConversationsPageProps = {
+  resetKey?: number;
+};
+
+const ConversationsPage = ({ resetKey }: ConversationsPageProps = {}) => {
   const { toast } = useToast();
   const { t, dateLocale } = useLanguage();
   const [assistants, setAssistants] = useState<Assistant[]>([]);
@@ -127,6 +131,18 @@ const ConversationsPage = () => {
     },
     [getAssistantIdsString, toast],
   );
+
+  const prevResetKeyRef = useRef(resetKey);
+
+  useEffect(() => {
+    if (prevResetKeyRef.current !== resetKey) {
+      prevResetKeyRef.current = resetKey;
+      if (selectedChat) {
+        setSelectedChat(null);
+        void loadChats(currentPage);
+      }
+    }
+  }, [resetKey, selectedChat, currentPage, loadChats]);
 
   useEffect(() => {
     if (!assistantsLoaded) {

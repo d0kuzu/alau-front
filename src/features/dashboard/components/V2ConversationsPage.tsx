@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, MoreHorizontal, Plus, Search, Trash2 } from "lucide-react";
 
 import { Button } from "@/shared/ui/button";
@@ -24,9 +24,11 @@ import { formatShortDate } from "@/shared/lib/date";
 
 const CHATS_PER_PAGE = 10;
 
+type V2ConversationsPageProps = {
+  resetKey?: number;
+};
 
-
-const V2ConversationsPage = () => {
+const V2ConversationsPage = ({ resetKey }: V2ConversationsPageProps = {}) => {
   const { toast } = useToast();
   const [agentName, setAgentName] = useState("AVA");
   const [chats, setChats] = useState<Chat[]>([]);
@@ -83,6 +85,20 @@ const V2ConversationsPage = () => {
     },
     [toast],
   );
+
+  const prevResetKeyRef = useRef(resetKey);
+
+  useEffect(() => {
+    if (prevResetKeyRef.current !== resetKey) {
+      prevResetKeyRef.current = resetKey;
+      if (selectedChat) {
+        setSelectedChat(null);
+        if (assistantId) {
+          void loadChats(currentPage, assistantId);
+        }
+      }
+    }
+  }, [resetKey, selectedChat, assistantId, currentPage, loadChats]);
 
   useEffect(() => {
     if (assistantId) {

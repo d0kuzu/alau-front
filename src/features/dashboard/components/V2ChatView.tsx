@@ -185,6 +185,7 @@ const V2ChatView = ({ agentName, chat, onBack }: V2ChatViewProps) => {
     return () => {
       cancelled = true;
       socket?.close(1000);
+      wsRef.current?.close(1000);
       wsRef.current = null;
     };
   }, [chat.id, toast]);
