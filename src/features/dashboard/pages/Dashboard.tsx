@@ -12,7 +12,7 @@ import AssistantDetailsPage from "../components/AssistantDetailsPage";
 import ConversationsPage from "../components/ConversationsPage";
 import LanguageSelector from "@/shared/components/LanguageSelector";
 import { fetchAnalytics, fetchAssistants, type AnalyticsData, type AnalyticsCategory } from "@/services/api/api";
-import AnalyticsChatsModal from "../components/AnalyticsChatsModal";
+import V2AnalyticsChatsPage from "../components/V2AnalyticsChatsPage";
 
 // Иконки для Telegram и WhatsApp
 const TelegramIcon = ({
@@ -59,8 +59,7 @@ const Dashboard = () => {
   const [isAnalyticsLoading, setIsAnalyticsLoading] = useState(false);
   const [selectedAssistantId, setSelectedAssistantId] = useState<string>("");
   const [agentName, setAgentName] = useState<string>("AVA");
-  const [analyticsModalCategory, setAnalyticsModalCategory] = useState<AnalyticsCategory | null>(null);
-  const [isAnalyticsModalOpen, setIsAnalyticsModalOpen] = useState(false);
+  const [analyticsCategory, setAnalyticsCategory] = useState<AnalyticsCategory | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -397,6 +396,15 @@ const Dashboard = () => {
             <div className="max-w-7xl mx-auto">
               {assistantId ? (
                 <AssistantDetailsPage assistantId={assistantId} />
+              ) : analyticsCategory ? (
+                <V2AnalyticsChatsPage
+                  assistantId={selectedAssistantId}
+                  category={analyticsCategory}
+                  days={selectedPeriodDays}
+                  periodLabel={selectedPeriodLabel}
+                  agentName={agentName}
+                  onBack={() => setAnalyticsCategory(null)}
+                />
               ) : activeNav === "prompt-settings" ? (
                 <PromptSettings />
               ) : activeNav === "assistants" ? (
@@ -457,8 +465,7 @@ const Dashboard = () => {
                             key={index}
                             onClick={() => {
                               if (stat.category) {
-                                setAnalyticsModalCategory(stat.category);
-                                setIsAnalyticsModalOpen(true);
+                                setAnalyticsCategory(stat.category);
                               }
                             }}
                             className={`p-4 md:p-5 bg-white border border-slate-200 shadow-sm transition-all ${

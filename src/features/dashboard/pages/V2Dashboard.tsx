@@ -19,7 +19,7 @@ import V2PromptSettings from "../components/V2PromptSettings";
 import V2BlockedCustomers from "../components/V2BlockedCustomers";
 import V2PendingAppointments from "../components/V2PendingAppointments";
 import { fetchAnalytics, fetchAssistants, type AnalyticsData, type AnalyticsCategory } from "@/services/api/api";
-import AnalyticsChatsModal from "../components/AnalyticsChatsModal";
+import V2AnalyticsChatsPage from "../components/V2AnalyticsChatsPage";
 
 const periods = ["Today", "7 days", "30 days", "60 days", "90 days"];
 
@@ -54,8 +54,7 @@ const V2Dashboard = () => {
   const [isAnalyticsLoading, setIsAnalyticsLoading] = useState(false);
   const [assistantId, setAssistantId] = useState<string>("");
   const [agentName, setAgentName] = useState<string>("AVA");
-  const [analyticsModalCategory, setAnalyticsModalCategory] = useState<AnalyticsCategory | null>(null);
-  const [isAnalyticsModalOpen, setIsAnalyticsModalOpen] = useState(false);
+  const [analyticsCategory, setAnalyticsCategory] = useState<AnalyticsCategory | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -220,13 +219,14 @@ const V2Dashboard = () => {
           <div className="space-y-1.5">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = activeNav === item.id;
+              const isActive = activeNav === item.id && !analyticsCategory;
 
               return (
                 <button
                   key={item.id}
                   type="button"
                   onClick={() => {
+                    setAnalyticsCategory(null);
                     if (item.id === "conversations") {
                       setConversationsResetKey((prev) => prev + 1);
                     }
@@ -260,7 +260,16 @@ const V2Dashboard = () => {
 
       <div className="min-h-screen md:pl-[320px]">
         <div className="mx-auto max-w-[1660px] px-5 py-8 md:px-10 md:py-12">
-          {activeNav === "conversations" ? (
+          {analyticsCategory ? (
+            <V2AnalyticsChatsPage
+              assistantId={assistantId}
+              category={analyticsCategory}
+              days={selectedPeriodDays}
+              periodLabel={selectedPeriod}
+              agentName={agentName}
+              onBack={() => setAnalyticsCategory(null)}
+            />
+          ) : activeNav === "conversations" ? (
             <V2ConversationsPage resetKey={conversationsResetKey} />
           ) : activeNav === "prompt-settings" ? (
             <V2PromptSettings />
@@ -307,8 +316,7 @@ const V2Dashboard = () => {
                     key={stat.title}
                     onClick={() => {
                       if (stat.category) {
-                        setAnalyticsModalCategory(stat.category);
-                        setIsAnalyticsModalOpen(true);
+                        setAnalyticsCategory(stat.category);
                       }
                     }}
                     className={`min-h-[188px] rounded-[8px] border border-[#dfe6ef] bg-white px-8 py-8 shadow-[0_2px_8px_rgba(15,23,42,0.04)] ${
@@ -483,15 +491,6 @@ const V2Dashboard = () => {
         </div>
       )}
 
-      <AnalyticsChatsModal
-        isOpen={isAnalyticsModalOpen}
-        onClose={() => setIsAnalyticsModalOpen(false)}
-        assistantId={assistantId}
-        category={analyticsModalCategory}
-        days={selectedPeriodDays}
-        periodLabel={selectedPeriod}
-        agentName={agentName}
-      />
     </main>
   );
 };
