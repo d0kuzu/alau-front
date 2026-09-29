@@ -181,7 +181,6 @@ const V2Dashboard = () => {
       changeColor: getPctColor(currentStatsData?.booked_change_pct),
       note: `appointments booked ${selectedPeriod.toLowerCase()}`,
       icon: CalendarDays,
-      category: "booked",
     },
     {
       title: "Conversion Rate",

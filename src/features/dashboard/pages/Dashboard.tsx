@@ -204,7 +204,6 @@ const Dashboard = () => {
     description: t.dashboard.previousPeriod,
     icon: Calendar,
     iconColor: "text-[#51C2FB]",
-    category: "booked",
   }, {
     title: t.dashboard.conversion,
     value: currentStatsData?.conversion_rate ? `${currentStatsData.conversion_rate.toFixed(1)}%` : "-",
