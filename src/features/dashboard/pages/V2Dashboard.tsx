@@ -18,7 +18,8 @@ import V2ConversationsPage from "../components/V2ConversationsPage";
 import V2PromptSettings from "../components/V2PromptSettings";
 import V2BlockedCustomers from "../components/V2BlockedCustomers";
 import V2PendingAppointments from "../components/V2PendingAppointments";
-import { fetchAnalytics, fetchAssistants, type AnalyticsData } from "@/services/api/api";
+import { fetchAnalytics, fetchAssistants, type AnalyticsData, type AnalyticsCategory } from "@/services/api/api";
+import AnalyticsChatsModal from "../components/AnalyticsChatsModal";
 
 const periods = ["Today", "7 days", "30 days", "60 days", "90 days"];
 
@@ -51,6 +52,10 @@ const V2Dashboard = () => {
   const [showWelcomePopup, setShowWelcomePopup] = useState(false);
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
   const [isAnalyticsLoading, setIsAnalyticsLoading] = useState(false);
+  const [assistantId, setAssistantId] = useState<string>("");
+  const [agentName, setAgentName] = useState<string>("AVA");
+  const [analyticsModalCategory, setAnalyticsModalCategory] = useState<AnalyticsCategory | null>(null);
+  const [isAnalyticsModalOpen, setIsAnalyticsModalOpen] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -61,9 +66,13 @@ const V2Dashboard = () => {
       try {
         const assistants = await fetchAssistants();
         if (assistants.length > 0) {
-          const firstAssistantId = assistants[0].id;
-          const data = await fetchAnalytics(firstAssistantId);
-          console.log(`[V2Dashboard] fetched analytics for ${firstAssistantId}:`, data);
+          const firstAssistant = assistants[0];
+          if (isMounted) {
+            setAssistantId(firstAssistant.id);
+            if (firstAssistant.name) setAgentName(firstAssistant.name);
+          }
+          const data = await fetchAnalytics(firstAssistant.id);
+          console.log(`[V2Dashboard] fetched analytics for ${firstAssistant.id}:`, data);
           if (isMounted) setAnalyticsData(data);
         }
       } catch (error) {
@@ -107,6 +116,15 @@ const V2Dashboard = () => {
 
   const userName = profile?.name || user?.email?.split("@")[0] || "kawka";
 
+  const periodDaysMap: Record<string, number> = {
+    "Today": 1,
+    "7 days": 7,
+    "30 days": 30,
+    "60 days": 60,
+    "90 days": 90,
+  };
+  const selectedPeriodDays = periodDaysMap[selectedPeriod] || 1;
+
   const periodKey = ({
     "Today": "today",
     "7 days": "7_days",
@@ -128,7 +146,17 @@ const V2Dashboard = () => {
     return val > 0 ? "text-[#16a34a]" : "text-[#ef4444]";
   };
 
-  const stats = [
+  type StatItem = {
+    title: string;
+    value: string;
+    change: string;
+    changeColor: string;
+    note: string;
+    icon: typeof Phone;
+    category?: AnalyticsCategory;
+  };
+
+  const stats: StatItem[] = [
     {
       title: "Conversations Started",
       value: currentStatsData?.started_conversations?.toString() ?? "-",
@@ -136,6 +164,7 @@ const V2Dashboard = () => {
       changeColor: getPctColor(currentStatsData?.started_change_pct),
       note: `new conversations ${selectedPeriod.toLowerCase()}`,
       icon: Phone,
+      category: "started",
     },
     {
       title: "Conversations Completed",
@@ -144,6 +173,7 @@ const V2Dashboard = () => {
       changeColor: getPctColor(currentStatsData?.completed_change_pct),
       note: "customers who responded",
       icon: MessageCircle,
+      category: "completed",
     },
     {
       title: "Booked Appointments",
@@ -152,6 +182,7 @@ const V2Dashboard = () => {
       changeColor: getPctColor(currentStatsData?.booked_change_pct),
       note: `appointments booked ${selectedPeriod.toLowerCase()}`,
       icon: CalendarDays,
+      category: "booked",
     },
     {
       title: "Conversion Rate",
@@ -274,12 +305,31 @@ const V2Dashboard = () => {
                 return (
                   <article
                     key={stat.title}
-                    className="min-h-[188px] rounded-[8px] border border-[#dfe6ef] bg-white px-8 py-8 shadow-[0_2px_8px_rgba(15,23,42,0.04)]"
+                    onClick={() => {
+                      if (stat.category) {
+                        setAnalyticsModalCategory(stat.category);
+                        setIsAnalyticsModalOpen(true);
+                      }
+                    }}
+                    className={`min-h-[188px] rounded-[8px] border border-[#dfe6ef] bg-white px-8 py-8 shadow-[0_2px_8px_rgba(15,23,42,0.04)] ${
+                      stat.category
+                        ? "cursor-pointer transition-all duration-200 hover:border-[#ff8f6a] hover:shadow-[0_4px_16px_rgba(255,143,106,0.12)] hover:-translate-y-0.5 group"
+                        : ""
+                    }`}
                   >
                     <div className="flex items-start justify-between gap-6">
                       <div>
-                        <p className="mb-4 text-[1.05rem] font-semibold text-[#64748b]">{stat.title}</p>
-                        <div className="flex h-[32px] items-center text-[2rem] font-bold leading-none text-[#010817]">
+                        <div className="flex items-center gap-2 mb-4">
+                          <p className="text-[1.05rem] font-semibold text-[#64748b] group-hover:text-[#010817] transition-colors">
+                            {stat.title}
+                          </p>
+                          {stat.category && (
+                            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-xs font-semibold text-[#ff8f6a] bg-[#ff8f6a]/10 px-2 py-0.5 rounded-full">
+                              View chats →
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex h-[32px] items-center text-[2rem] font-bold leading-none text-[#010817] group-hover:text-[#ff6f2d] transition-colors">
                           {isAnalyticsLoading ? <Loader2 className="h-6 w-6 animate-spin text-[#ff8f6a]" /> : stat.value}
                         </div>
                         <p className="mt-3 text-base text-[#68788f]">
@@ -288,7 +338,7 @@ const V2Dashboard = () => {
                         </p>
                         <p className="mt-1 text-base text-[#68788f]">{stat.note}</p>
                       </div>
-                      <Icon className="mt-1 h-5 w-5 shrink-0 text-[#ff8f6a]" strokeWidth={1.8} />
+                      <Icon className="mt-1 h-5 w-5 shrink-0 text-[#ff8f6a] group-hover:scale-110 transition-transform" strokeWidth={1.8} />
                     </div>
                   </article>
                 );
@@ -432,6 +482,16 @@ const V2Dashboard = () => {
           </p>
         </div>
       )}
+
+      <AnalyticsChatsModal
+        isOpen={isAnalyticsModalOpen}
+        onClose={() => setIsAnalyticsModalOpen(false)}
+        assistantId={assistantId}
+        category={analyticsModalCategory}
+        days={selectedPeriodDays}
+        periodLabel={selectedPeriod}
+        agentName={agentName}
+      />
     </main>
   );
 };

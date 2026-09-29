@@ -46,6 +46,10 @@ export type Chat = {
   updated_at: string;
   message_count: number;
   is_end: boolean;
+  started_at?: string;
+  is_booked?: boolean;
+  is_reviewed?: boolean;
+  followup_stage?: number;
 };
 
 type UpdateAssistantPayload = {
@@ -868,6 +872,82 @@ export const fetchAnalytics = async (assistantId: string): Promise<AnalyticsData
   const payload = getAnswerPayload(response, "Не удалось загрузить аналитику");
   
   return payload as AnalyticsData;
+};
+
+export type AnalyticsCategory = "started" | "completed" | "booked";
+
+export type AnalyticsChatsResponse = {
+  category: string;
+  days: number;
+  total_count: number;
+  total_pages: number;
+  current_page: number;
+  limit: number;
+  chats: Chat[];
+};
+
+export const fetchAnalyticsStartedChats = async (params: {
+  assistantId: string;
+  days: number;
+  page?: number;
+  limit?: number;
+}): Promise<AnalyticsChatsResponse> => {
+  const query = buildQueryParams({
+    assistant_id: params.assistantId,
+    days: params.days,
+    page: params.page ?? 1,
+    limit: params.limit ?? 10,
+  });
+  return backendRequest<AnalyticsChatsResponse>(`/ai/analytics/chats/started${query}`);
+};
+
+export const fetchAnalyticsCompletedChats = async (params: {
+  assistantId: string;
+  days: number;
+  page?: number;
+  limit?: number;
+}): Promise<AnalyticsChatsResponse> => {
+  const query = buildQueryParams({
+    assistant_id: params.assistantId,
+    days: params.days,
+    page: params.page ?? 1,
+    limit: params.limit ?? 10,
+  });
+  return backendRequest<AnalyticsChatsResponse>(`/ai/analytics/chats/completed${query}`);
+};
+
+export const fetchAnalyticsBookedChats = async (params: {
+  assistantId: string;
+  days: number;
+  page?: number;
+  limit?: number;
+}): Promise<AnalyticsChatsResponse> => {
+  const query = buildQueryParams({
+    assistant_id: params.assistantId,
+    days: params.days,
+    page: params.page ?? 1,
+    limit: params.limit ?? 10,
+  });
+  return backendRequest<AnalyticsChatsResponse>(`/ai/analytics/chats/booked${query}`);
+};
+
+export const fetchAnalyticsChatsByCategory = async (
+  category: AnalyticsCategory,
+  params: {
+    assistantId: string;
+    days: number;
+    page?: number;
+    limit?: number;
+  }
+): Promise<AnalyticsChatsResponse> => {
+  switch (category) {
+    case "started":
+      return fetchAnalyticsStartedChats(params);
+    case "completed":
+      return fetchAnalyticsCompletedChats(params);
+    case "booked":
+      return fetchAnalyticsBookedChats(params);
+  }
 };
 
 export type BlockedCustomer = {

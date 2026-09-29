@@ -11,7 +11,8 @@ import AssistantsPage from "../components/AssistantsPage";
 import AssistantDetailsPage from "../components/AssistantDetailsPage";
 import ConversationsPage from "../components/ConversationsPage";
 import LanguageSelector from "@/shared/components/LanguageSelector";
-import { fetchAnalytics, fetchAssistants, type AnalyticsData } from "@/services/api/api";
+import { fetchAnalytics, fetchAssistants, type AnalyticsData, type AnalyticsCategory } from "@/services/api/api";
+import AnalyticsChatsModal from "../components/AnalyticsChatsModal";
 
 // Иконки для Telegram и WhatsApp
 const TelegramIcon = ({
@@ -56,6 +57,10 @@ const Dashboard = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
   const [isAnalyticsLoading, setIsAnalyticsLoading] = useState(false);
+  const [selectedAssistantId, setSelectedAssistantId] = useState<string>("");
+  const [agentName, setAgentName] = useState<string>("AVA");
+  const [analyticsModalCategory, setAnalyticsModalCategory] = useState<AnalyticsCategory | null>(null);
+  const [isAnalyticsModalOpen, setIsAnalyticsModalOpen] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -66,9 +71,13 @@ const Dashboard = () => {
       try {
         const assistants = await fetchAssistants();
         if (assistants.length > 0) {
-          const firstAssistantId = assistants[0].id;
-          const data = await fetchAnalytics(firstAssistantId);
-          console.log(`[Dashboard] fetched analytics for ${firstAssistantId}:`, data);
+          const firstAssistant = assistants[0];
+          if (isMounted) {
+            setSelectedAssistantId(firstAssistant.id);
+            if (firstAssistant.name) setAgentName(firstAssistant.name);
+          }
+          const data = await fetchAnalytics(firstAssistant.id);
+          console.log(`[Dashboard] fetched analytics for ${firstAssistant.id}:`, data);
           if (isMounted) setAnalyticsData(data);
         }
       } catch (error) {
@@ -119,6 +128,16 @@ const Dashboard = () => {
     "90days": "90_days",
   } as Record<string, keyof AnalyticsData>)[selectedPeriod] || "today";
 
+  const periodDaysMap: Record<string, number> = {
+    "today": 1,
+    "7_days": 7,
+    "30_days": 30,
+    "60_days": 60,
+    "90_days": 90,
+  };
+  const selectedPeriodDays = periodDaysMap[selectedPeriod] || 1;
+  const selectedPeriodLabel = periods.find((p) => p.key === selectedPeriod)?.label || "30 days";
+
   const currentStatsData = analyticsData?.[periodKey];
 
   const formatPct = (val?: number) => {
@@ -149,15 +168,26 @@ const Dashboard = () => {
     0
   ];
 
-  // Статистика
-  const stats = [{
+  type V1StatItem = {
+    title: string;
+    value: string;
+    change: string;
+    changeType: "positive" | "negative" | "neutral";
+    description: string;
+    icon: typeof Phone;
+    iconColor: string;
+    category?: AnalyticsCategory;
+  };
+
+  const stats: V1StatItem[] = [{
     title: t.dashboard.startedConversations,
     value: currentStatsData?.started_conversations?.toString() ?? "-",
     change: formatPct(currentStatsData?.started_change_pct),
     changeType: getPctChangeType(currentStatsData?.started_change_pct),
     description: t.dashboard.previousPeriod,
     icon: Phone,
-    iconColor: "text-[#51C2FB]"
+    iconColor: "text-[#51C2FB]",
+    category: "started",
   }, {
     title: t.dashboard.completedConversations,
     value: currentStatsData?.completed_conversations?.toString() ?? "-",
@@ -165,7 +195,8 @@ const Dashboard = () => {
     changeType: getPctChangeType(currentStatsData?.completed_change_pct),
     description: t.dashboard.previousPeriod,
     icon: MessageSquare,
-    iconColor: "text-[#51C2FB]"
+    iconColor: "text-[#51C2FB]",
+    category: "completed",
   }, {
     title: t.dashboard.bookedMeetings,
     value: currentStatsData?.booked_meetings?.toString() ?? "-",
@@ -173,7 +204,8 @@ const Dashboard = () => {
     changeType: getPctChangeType(currentStatsData?.booked_change_pct),
     description: t.dashboard.previousPeriod,
     icon: Calendar,
-    iconColor: "text-[#51C2FB]"
+    iconColor: "text-[#51C2FB]",
+    category: "booked",
   }, {
     title: t.dashboard.conversion,
     value: currentStatsData?.conversion_rate ? `${currentStatsData.conversion_rate.toFixed(1)}%` : "-",
@@ -419,12 +451,33 @@ const Dashboard = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                       {stats.map((stat, index) => {
                         const Icon = stat.icon;
+                        const hasCategory = Boolean(stat.category);
                         return (
-                          <Card key={index} className="p-4 md:p-5 bg-white border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                          <Card
+                            key={index}
+                            onClick={() => {
+                              if (stat.category) {
+                                setAnalyticsModalCategory(stat.category);
+                                setIsAnalyticsModalOpen(true);
+                              }
+                            }}
+                            className={`p-4 md:p-5 bg-white border border-slate-200 shadow-sm transition-all ${
+                              hasCategory
+                                ? "cursor-pointer hover:border-[#51C2FB] hover:shadow-md hover:-translate-y-0.5 group"
+                                : ""
+                            }`}
+                          >
                             <div className="flex items-start justify-between mb-3">
                               <div className="flex-1">
-                                <p className="text-xs md:text-sm text-slate-600 mb-2">{stat.title}</p>
-                                <p className="text-2xl md:text-3xl font-bold text-slate-900 mb-1">
+                                <div className="flex items-center gap-1.5 mb-2">
+                                  <p className="text-xs md:text-sm text-slate-600 group-hover:text-slate-900 transition-colors">{stat.title}</p>
+                                  {hasCategory && (
+                                    <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-semibold text-[#51C2FB] bg-[#51C2FB]/10 px-1.5 py-0.5 rounded-full">
+                                      View →
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-2xl md:text-3xl font-bold text-slate-900 mb-1 group-hover:text-[#51C2FB] transition-colors">
                                   {isAnalyticsLoading ? <span className="inline-block animate-pulse h-8 w-16 bg-slate-200 rounded"></span> : stat.value}
                                 </p>
                                 <div className="flex items-center gap-1.5 flex-wrap">
@@ -440,7 +493,7 @@ const Dashboard = () => {
                                   <span className="text-xs text-slate-500 hidden sm:inline">{stat.description}</span>
                                 </div>
                               </div>
-                              <div className={`p-2 rounded-lg bg-[#51C2FB]/10 ${stat.iconColor} opacity-60`}>
+                              <div className={`p-2 rounded-lg bg-[#51C2FB]/10 ${stat.iconColor} opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all`}>
                                 <Icon className="w-4 h-4 md:w-5 md:h-5" />
                               </div>
                             </div>
@@ -558,6 +611,16 @@ const Dashboard = () => {
           </div>
         </main>
       </div>
+
+      <AnalyticsChatsModal
+        isOpen={isAnalyticsModalOpen}
+        onClose={() => setIsAnalyticsModalOpen(false)}
+        assistantId={assistantId}
+        category={analyticsModalCategory}
+        days={selectedPeriodDays}
+        periodLabel={selectedPeriodLabel}
+        agentName={agentName}
+      />
     </div>
   );
 };
