@@ -621,16 +621,6 @@ const Dashboard = () => {
           </div>
         </main>
       </div>
-
-      <AnalyticsChatsModal
-        isOpen={isAnalyticsModalOpen}
-        onClose={() => setIsAnalyticsModalOpen(false)}
-        assistantId={assistantId}
-        category={analyticsModalCategory}
-        days={selectedPeriodDays}
-        periodLabel={selectedPeriodLabel}
-        agentName={agentName}
-      />
     </div>
   );
 };
