@@ -119,6 +119,14 @@ const Dashboard = () => {
   // Получаем имя пользователя из профиля
   const userName = profile?.name || user?.email?.split('@')[0] || t.common.userFallback;
 
+  const periods = [
+    { key: "today", label: t.dashboard.periods.today },
+    { key: "7days", label: t.dashboard.periods.sevenDays },
+    { key: "30days", label: t.dashboard.periods.thirtyDays },
+    { key: "60days", label: t.dashboard.periods.sixtyDays },
+    { key: "90days", label: t.dashboard.periods.ninetyDays },
+  ];
+
   const periodKey = ({
     "today": "today",
     "7days": "7_days",
@@ -129,12 +137,16 @@ const Dashboard = () => {
 
   const periodDaysMap: Record<string, number> = {
     "today": 1,
+    "7days": 7,
+    "30days": 30,
+    "60days": 60,
+    "90days": 90,
     "7_days": 7,
     "30_days": 30,
     "60_days": 60,
     "90_days": 90,
   };
-  const selectedPeriodDays = periodDaysMap[selectedPeriod] || 1;
+  const selectedPeriodDays = periodDaysMap[selectedPeriod] || periodDaysMap[periodKey] || 1;
   const selectedPeriodLabel = periods.find((p) => p.key === selectedPeriod)?.label || "30 days";
 
   const currentStatsData = analyticsData?.[periodKey];
@@ -289,14 +301,6 @@ const Dashboard = () => {
       </div>
     </>
   );
-
-  const periods = [
-    { key: "today", label: t.dashboard.periods.today },
-    { key: "7days", label: t.dashboard.periods.sevenDays },
-    { key: "30days", label: t.dashboard.periods.thirtyDays },
-    { key: "60days", label: t.dashboard.periods.sixtyDays },
-    { key: "90days", label: t.dashboard.periods.ninetyDays },
-  ];
 
   if (isLoading) {
     return (
