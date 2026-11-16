@@ -3,6 +3,7 @@ import {
   ArrowLeft,
   CalendarDays,
   Clock,
+  GraduationCap,
   MessageSquare,
   Phone,
   Send,
@@ -23,6 +24,7 @@ type ChatMessage = {
 type V2ChatViewProps = {
   agentName: string;
   chat: Chat;
+  isTutor?: boolean;
   onBack: () => void;
 };
 
@@ -54,8 +56,9 @@ const normalizeBody = (value: unknown) => {
   }
 };
 
-const V2ChatView = ({ agentName, chat, onBack }: V2ChatViewProps) => {
+const V2ChatView = ({ agentName, chat, isTutor = false, onBack }: V2ChatViewProps) => {
   const { toast } = useToast();
+  const [viewTutor, setViewTutor] = useState<boolean>(Boolean(isTutor));
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isConnecting, setIsConnecting] = useState(true);
   const [manualMessage, setManualMessage] = useState("");
@@ -105,7 +108,7 @@ const V2ChatView = ({ agentName, chat, onBack }: V2ChatViewProps) => {
           return;
         }
 
-        const wsUrl = `wss://api.zerde.co/diaxel/ai/websocket/get_conversation?token=${encodeURIComponent(accessToken)}&chat=${encodeURIComponent(chat.id)}`;
+        const wsUrl = `wss://api.zerde.co/diaxel/ai/websocket/get_conversation?token=${encodeURIComponent(accessToken)}&chat=${encodeURIComponent(chat.id)}&isTutor=${viewTutor ? "true" : "false"}`;
         socket = new WebSocket(wsUrl);
         wsRef.current = socket;
 
@@ -188,7 +191,7 @@ const V2ChatView = ({ agentName, chat, onBack }: V2ChatViewProps) => {
       wsRef.current?.close(1000);
       wsRef.current = null;
     };
-  }, [chat.id, toast]);
+  }, [chat.id, viewTutor, toast]);
 
   return (
     <div className="min-h-[calc(100vh-6rem)]">
@@ -226,11 +229,41 @@ const V2ChatView = ({ agentName, chat, onBack }: V2ChatViewProps) => {
 
       <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_535px]">
         <section className="flex min-h-[calc(100vh-13rem)] flex-col overflow-hidden rounded-[8px] border border-[#dfe6ef] bg-white">
-          <div className="border-b border-[#e6ebf2] px-5 py-8 md:px-6">
-            <h2 className="text-[2.2rem] font-bold leading-tight text-[#071225]">Message History</h2>
-            <p className="mt-2 text-lg font-medium text-[#465468]">
-              {chat.message_count || messages.length} messages exchanged
-            </p>
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#e6ebf2] px-5 py-8 md:px-6">
+            <div>
+              <h2 className="text-[2.2rem] font-bold leading-tight text-[#071225]">
+                {viewTutor ? "Tutor Message History" : "Message History"}
+              </h2>
+              <p className="mt-2 text-lg font-medium text-[#465468]">
+                {messages.length || chat.message_count} messages exchanged
+              </p>
+            </div>
+            {(chat.is_tutor || isTutor) && (
+              <div className="inline-flex rounded-[8px] bg-[#f1f5f9] p-1">
+                <button
+                  type="button"
+                  onClick={() => setViewTutor(false)}
+                  className={`h-9 rounded-[6px] px-4 text-sm font-semibold transition-colors ${
+                    !viewTutor
+                      ? "bg-white text-[#020817] shadow-sm"
+                      : "text-[#66748a] hover:text-[#020817]"
+                  }`}
+                >
+                  Admissions Chat
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewTutor(true)}
+                  className={`h-9 rounded-[6px] px-4 text-sm font-semibold transition-colors ${
+                    viewTutor
+                      ? "bg-white text-[#020817] shadow-sm"
+                      : "text-[#66748a] hover:text-[#020817]"
+                  }`}
+                >
+                  Tutor Chat
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="min-h-[28rem] flex-1 space-y-7 overflow-y-auto px-7 py-8">
@@ -299,7 +332,21 @@ const V2ChatView = ({ agentName, chat, onBack }: V2ChatViewProps) => {
             <DetailItem icon={Phone} label="Customer Number" value={chat.customer_id || "-"} />
             <DetailItem icon={CalendarDays} label="Created" value={formatDateTime(chat.created_at)} />
             <DetailItem icon={Clock} label="Last Activity" value={formatDateTime(chat.updated_at)} />
-            <DetailItem icon={MessageSquare} label="Message Count" value={String(chat.message_count || messages.length)} />
+            <DetailItem icon={MessageSquare} label="Message Count" value={String(messages.length || chat.message_count)} />
+            {(chat.is_tutor || isTutor) && (
+              <>
+                <DetailItem
+                  icon={GraduationCap}
+                  label="Tutor Program"
+                  value={chat.tuting_program || "Not selected yet"}
+                />
+                <DetailItem
+                  icon={GraduationCap}
+                  label="Tutor Progress"
+                  value={`${chat.tutor_count ?? 0} total (${chat.tutor_count_per_day ?? 0}/5 today)`}
+                />
+              </>
+            )}
           </div>
         </aside>
       </div>

@@ -5,7 +5,7 @@ import { useLanguage } from "@/shared/contexts/LanguageContext";
 import { Card } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/shared/ui/sheet";
-import { Settings, MessageSquare, Phone, Calendar, TrendingUp, ArrowUp, ArrowDown, BarChart3, MessageCircle, Clock, ArrowRight, FileText, Menu, Bot } from "lucide-react";
+import { Settings, MessageSquare, Phone, Calendar, TrendingUp, ArrowUp, ArrowDown, BarChart3, MessageCircle, Clock, ArrowRight, FileText, Menu, Bot, GraduationCap } from "lucide-react";
 import PromptSettings from "../components/PromptSettings";
 import AssistantsPage from "../components/AssistantsPage";
 import AssistantDetailsPage from "../components/AssistantDetailsPage";
@@ -240,6 +240,10 @@ const Dashboard = () => {
     label: t.dashboard.conversations,
     icon: MessageCircle
   }, {
+    id: "tutor-conversations",
+    label: "Tutor Conversations",
+    icon: GraduationCap
+  }, {
     id: "follow-up",
     label: t.dashboard.followUp,
     icon: Clock
@@ -277,7 +281,7 @@ const Dashboard = () => {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                if (item.id === "conversations") {
+                if (item.id === "conversations" || item.id === "tutor-conversations") {
                   setConversationsResetKey((prev) => prev + 1);
                 }
                 setActiveNav(item.id);
@@ -413,7 +417,9 @@ const Dashboard = () => {
               ) : activeNav === "assistants" ? (
                 <AssistantsPage />
               ) : activeNav === "conversations" ? (
-                <ConversationsPage resetKey={conversationsResetKey} />
+                <ConversationsPage key="regular-conversations" resetKey={conversationsResetKey} isTutor={false} />
+              ) : activeNav === "tutor-conversations" ? (
+                <ConversationsPage key="tutor-conversations" resetKey={conversationsResetKey} isTutor={true} />
               ) : (
                 <>
                   {/* Заголовок */}

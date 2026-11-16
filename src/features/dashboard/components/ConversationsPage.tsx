@@ -49,9 +49,10 @@ const formatDate = (iso: string, locale: string) => {
 
 type ConversationsPageProps = {
   resetKey?: number;
+  isTutor?: boolean;
 };
 
-const ConversationsPage = ({ resetKey }: ConversationsPageProps = {}) => {
+const ConversationsPage = ({ resetKey, isTutor = false }: ConversationsPageProps = {}) => {
   const { toast } = useToast();
   const { t, dateLocale } = useLanguage();
   const [assistants, setAssistants] = useState<Assistant[]>([]);
@@ -112,8 +113,8 @@ const ConversationsPage = ({ resetKey }: ConversationsPageProps = {}) => {
 
       try {
         const [nextChats, nextTotalPages] = await Promise.all([
-          fetchChats(page, assistantIds),
-          fetchChatsPagination(assistantIds),
+          fetchChats(page, assistantIds, isTutor),
+          fetchChatsPagination(assistantIds, isTutor),
         ]);
 
         setChats(nextChats);
@@ -189,7 +190,7 @@ const ConversationsPage = ({ resetKey }: ConversationsPageProps = {}) => {
     setIsSearchMode(true);
 
     try {
-      const data = await searchChats(query, getAssistantIdsString(), 1);
+      const data = await searchChats(query, getAssistantIdsString(), 1, isTutor);
 
       setChats(data.answer);
       setTotalPages(Math.max(1, Math.ceil((data.total_count || data.answer.length) / CHATS_PER_PAGE)));
@@ -214,7 +215,7 @@ const ConversationsPage = ({ resetKey }: ConversationsPageProps = {}) => {
       setIsLoading(true);
 
       try {
-        const data = await searchChats(searchQuery.trim(), getAssistantIdsString(), page);
+        const data = await searchChats(searchQuery.trim(), getAssistantIdsString(), page, isTutor);
 
         setChats(data.answer);
         setCurrentPage(page);
@@ -294,6 +295,7 @@ const ConversationsPage = ({ resetKey }: ConversationsPageProps = {}) => {
     return (
       <ChatView
         chat={selectedChat}
+        isTutor={isTutor}
         onBack={() => {
           setSelectedChat(null);
           void loadChats(currentPage);

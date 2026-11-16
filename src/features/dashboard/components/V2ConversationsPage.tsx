@@ -26,9 +26,26 @@ const CHATS_PER_PAGE = 10;
 
 type V2ConversationsPageProps = {
   resetKey?: number;
+  isTutor?: boolean;
 };
 
-const V2ConversationsPage = ({ resetKey }: V2ConversationsPageProps = {}) => {
+const formatProgramName = (program?: string) => {
+  if (!program) return "Not selected";
+  switch (program.toLowerCase()) {
+    case "barber":
+      return "Barber";
+    case "cosmetology":
+      return "Cosmetology";
+    case "esthetician":
+      return "Esthetician";
+    case "nail-technician":
+      return "Nail Technician";
+    default:
+      return program;
+  }
+};
+
+const V2ConversationsPage = ({ resetKey, isTutor = false }: V2ConversationsPageProps = {}) => {
   const { toast } = useToast();
   const [agentName, setAgentName] = useState("AVA");
   const [chats, setChats] = useState<Chat[]>([]);
@@ -65,8 +82,8 @@ const V2ConversationsPage = ({ resetKey }: V2ConversationsPageProps = {}) => {
 
       try {
         const [nextChats, nextTotalPages] = await Promise.all([
-          fetchChats(page, currentAssistantId),
-          fetchChatsPagination(currentAssistantId),
+          fetchChats(page, currentAssistantId, isTutor),
+          fetchChatsPagination(currentAssistantId, isTutor),
         ]);
 
         setChats(nextChats);
@@ -83,7 +100,7 @@ const V2ConversationsPage = ({ resetKey }: V2ConversationsPageProps = {}) => {
         setIsLoading(false);
       }
     },
-    [toast],
+    [toast, isTutor],
   );
 
   const prevResetKeyRef = useRef(resetKey);
@@ -124,7 +141,7 @@ const V2ConversationsPage = ({ resetKey }: V2ConversationsPageProps = {}) => {
     setIsSearchMode(true);
 
     try {
-      const data = await searchChats(query, assistantId, 1);
+      const data = await searchChats(query, assistantId, 1, isTutor);
 
       setChats(data.answer);
       setTotalCount(data.total_count || data.answer.length);
@@ -150,7 +167,7 @@ const V2ConversationsPage = ({ resetKey }: V2ConversationsPageProps = {}) => {
       setIsLoading(true);
 
       try {
-        const data = await searchChats(searchQuery.trim(), assistantId, page);
+        const data = await searchChats(searchQuery.trim(), assistantId, page, isTutor);
 
         setChats(data.answer);
         setTotalCount(data.total_count || data.answer.length);
@@ -224,15 +241,26 @@ const V2ConversationsPage = ({ resetKey }: V2ConversationsPageProps = {}) => {
   };
 
   if (selectedChat) {
-    return <V2ChatView agentName={agentName} chat={selectedChat} onBack={() => setSelectedChat(null)} />;
+    return (
+      <V2ChatView
+        agentName={agentName}
+        chat={selectedChat}
+        isTutor={isTutor}
+        onBack={() => setSelectedChat(null)}
+      />
+    );
   }
 
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-[2.25rem] font-bold leading-tight text-[#071225]">Conversations</h1>
+        <h1 className="text-[2.25rem] font-bold leading-tight text-[#071225]">
+          {isTutor ? "Tutor Conversations" : "Conversations"}
+        </h1>
         <p className="mt-3 text-[1.45rem] font-medium text-[#465468]">
-          Manage your AI-powered conversations through WebSocket
+          {isTutor
+            ? "Manage AI Exam Prep Tutor conversations and student progress"
+            : "Manage your AI-powered conversations through WebSocket"}
         </p>
       </div>
 
@@ -274,6 +302,12 @@ const V2ConversationsPage = ({ resetKey }: V2ConversationsPageProps = {}) => {
             <TableRow className="border-[#dfe6ef] bg-white hover:bg-white">
               <TableHead className="h-[60px] px-5 text-lg font-semibold text-[#465468]">Phone Number</TableHead>
               <TableHead className="h-[60px] px-5 text-lg font-semibold text-[#465468]">Agent</TableHead>
+              {isTutor && (
+                <>
+                  <TableHead className="h-[60px] px-5 text-lg font-semibold text-[#465468]">Program</TableHead>
+                  <TableHead className="h-[60px] px-5 text-lg font-semibold text-[#465468]">Progress</TableHead>
+                </>
+              )}
               <TableHead className="h-[60px] px-5 text-lg font-semibold text-[#465468]">Status</TableHead>
               <TableHead className="h-[60px] px-5 text-lg font-semibold text-[#465468]">Messages</TableHead>
               <TableHead className="h-[60px] px-5 text-lg font-semibold text-[#465468]">Created</TableHead>
@@ -283,7 +317,7 @@ const V2ConversationsPage = ({ resetKey }: V2ConversationsPageProps = {}) => {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={6} className="h-40 text-center">
+                <TableCell colSpan={isTutor ? 8 : 6} className="h-40 text-center">
                   <div className="flex items-center justify-center">
                     <div className="h-7 w-7 animate-spin rounded-full border-b-2 border-[#ff8f6a]" />
                   </div>
@@ -291,7 +325,7 @@ const V2ConversationsPage = ({ resetKey }: V2ConversationsPageProps = {}) => {
               </TableRow>
             ) : chats.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="h-40 text-center text-lg text-[#66748a]">
+                <TableCell colSpan={isTutor ? 8 : 6} className="h-40 text-center text-lg text-[#66748a]">
                   {isSearchMode ? "Nothing was found for your search." : "No conversations found."}
                 </TableCell>
               </TableRow>
@@ -306,6 +340,16 @@ const V2ConversationsPage = ({ resetKey }: V2ConversationsPageProps = {}) => {
                     {chat.customer_id || "-"}
                   </TableCell>
                   <TableCell className="px-5 text-lg font-medium text-[#1f2937]">{agentName || "AVA"}</TableCell>
+                  {isTutor && (
+                    <>
+                      <TableCell className="px-5 text-lg font-medium text-[#1f2937]">
+                        {formatProgramName(chat.tuting_program)}
+                      </TableCell>
+                      <TableCell className="px-5 text-base font-medium text-[#465468]">
+                        {chat.tutor_count ?? 0} total ({chat.tutor_count_per_day ?? 0}/5 today)
+                      </TableCell>
+                    </>
+                  )}
                   <TableCell className="px-5">
                     <span
                       className={`inline-flex items-center rounded-full border px-3.5 py-1 text-base font-semibold ${

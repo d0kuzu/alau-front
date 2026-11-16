@@ -50,6 +50,11 @@ export type Chat = {
   is_booked?: boolean;
   is_reviewed?: boolean;
   followup_stage?: number;
+  is_tutor?: boolean;
+  is_tuting?: boolean;
+  tuting_program?: string;
+  tutor_count_per_day?: number;
+  tutor_count?: number;
 };
 
 type UpdateAssistantPayload = {
@@ -673,6 +678,11 @@ const normalizeChat = (item: unknown): Chat | null => {
     updated_at: getFirstString(record.updated_at, record.updatedAt) ?? "",
     message_count: getNumberValue(record.message_count ?? record.messageCount ?? record.messages_count) ?? 0,
     is_end: getBooleanValue(record.is_end ?? record.isEnd ?? record.is_ended ?? record.isEnded),
+    is_tutor: getBooleanValue(record.is_tutor ?? record.isTutor),
+    is_tuting: getBooleanValue(record.is_tuting ?? record.isTuting),
+    tuting_program: getFirstOptionalString(record.tuting_program, record.tutingProgram) ?? "",
+    tutor_count_per_day: getNumberValue(record.tutor_count_per_day ?? record.tutorCountPerDay) ?? 0,
+    tutor_count: getNumberValue(record.tutor_count ?? record.tutorCount) ?? 0,
   };
 };
 
@@ -708,29 +718,34 @@ const normalizeChatsListResponse = (response: unknown): Chat[] =>
     .map((item) => normalizeChat(item))
     .filter((chat): chat is Chat => Boolean(chat));
 
-export const fetchChats = async (page: number, assistantIds: string) => {
+export const fetchChats = async (page: number, assistantIds: string, isTutor = false) => {
   const query = buildQueryParams({
     page,
     assistant_ids: assistantIds,
+    is_tutor: isTutor ? "true" : undefined,
   });
   const response = await backendRequest<unknown>(`/ai/chats/get_all${query}`);
 
   return normalizeChatsListResponse(response);
 };
 
-export const fetchChatsPagination = async (assistantIds: string) => {
-  const query = buildQueryParams({ assistant_ids: assistantIds });
+export const fetchChatsPagination = async (assistantIds: string, isTutor = false) => {
+  const query = buildQueryParams({
+    assistant_ids: assistantIds,
+    is_tutor: isTutor ? "true" : undefined,
+  });
   const response = await backendRequest<unknown>(`/ai/chats/get_pagination${query}`);
   const payload = getAnswerPayload(response, "Не удалось загрузить пагинацию разговоров");
 
   return getNumberValue(payload) ?? 1;
 };
 
-export const searchChats = async (queryText: string, assistantIds: string, page = 1): Promise<SearchChatsResult> => {
+export const searchChats = async (queryText: string, assistantIds: string, page = 1, isTutor = false): Promise<SearchChatsResult> => {
   const query = buildQueryParams({
     chat: queryText,
     assistant_ids: assistantIds,
     page,
+    is_tutor: isTutor ? "true" : undefined,
   });
   const response = await backendRequest<unknown>(`/ai/chats/search_chat${query}`);
 

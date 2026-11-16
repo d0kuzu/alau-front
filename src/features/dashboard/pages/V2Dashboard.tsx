@@ -11,6 +11,7 @@ import {
   Loader2,
   Ban,
   AlertCircle,
+  GraduationCap,
 } from "lucide-react";
 
 import { useAuth } from "@/shared/contexts/AuthContext";
@@ -27,6 +28,7 @@ const periods = ["Today", "7 days", "30 days", "60 days", "90 days"];
 const navItems = [
   { id: "overview", label: "Overview", icon: BarChart3 },
   { id: "conversations", label: "Conversations", icon: MessageCircle },
+  { id: "tutor-conversations", label: "Tutor Conversations", icon: GraduationCap },
   { id: "prompt-settings", label: "AI Prompt Settings", icon: FileText },
   { id: "blocked", label: "Blocked Customers", icon: Ban },
   { id: "pending", label: "Pending Sync", icon: AlertCircle },
@@ -226,7 +228,7 @@ const V2Dashboard = () => {
                   type="button"
                   onClick={() => {
                     setAnalyticsCategory(null);
-                    if (item.id === "conversations") {
+                    if (item.id === "conversations" || item.id === "tutor-conversations") {
                       setConversationsResetKey((prev) => prev + 1);
                     }
                     setActiveNav(item.id);
@@ -269,7 +271,9 @@ const V2Dashboard = () => {
               onBack={() => setAnalyticsCategory(null)}
             />
           ) : activeNav === "conversations" ? (
-            <V2ConversationsPage resetKey={conversationsResetKey} />
+            <V2ConversationsPage key="regular-conversations" resetKey={conversationsResetKey} isTutor={false} />
+          ) : activeNav === "tutor-conversations" ? (
+            <V2ConversationsPage key="tutor-conversations" resetKey={conversationsResetKey} isTutor={true} />
           ) : activeNav === "prompt-settings" ? (
             <V2PromptSettings />
           ) : activeNav === "blocked" ? (

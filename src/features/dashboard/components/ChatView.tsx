@@ -13,6 +13,7 @@ type ChatMessage = {
 
 type ChatViewProps = {
   chat: Chat;
+  isTutor?: boolean;
   onBack: () => void;
 };
 
@@ -60,9 +61,10 @@ const normalizeBody = (value: unknown) => {
   }
 };
 
-const ChatView = ({ chat, onBack }: ChatViewProps) => {
+const ChatView = ({ chat, isTutor = false, onBack }: ChatViewProps) => {
   const { toast } = useToast();
   const { t, dateLocale } = useLanguage();
+  const [viewTutor, setViewTutor] = useState<boolean>(Boolean(isTutor));
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isConnecting, setIsConnecting] = useState(true);
   const wsRef = useRef<WebSocket | null>(null);
@@ -93,7 +95,7 @@ const ChatView = ({ chat, onBack }: ChatViewProps) => {
           return;
         }
 
-        const wsUrl = `wss://api.zerde.co/diaxel/ai/websocket/get_conversation?token=${encodeURIComponent(accessToken)}&chat=${encodeURIComponent(chat.id)}`;
+        const wsUrl = `wss://api.zerde.co/diaxel/ai/websocket/get_conversation?token=${encodeURIComponent(accessToken)}&chat=${encodeURIComponent(chat.id)}&isTutor=${viewTutor ? "true" : "false"}`;
         socket = new WebSocket(wsUrl);
         wsRef.current = socket;
 
@@ -176,7 +178,7 @@ const ChatView = ({ chat, onBack }: ChatViewProps) => {
       wsRef.current?.close(1000);
       wsRef.current = null;
     };
-  }, [chat.id, toast]);
+  }, [chat.id, viewTutor, toast]);
 
   return (
     <div className="flex h-[calc(100vh-8rem)] flex-col md:h-[calc(100vh-4rem)]">
