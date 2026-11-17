@@ -48,6 +48,7 @@ const formatProgramName = (program?: string) => {
 const V2ConversationsPage = ({ resetKey, isTutor = false }: V2ConversationsPageProps = {}) => {
   const { toast } = useToast();
   const [agentName, setAgentName] = useState("AVA");
+  const [assistantsMap, setAssistantsMap] = useState<Record<string, string>>({});
   const [chats, setChats] = useState<Chat[]>([]);
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -63,12 +64,19 @@ const V2ConversationsPage = ({ resetKey, isTutor = false }: V2ConversationsPageP
       try {
         const assistantsList = await fetchAssistants();
         if (assistantsList.length > 0) {
-          const firstAssistant = assistantsList[0];
-          setAssistantId(firstAssistant.id);
-          setAgentName(firstAssistant.name || "AVA");
+          const nextMap: Record<string, string> = {};
+          for (const assistant of assistantsList) {
+            nextMap[assistant.id] = assistant.name || "AVA";
+          }
+          setAssistantsMap(nextMap);
+          setAssistantId(assistantsList.map((assistant) => assistant.id).join(","));
+          setAgentName(assistantsList[0].name || "AVA");
+        } else {
+          setIsLoading(false);
         }
       } catch {
         setAgentName("AVA");
+        setIsLoading(false);
       }
     };
 
@@ -243,7 +251,7 @@ const V2ConversationsPage = ({ resetKey, isTutor = false }: V2ConversationsPageP
   if (selectedChat) {
     return (
       <V2ChatView
-        agentName={agentName}
+        agentName={assistantsMap[selectedChat.assistant_id] || agentName}
         chat={selectedChat}
         isTutor={isTutor}
         onBack={() => setSelectedChat(null)}
@@ -339,7 +347,9 @@ const V2ConversationsPage = ({ resetKey, isTutor = false }: V2ConversationsPageP
                   <TableCell className="px-5 text-lg font-semibold text-[#ff8f6a]">
                     {chat.customer_id || "-"}
                   </TableCell>
-                  <TableCell className="px-5 text-lg font-medium text-[#1f2937]">{agentName || "AVA"}</TableCell>
+                  <TableCell className="px-5 text-lg font-medium text-[#1f2937]">
+                    {assistantsMap[chat.assistant_id] || agentName || "AVA"}
+                  </TableCell>
                   {isTutor && (
                     <>
                       <TableCell className="px-5 text-lg font-medium text-[#1f2937]">
