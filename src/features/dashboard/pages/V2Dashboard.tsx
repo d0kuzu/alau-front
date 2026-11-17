@@ -19,7 +19,7 @@ import V2ConversationsPage from "../components/V2ConversationsPage";
 import V2PromptSettings from "../components/V2PromptSettings";
 import V2BlockedCustomers from "../components/V2BlockedCustomers";
 import V2PendingAppointments from "../components/V2PendingAppointments";
-import { TUTOR_ASSISTANT_ID, fetchAnalytics, fetchAssistants, type AnalyticsData, type AnalyticsCategory } from "@/services/api/api";
+import { fetchAnalytics, fetchAssistants, type AnalyticsData, type AnalyticsCategory } from "@/services/api/api";
 import V2AnalyticsChatsPage from "../components/V2AnalyticsChatsPage";
 
 const periods = ["Today", "7 days", "30 days", "60 days", "90 days"];
@@ -67,7 +67,7 @@ const V2Dashboard = () => {
       try {
         const assistants = await fetchAssistants();
         if (assistants.length > 0) {
-          const firstAssistant = assistants.find((a) => a.id !== TUTOR_ASSISTANT_ID) ?? assistants[0];
+          const firstAssistant = assistants[0];
           if (isMounted) {
             setAssistantId(firstAssistant.id);
             if (firstAssistant.name) setAgentName(firstAssistant.name);

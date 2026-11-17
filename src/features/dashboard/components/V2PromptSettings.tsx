@@ -5,7 +5,6 @@ import { Button } from "@/shared/ui/button";
 import { Textarea } from "@/shared/ui/textarea";
 import { useToast } from "@/shared/hooks/use-toast";
 import {
-  TUTOR_ASSISTANT_ID,
   fetchAssistant,
   fetchAssistants,
   updateAssistant,
@@ -39,7 +38,7 @@ const V2PromptSettings = () => {
         throw new Error("No assistants found");
       }
       
-      const firstAssistant = assistants.find((a) => a.id !== TUTOR_ASSISTANT_ID) ?? assistants[0];
+      const firstAssistant = assistants[0];
       const data = await fetchAssistant(firstAssistant.id);
       const nextForm = getPromptForm(data);
 

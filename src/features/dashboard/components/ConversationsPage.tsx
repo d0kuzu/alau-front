@@ -14,7 +14,6 @@ import {
 import { useToast } from "@/shared/hooks/use-toast";
 import { useLanguage } from "@/shared/contexts/LanguageContext";
 import {
-  TUTOR_ASSISTANT_ID,
   fetchAssistants,
   fetchChats,
   fetchChatsPagination,
@@ -70,8 +69,8 @@ const ConversationsPage = ({ resetKey, isTutor = false }: ConversationsPageProps
   const filterRef = useRef<HTMLDivElement>(null);
 
   const getAssistantIdsString = useCallback(
-    () => (isTutor ? TUTOR_ASSISTANT_ID : Array.from(selectedAssistantIds).join(",")),
-    [isTutor, selectedAssistantIds],
+    () => Array.from(selectedAssistantIds).join(","),
+    [selectedAssistantIds],
   );
 
   useEffect(() => {

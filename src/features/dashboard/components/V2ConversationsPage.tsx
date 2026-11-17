@@ -13,7 +13,6 @@ import {
 } from "@/shared/ui/table";
 import { useToast } from "@/shared/hooks/use-toast";
 import {
-  TUTOR_ASSISTANT_ID,
   fetchAssistants,
   fetchChats,
   fetchChatsPagination,
@@ -63,28 +62,18 @@ const V2ConversationsPage = ({ resetKey, isTutor = false }: V2ConversationsPageP
     const init = async () => {
       try {
         const assistantsList = await fetchAssistants();
-        if (isTutor) {
-          const tutorAssistant = assistantsList.find((a) => a.id === TUTOR_ASSISTANT_ID);
-          setAssistantId(TUTOR_ASSISTANT_ID);
-          setAgentName(tutorAssistant?.name || "Tutor");
-        } else if (assistantsList.length > 0) {
-          const mainAssistant =
-            assistantsList.find((a) => a.id !== TUTOR_ASSISTANT_ID) ?? assistantsList[0];
-          setAssistantId(mainAssistant.id);
-          setAgentName(mainAssistant.name || "AVA");
+        if (assistantsList.length > 0) {
+          const firstAssistant = assistantsList[0];
+          setAssistantId(firstAssistant.id);
+          setAgentName(firstAssistant.name || "AVA");
         }
       } catch {
-        if (isTutor) {
-          setAssistantId(TUTOR_ASSISTANT_ID);
-          setAgentName("Tutor");
-        } else {
-          setAgentName("AVA");
-        }
+        setAgentName("AVA");
       }
     };
 
     void init();
-  }, [isTutor]);
+  }, []);
 
   const loadChats = useCallback(
     async (page: number, currentAssistantId: string) => {
